@@ -1,0 +1,26 @@
+.bar {
+  display: flex;
+  align-items: center;
+  padding: var(--cc-space-xs);
+  max-width: var(--cc-content-max);
+  margin: 0 auto;
+
+  @media (width >= 1024px) {
+    padding: var(--cc-space-lg) var(--cc-space-xl);
+  }
+}
+
+.bar__mark {
+  font-family: var(--cc-font-display);
+  font-weight: var(--cc-fw-bold);
+  font-size: var(--cc-fs-lg);
+  color: var(--cc-green-mid);
+  text-decoration: none;
+  min-height: var(--cc-tap-target);
+  display: flex;
+  align-items: center;
+}
+
+.bar--dark .bar__mark {
+  color: var(--cc-cream);
+}

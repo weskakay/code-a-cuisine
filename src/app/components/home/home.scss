@@ -1,0 +1,101 @@
+:host {
+  display: block;
+  background: var(--cc-olive);
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--cc-space-2xl);
+  max-width: var(--cc-content-max);
+  margin: 0 auto;
+  padding: var(--cc-space-lg) var(--cc-space-xs) var(--cc-space-xl);
+  min-height: calc(100svh - 76px);
+
+  @media (width >= 1024px) {
+    padding: var(--cc-space-2xl) var(--cc-space-xl);
+  }
+}
+
+.hero__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--cc-space-lg);
+}
+
+.hero__claim {
+  color: var(--cc-beige);
+  font-size: var(--cc-fs-lg);
+  font-weight: var(--cc-fw-semibold);
+  max-width: 14ch;
+
+  @media (width >= 1024px) {
+    font-size: 48px;
+    max-width: none;
+  }
+}
+
+.hero__title {
+  color: var(--cc-cream);
+  font-family: var(--cc-font-display);
+  font-weight: var(--cc-fw-bold);
+  font-size: var(--cc-fs-h1);
+  line-height: 1.1;
+}
+
+.hero__secondary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--cc-space-xs);
+}
+
+.hero__question {
+  color: var(--cc-cream);
+  font-family: var(--cc-font-display);
+  font-weight: var(--cc-fw-medium);
+  font-size: var(--cc-fs-lg);
+
+  @media (width >= 1024px) {
+    font-size: var(--cc-fs-card);
+  }
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cc-space-2xs);
+  min-height: var(--cc-tap-target);
+  padding: var(--cc-space-2xs) var(--cc-space-sm);
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-semibold);
+  text-decoration: none;
+  transition: background var(--cc-transition), color var(--cc-transition);
+
+  @media (width >= 1024px) {
+    font-size: var(--cc-fs-lg);
+    padding: var(--cc-space-xs) var(--cc-space-sm);
+  }
+}
+
+.button--cream {
+  background: var(--cc-cream);
+  color: var(--cc-green);
+
+  &:hover {
+    background: var(--cc-cream-hover);
+  }
+}
+
+.button--ghost {
+  color: var(--cc-cream);
+  border-radius: 5px;
+
+  &:hover {
+    background: rgb(250 224 198 / 20%);
+  }
+}
