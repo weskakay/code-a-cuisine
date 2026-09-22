@@ -30,7 +30,7 @@ follow.
 Clone the repository:
 
 ```bash
-git clone https://github.com/weskakay/code-a-cuisine.git
+git clone <repository-url>
 ```
 
 Change into the folder:
@@ -62,7 +62,7 @@ npm start
 Clone the repository:
 
 ```powershell
-git clone https://github.com/weskakay/code-a-cuisine.git
+git clone <repository-url>
 ```
 
 Change into the folder:
@@ -120,6 +120,16 @@ npm test
 
 ```bash
 npm run build
+```
+
+## Project structure
+
+```text
+src/app/components   screens and reusable parts
+src/app/services     data access and shared logic
+src/app/interfaces   the types shared with the workflow
+src/styles           design tokens and base styles
+n8n/workflows        exported automation workflows
 ```
 
 ## Data format
