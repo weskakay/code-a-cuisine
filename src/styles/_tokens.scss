@@ -1,0 +1,69 @@
+/* Every colour, spacing, radius and font size of the design lives here.
+   Components only use var(--cc-...), never a hex value or a magic pixel. */
+
+:root {
+  /* Greens */
+  --cc-olive: #396039;
+  --cc-green-mid: #1e5515;
+  --cc-green-dark: #10310b;
+  --cc-green: #008000;
+  --cc-green-pressed: #055e05;
+
+  /* Creams and surfaces */
+  --cc-cream: #faf0e6;
+  --cc-cream-hover: #fae0c6;
+  --cc-beige: #f5f5dc;
+  --cc-white: #ffffff;
+  --cc-card: #dbe0db;
+  --cc-card-alt: #d7dfd7;
+  --cc-loader: #c4d0c4;
+  --cc-number-circle: #f6e3cf;
+
+  /* Cook labels */
+  --cc-chef-1: #d7dfd7;
+  --cc-chef-2: #ffd9b3;
+  --cc-chef-3: rgb(207 215 0 / 30%);
+
+  /* Overlay */
+  --cc-overlay: rgb(12 33 8 / 40%);
+
+  /* Spacing */
+  --cc-space-3xs: 4px;
+  --cc-space-2xs: 8px;
+  --cc-space-xs: 16px;
+  --cc-space-sm: 24px;
+  --cc-space-md: 32px;
+  --cc-space-lg: 40px;
+  --cc-space-xl: 64px;
+  --cc-space-2xl: 96px;
+
+  /* Radii */
+  --cc-radius-xs: 4px;
+  --cc-radius-sm: 8px;
+  --cc-radius-md: 16px;
+  --cc-radius-lg: 20px;
+  --cc-radius-pill: 30px;
+
+  /* Fonts */
+  --cc-font-body: 'Quicksand', system-ui, sans-serif;
+  --cc-font-display: 'Ubuntu', system-ui, sans-serif;
+  --cc-fw-medium: 500;
+  --cc-fw-semibold: 600;
+  --cc-fw-bold: 700;
+
+  /* Font sizes, 16px is the smallest the checklist allows */
+  --cc-fs-xs: 16px;
+  --cc-fs-sm: 18px;
+  --cc-fs-body: 20px;
+  --cc-fs-lg: 24px;
+  --cc-fs-card: 28px;
+  --cc-fs-h2: clamp(32px, 5vw, 54px);
+  --cc-fs-h1: clamp(48px, 9vw, 104px);
+  --cc-lh-body: 1.5;
+
+  /* Layout */
+  --cc-content-max: 1440px;
+  --cc-tap-target: 44px;
+  --cc-transition: 100ms;
+  --cc-shadow-plate: -6px 2px 4px rgb(0 0 0 / 25%);
+}
