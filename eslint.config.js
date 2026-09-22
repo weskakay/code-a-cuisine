@@ -31,6 +31,17 @@ module.exports = defineConfig([
           style: 'kebab-case',
         },
       ],
+      'max-lines-per-function': ['error', { max: 14, skipBlankLines: true, skipComments: true }],
+      'max-lines': ['error', { max: 400, skipBlankLines: true, skipComments: true }],
+      'no-console': ['error', { allow: ['error', 'warn'] }],
+      camelcase: ['error', { properties: 'never' }],
+    },
+  },
+  {
+    // A describe block is naturally longer than 14 lines.
+    files: ['**/*.spec.ts'],
+    rules: {
+      'max-lines-per-function': 'off',
     },
   },
   {
