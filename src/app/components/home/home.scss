@@ -96,6 +96,6 @@
   border-radius: 5px;
 
   &:hover {
-    background: rgb(250 224 198 / 20%);
+    background: color-mix(in srgb, var(--cc-cream-hover) 20%, transparent);
   }
 }
