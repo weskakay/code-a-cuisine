@@ -1,0 +1,65 @@
+{
+  "name": "Generate recipes",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "generate-recipes",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "http://localhost:4200"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8be73b82-e19b-4a1d-8100-c123b4c8f658",
+      "name": "Webhook",
+      "webhookId": "484f3f8a-7edd-48e4-82da-b00c6ac12744"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{ \"status\": \"ok\" }\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "7b66a314-48e7-475b-967f-dab91b5ed9a8",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "639e8187-acfc-4228-bf76-3b7fb1500d2b",
+  "meta": {
+    "instanceId": "ed40ae4b52268f7af8ddc1f55ef685d78d1e3cb6bf9828970417b77a8f646d44"
+  },
+  "nodeGroups": [],
+  "id": "t9P3ujhsVF2Cig9W",
+  "tags": []
+}
