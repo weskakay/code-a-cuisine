@@ -25,9 +25,7 @@ export class GeneratorService {
   /** Sends the form data and returns three saved recipes plus the quota. */
   async generate(request: RecipeRequest): Promise<RecipeResponse> {
     try {
-      return await firstValueFrom(
-        this.http.post<RecipeResponse>(environment.webhookUrl, request),
-      );
+      return await firstValueFrom(this.http.post<RecipeResponse>(environment.webhookUrl, request));
     } catch (error) {
       throw toGeneratorError(error as HttpErrorResponse);
     }

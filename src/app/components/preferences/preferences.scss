@@ -135,3 +135,36 @@
   color: var(--cc-green-dark);
   font-weight: var(--cc-fw-semibold);
 }
+
+.prefs__submit {
+  align-self: center;
+  min-height: var(--cc-tap-target);
+  padding: var(--cc-space-2xs) var(--cc-space-sm);
+  background: var(--cc-olive);
+  color: var(--cc-cream);
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-semibold);
+  transition: background var(--cc-transition);
+
+  &:hover:enabled {
+    background: var(--cc-green-pressed);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  @media (width >= 1024px) {
+    align-self: flex-end;
+    font-size: var(--cc-fs-lg);
+  }
+}
+
+/* Room for the message, so nothing jumps when it appears */
+.prefs__error {
+  min-height: calc(var(--cc-fs-xs) * 1.5);
+  color: var(--cc-green-mid);
+  font-size: var(--cc-fs-xs);
+  text-align: center;
+}

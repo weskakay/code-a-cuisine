@@ -7,7 +7,9 @@
     <section class="counter">
       <h2 class="counter__label">How many portions do you need?</h2>
       <div class="counter__row">
-        <button type="button" aria-label="One portion less" (click)="changePortions(-1)">&minus;</button>
+        <button type="button" aria-label="One portion less" (click)="changePortions(-1)">
+          &minus;
+        </button>
         <output class="counter__value">{{ portions() }}</output>
         <span class="counter__unit">Portions</span>
         <button type="button" aria-label="One portion more" (click)="changePortions(1)">+</button>
@@ -17,7 +19,9 @@
     <section class="counter">
       <h2 class="counter__label">How many are cooking?</h2>
       <div class="counter__row">
-        <button type="button" aria-label="One cook less" (click)="changeHelpers(-1)">&minus;</button>
+        <button type="button" aria-label="One cook less" (click)="changeHelpers(-1)">
+          &minus;
+        </button>
         <output class="counter__value">{{ helpers() }}</output>
         <span class="counter__unit">Cooks</span>
         <button type="button" aria-label="One cook more" (click)="changeHelpers(1)">+</button>
@@ -78,4 +82,10 @@
       </div>
     </section>
   </div>
+
+  <button class="prefs__submit" type="button" [disabled]="busy()" (click)="generate()">
+    {{ busy() ? 'Generating …' : 'Generate a recipe' }}
+  </button>
+
+  <p class="prefs__error" role="alert">{{ error() }}</p>
 </main>

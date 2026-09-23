@@ -74,7 +74,9 @@
   font-size: var(--cc-fs-xs);
   font-weight: var(--cc-fw-semibold);
   text-decoration: none;
-  transition: background var(--cc-transition), color var(--cc-transition);
+  transition:
+    background var(--cc-transition),
+    color var(--cc-transition);
 
   @media (width >= 1024px) {
     font-size: var(--cc-fs-lg);

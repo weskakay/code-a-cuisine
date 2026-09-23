@@ -81,7 +81,9 @@ button {
   cursor: pointer;
   background: none;
   min-height: var(--cc-tap-target);
-  transition: background var(--cc-transition), color var(--cc-transition);
+  transition:
+    background var(--cc-transition),
+    color var(--cc-transition);
 }
 
 a {
