@@ -168,3 +168,59 @@
   font-size: var(--cc-fs-xs);
   text-align: center;
 }
+
+/* Pop-up when the daily limit is used up */
+.quota {
+  max-width: 420px;
+  padding: var(--cc-space-md);
+  color: var(--cc-green-dark);
+  background: var(--cc-cream);
+  border: unset;
+  border-radius: var(--cc-radius-md);
+
+  &::backdrop {
+    background: var(--cc-overlay);
+  }
+}
+
+.quota__title {
+  margin: 0 0 var(--cc-space-2xs);
+  font-family: var(--cc-font-display);
+  font-size: var(--cc-fs-card);
+  font-weight: var(--cc-fw-bold);
+}
+
+.quota__text {
+  margin: 0 0 var(--cc-space-sm);
+  font-size: var(--cc-fs-xs);
+  line-height: var(--cc-lh-body);
+}
+
+.quota__close {
+  width: 100%;
+  min-height: var(--cc-tap-target);
+  font-family: var(--cc-font-body);
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-semibold);
+  color: var(--cc-white);
+  cursor: pointer;
+  background: var(--cc-olive);
+  border: unset;
+  border-radius: var(--cc-radius-pill);
+  transition: background var(--cc-transition);
+
+  &:hover {
+    background: var(--cc-green-pressed);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--cc-green);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quota__close {
+    transition: none;
+  }
+}

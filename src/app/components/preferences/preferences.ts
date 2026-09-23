@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { COOKING_TIMES, CUISINES, DIETS, HELPERS, PORTIONS } from '../../data/options';
 import { GeneratorError, GeneratorService } from '../../services/generator.service';
@@ -32,6 +32,33 @@ export class Preferences {
   readonly busy = signal(false);
   readonly error = signal('');
 
+  /** True once the workflow refused because the daily limit is used up. */
+  readonly blocked = signal(false);
+
+  private readonly quotaDialog = viewChild<ElementRef<HTMLDialogElement>>('quotaDialog');
+
+  constructor() {
+    effect(() => this.toggleDialog(this.blocked()));
+  }
+
+  /** Opens the pop-up as a modal so it traps the focus, or closes it again. */
+  private toggleDialog(open: boolean): void {
+    const dialog = this.quotaDialog()?.nativeElement;
+    if (!dialog) {
+      return;
+    }
+    if (open && !dialog.open) {
+      dialog.showModal();
+    } else if (!open && dialog.open) {
+      dialog.close();
+    }
+  }
+
+  /** Closes the quota pop-up. */
+  dismiss(): void {
+    this.blocked.set(false);
+  }
+
   /** Adds the step to the portions, staying inside the allowed range. */
   changePortions(step: number): void {
     this.portions.update((value) => clamp(value + step, PORTIONS.min, PORTIONS.max));
@@ -50,10 +77,19 @@ export class Preferences {
       this.store.setResult(await this.generator.generate(this.draft.toRequest()));
       await this.router.navigate(['/results']);
     } catch (failure) {
-      this.error.set((failure as GeneratorError).message);
+      this.showFailure(failure as GeneratorError);
     } finally {
       this.busy.set(false);
     }
+  }
+
+  /** The used up quota gets a pop-up, everything else a line under the button. */
+  private showFailure(failure: GeneratorError): void {
+    if (failure.quotaReached) {
+      this.blocked.set(true);
+      return;
+    }
+    this.error.set(failure.message);
   }
 }
 

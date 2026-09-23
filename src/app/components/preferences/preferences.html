@@ -89,3 +89,12 @@
 
   <p class="prefs__error" role="alert">{{ error() }}</p>
 </main>
+
+<dialog #quotaDialog class="quota" aria-labelledby="quota-title" (close)="dismiss()">
+  <h2 id="quota-title" class="quota__title">Ups!</h2>
+  <p class="quota__text">
+    You have used all three recipes for today. The kitchen opens again tomorrow, so come back
+    and bring your ingredients with you.
+  </p>
+  <button class="quota__close" type="button" (click)="dismiss()">Alright</button>
+</dialog>
