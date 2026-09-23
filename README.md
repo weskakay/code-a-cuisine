@@ -141,12 +141,56 @@ and ask for more recipes than allowed.
 
 ## Data format
 
-The JSON contract between the app and the workflow is described here once it is in place.
+The app posts this to the workflow:
 
-## Importing the workflow
+```json
+{
+  "ingredients": [{ "name": "Pasta", "amount": 100, "unit": "g" }],
+  "portions": 2,
+  "cookingTime": "quick",
+  "cuisine": "italian",
+  "diet": "vegetarian",
+  "helpers": 2
+}
+```
 
-The exported workflows live in `n8n/workflows/`. The import steps follow with the first
-workflow.
+`unit` is `g`, `ml` or `piece`. `cookingTime` is `quick`, `medium` or `complex`. `cuisine`
+is one of german, italian, japanese, indian, gourmet, fusion. `diet` is vegetarian, vegan,
+keto or none. Portions run from 1 to 12, helpers from 1 to 3.
+
+The answer holds three saved recipes and what is left of the daily limit:
+
+```json
+{
+  "recipes": [{ "id": "…", "title": "…", "steps": [], "nutritionPerPortion": {} }],
+  "quota": { "remaining": 2, "limit": 3 }
+}
+```
+
+Errors come back as `{ "error": "one sentence" }` with status 400 for a bad request, 429
+when the limit is reached and 502 when the model broke the rules. The types live in
+`src/app/interfaces/recipe.interface.ts`.
+
+## Importing the workflows
+
+The exported workflows live in `n8n/workflows/`.
+
+Start n8n, open it, then use the menu next to the workflow name and pick Import from File.
+Import `generate-recipes.json` and `error-handler.json`.
+
+Credentials are not part of the export, so create them once in n8n and select them in the
+nodes that need them:
+
+| Credential | Used by |
+|---|---|
+| Google Gemini(PaLM) API | Gemini model |
+| Supabase API, service role secret | Use quota, Save recipes |
+| SMTP account | Send alert mail |
+
+Publish `Error handler`, then open the settings of `Generate recipes` and pick it as the
+error workflow. Publish `Generate recipes` last.
+
+The database part lives in `supabase/schema.sql`. Run it once in the Supabase SQL editor.
 
 ## Licence
 

@@ -1,0 +1,100 @@
+{
+  "name": "Error handler",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "3097bc7a-9cad-479e-bd7d-205789bf03e3",
+      "name": "On workflow error",
+      "notesInFlow": true,
+      "notes": "Runs whenever another workflow fails."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Keeps the mail short: what failed, where and when.\nconst run = $json.execution ?? {};\nconst workflow = $json.workflow ?? {};\nconst error = run.error ?? {};\n\nreturn [{\n  json: {\n    subject: `Code a Cuisine: ${workflow.name ?? 'workflow'} failed`,\n    body: [\n      `Workflow: ${workflow.name ?? 'unknown'}`,\n      `Node: ${error.node?.name ?? 'unknown'}`,\n      `Message: ${error.message ?? 'no message'}`,\n      `Time: ${run.lastNodeExecuted ? new Date().toISOString() : ''}`,\n      `Execution: ${run.url ?? 'open n8n and check the executions tab'}`,\n    ].join('\\n'),\n  },\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "299b51e9-8d22-4a38-b4d3-bd3747bd1e76",
+      "name": "Build message",
+      "notesInFlow": true,
+      "notes": "Collects workflow, node and message for the mail."
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.ALERT_EMAIL }}",
+        "toEmail": "={{ $env.ALERT_EMAIL }}",
+        "subject": "={{ $json.subject }}",
+        "emailFormat": "text",
+        "text": "={{ $json.body }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        448,
+        0
+      ],
+      "id": "68d11b14-0470-4f28-b826-cc1c122bd6c2",
+      "name": "Send alert mail",
+      "notesInFlow": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "webhookId": "0925bb93-2cde-4b90-8850-476ae70295e8",
+      "credentials": {
+        "smtp": {
+          "id": "Iz6pzMAvZdMKrBDd",
+          "name": "SMTP account"
+        }
+      },
+      "notes": "Sends the alert to the address in ALERT_EMAIL."
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On workflow error": {
+      "main": [
+        [
+          {
+            "node": "Build message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build message": {
+      "main": [
+        [
+          {
+            "node": "Send alert mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "bff018a4-9fde-4a32-9caf-4755bd4fff61",
+  "meta": {
+    "instanceId": "ed40ae4b52268f7af8ddc1f55ef685d78d1e3cb6bf9828970417b77a8f646d44"
+  },
+  "nodeGroups": [],
+  "id": "WtCxxYlkHEkpbyhi",
+  "tags": []
+}

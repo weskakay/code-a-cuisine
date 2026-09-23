@@ -13,10 +13,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -1968,
-        416
+        -1952,
+        560
       ],
-      "id": "a426fc92-2312-43ad-af47-4d0ed3bef977",
+      "id": "5d635b7b-e902-4d8f-b711-fabbbe0b1136",
       "name": "Webhook",
       "webhookId": "484f3f8a-7edd-48e4-82da-b00c6ac12744",
       "notesInFlow": true,
@@ -31,10 +31,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        272,
-        48
+        960,
+        80
       ],
-      "id": "25402560-b5bf-4b8c-88d1-5183efa35de9",
+      "id": "4292b0da-f92a-4ba0-b6ea-cdfeccd476b4",
       "name": "Respond to Webhook",
       "notesInFlow": true,
       "notes": "Answers the app with the result.\n"
@@ -46,10 +46,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1744,
-        416
+        -1728,
+        560
       ],
-      "id": "6e25fb00-4515-4ba7-9cb7-80b0eb55509a",
+      "id": "8c06b88b-fa74-4346-9e3c-af78c5ed79d7",
       "name": "Validate request",
       "notesInFlow": true,
       "notes": "Checks the request: at least one ingredient, portions 1-12, cooks 1-3, known cooking time, cuisine and diet.\n"
@@ -82,10 +82,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -1520,
-        416
+        -1504,
+        560
       ],
-      "id": "81993fa2-2309-4113-b71d-bdf5c4e05da6",
+      "id": "ab2395ec-63e6-4678-9f85-f37101178f00",
       "name": "Is valid?",
       "notesInFlow": true,
       "notes": "Splits the flow: valid requests continue, invalid ones get an error.\n"
@@ -101,10 +101,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        -1248,
-        560
+        -1232,
+        704
       ],
-      "id": "4943af84-3a35-435b-8df3-27689cc9fcc9",
+      "id": "64c0587e-da26-42c1-a7c4-ff1e0323b295",
       "name": "Respond with error",
       "notesInFlow": true,
       "notes": "Answers with status 400 and one clear message.\n"
@@ -116,10 +116,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1296,
-        256
+        -1280,
+        400
       ],
-      "id": "e45597ef-b382-43de-8b96-e2b1fe5982fd",
+      "id": "5a7ab721-e47b-44a7-aba8-e72cc93d0575",
       "name": "Read visitor address",
       "notesInFlow": true,
       "notes": "Reads the caller address from the last proxy entry, IPv4 or IPv6. Callers cannot spoof it."
@@ -138,22 +138,22 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -1072,
-        256
+        -1056,
+        400
       ],
-      "id": "c117733c-3e37-4cec-bb0c-c923f7082d64",
+      "id": "45799ae7-6bec-4f0e-8268-5becdb2f7586",
       "name": "Use quota",
       "notesInFlow": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
       "credentials": {
         "supabaseApi": {
           "id": "9eA71zxV5ucRkFdG",
           "name": "Supabase code-a-cuisine"
         }
       },
-      "notes": "Counts this generation in the database: three per address and day, twelve per day in total.",
-      "retryOnFail": true,
-      "maxTries": 3,
-      "waitBetweenTries": 2000
+      "notes": "Counts this generation in the database: three per address and day, twelve per day in total."
     },
     {
       "parameters": {
@@ -183,10 +183,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -848,
-        256
+        -832,
+        400
       ],
-      "id": "98ff4de0-75b9-42cc-b770-65dcb36f38d8",
+      "id": "7b8ae096-6c5e-4661-8237-033faccc794c",
       "name": "Quota left?",
       "notesInFlow": true,
       "notes": "Stops the flow when the daily limit is reached."
@@ -202,25 +202,25 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        -624,
-        368
+        -608,
+        512
       ],
-      "id": "462a4e81-5115-4cb6-a96f-2ae9de1df0a0",
+      "id": "35051cd4-8974-4436-94d5-a257c4f16f5d",
       "name": "Respond quota reached",
       "notesInFlow": true,
       "notes": "Answers with status 429 and tells the visitor when to come back."
     },
     {
       "parameters": {
-        "jsCode": "// Turns the request into one clear order for the model.\nconst request = $('Read visitor address').item.json.request;\nconst list = request.ingredients\n  .map((item) => `${item.amount} ${item.unit} ${item.name}`)\n  .join(', ');\n\nconst prompt = [\n  'You are a cooking assistant. Create exactly three different recipes.',\n  `Ingredients at home: ${list}.`,\n  `Portions: ${request.portions}. Cooks in the kitchen: ${request.helpers}.`,\n  `Cooking style: ${request.cuisine}. Diet: ${request.diet}.`,\n  `Time frame: ${request.cookingTime} (quick is up to 20 minutes, medium 20 to 45, complex over 45).`,\n  'Every recipe uses at least 70 percent of the ingredients above.',\n  'Every recipe may add at most three basic extra ingredients.',\n  'The three recipes differ in preparation or taste.',\n  'Scale all amounts to the number of portions.',\n  'Steps are chronological. Mark steps that run in parallel and give each step a cook.',\n  'Use waiting times, for example time in the oven, for other steps.',\n  'Give durations in minutes and nutrition per portion and for the whole recipe.',\n].join(' ');\n\nreturn [{ json: { prompt } }];\n"
+        "jsCode": "// Turns the request into one clear order for the model.\nconst request = $('Read visitor address').item.json.request;\nconst list = request.ingredients\n  .map((item) => `${item.amount} ${item.unit} ${item.name}`)\n  .join(', ');\n\nconst prompt = [\n  'You are a cooking assistant. Create exactly three different recipes.',\n  `Ingredients at home: ${list}.`,\n  `Portions: ${request.portions}. Cooks in the kitchen: ${request.helpers}.`,\n  `Cooking style: ${request.cuisine}. Diet: ${request.diet}.`,\n  `Time frame: ${request.cookingTime} (quick is up to 20 minutes, medium 20 to 45, complex over 45).`,\n  'Every recipe uses at least 70 percent of the ingredients above.',\n  'Every recipe may add at most three basic extra ingredients.',\n  'The three recipes differ in preparation or taste.',\n  'Scale all amounts to the number of portions.',\n  'Steps are chronological. Mark steps that run in parallel and give each step a cook.',\n  'Use waiting times, for example time in the oven, for other steps.',\n  'Give durations in minutes and nutrition per portion and for the whole recipe.',\n  'Write every title and every text in English, whatever the cooking style is.',\n].join(' ');\n\nreturn [{ json: { prompt } }];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -624,
-        96
+        -608,
+        240
       ],
-      "id": "1b91ddbd-ae69-48f7-8b6b-cd372b2319f6",
+      "id": "bedbf806-23e0-442b-addc-049dce6ce43a",
       "name": "Build prompt",
       "notesInFlow": true,
       "notes": "Turns the request into one order for the model, including the rules from the spec."
@@ -235,16 +235,16 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.7,
       "position": [
-        -400,
-        96
+        -384,
+        240
       ],
-      "id": "48d148d5-cf21-4855-9b13-9e91ef2d8338",
+      "id": "46fac58b-bcdf-4d63-b63d-f409040313df",
       "name": "Ask Gemini",
       "notesInFlow": true,
-      "notes": "Sends the order to Gemini and forces the answer into the agreed shape.",
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000
+      "waitBetweenTries": 2000,
+      "notes": "Sends the order to Gemini and forces the answer into the agreed shape."
     },
     {
       "parameters": {
@@ -254,10 +254,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -400,
-        304
+        -384,
+        448
       ],
-      "id": "dd817abf-80cc-4b87-bd5e-2835d52a080e",
+      "id": "13a66905-f99e-4e2b-8d27-d06afc4d80e7",
       "name": "Gemini model",
       "notesInFlow": true,
       "credentials": {
@@ -276,10 +276,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        -224,
-        304
+        -208,
+        448
       ],
-      "id": "5ed56b72-738a-43bb-a127-03ddacd684ea",
+      "id": "91d65f02-66d8-4461-ba99-445617194140",
       "name": "Recipe shape",
       "notesInFlow": true,
       "notes": "Forces the answer into the agreed fields, so the app always gets the same structure.\n"
@@ -291,10 +291,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -176,
-        96
+        -160,
+        240
       ],
-      "id": "0ab65a23-50ab-46dd-aedc-6c7b909560b0",
+      "id": "550b5aa8-bd0a-4026-b529-aee1a8901ee6",
       "name": "Check rules",
       "notesInFlow": true,
       "notes": "Checks the answer: three recipes, at least 70 percent of the ingredients, at most three extras."
@@ -327,10 +327,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        48,
-        96
+        64,
+        240
       ],
-      "id": "05db18c3-95f1-45bb-9d5f-98eb1a86670c",
+      "id": "5d55fcad-fa34-4407-8e54-9ff3e6320da7",
       "name": "Rules ok?",
       "notesInFlow": true,
       "notes": "Splits the flow: a sound answer continues, a broken one ends with an error."
@@ -346,13 +346,83 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        272,
-        208
+        288,
+        352
       ],
-      "id": "ccf04085-8b82-4272-8742-4bcb30dcd1df",
+      "id": "d024f987-c5a1-4c23-9753-bda07ea4319a",
       "name": "Respond generation failed",
       "notesInFlow": true,
       "notes": "Answers with status 502 when the model did not keep to the rules."
+    },
+    {
+      "parameters": {
+        "jsCode": "// The database uses snake_case columns, the app uses camelCase.\nconst request = $('Read visitor address').item.json.request;\n\nconst rows = $json.recipes.map((recipe) => ({\n  title: recipe.title,\n  cuisine: request.cuisine,\n  diet: request.diet,\n  cooking_time: request.cookingTime,\n  cooking_minutes: recipe.cookingMinutes,\n  portions: request.portions,\n  helpers: request.helpers,\n  your_ingredients: recipe.yourIngredients,\n  extra_ingredients: recipe.extraIngredients,\n  steps: recipe.steps,\n  nutrition_per_portion: recipe.nutritionPerPortion,\n  nutrition_total: recipe.nutritionTotal,\n}));\n\nreturn [{ json: { rows } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        288,
+        80
+      ],
+      "id": "9f260bb1-e9d4-44db-943f-796388757951",
+      "name": "Build rows",
+      "notesInFlow": true,
+      "notes": "Turns the three recipes into database rows."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://vmyxyvqbmbgmmwydklff.supabase.co/rest/v1/recipes",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Prefer",
+              "value": "return=representation"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.rows) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        512,
+        80
+      ],
+      "id": "259165f0-7bd4-4566-89b8-2a4df1e22563",
+      "name": "Save recipes",
+      "notesInFlow": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "9eA71zxV5ucRkFdG",
+          "name": "Supabase code-a-cuisine"
+        }
+      },
+      "notes": "Stores the recipes in the library and hands the saved rows back."
+    },
+    {
+      "parameters": {
+        "jsCode": "// The database hands the saved rows back, now with id and created_at.\nconst recipes = $input.all().map((item) => item.json).map((row) => ({\n  id: row.id,\n  createdAt: row.created_at,\n  title: row.title,\n  cuisine: row.cuisine,\n  diet: row.diet,\n  cookingTime: row.cooking_time,\n  cookingMinutes: row.cooking_minutes,\n  portions: row.portions,\n  helpers: row.helpers,\n  yourIngredients: row.your_ingredients,\n  extraIngredients: row.extra_ingredients,\n  steps: row.steps,\n  nutritionPerPortion: row.nutrition_per_portion,\n  nutritionTotal: row.nutrition_total,\n  likes: row.likes,\n}));\n\nreturn [{ json: { recipes } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        736,
+        80
+      ],
+      "id": "6247d675-ce08-4f7d-be51-95d8e8e89403",
+      "name": "Collect saved recipes",
+      "notesInFlow": true,
+      "notes": "Reads the saved rows back into the shape the app expects, now with ids."
     }
   ],
   "pinData": {},
@@ -474,7 +544,7 @@
       "main": [
         [
           {
-            "node": "Respond to Webhook",
+            "node": "Build rows",
             "type": "main",
             "index": 0
           }
@@ -509,14 +579,51 @@
           }
         ]
       ]
+    },
+    "Build rows": {
+      "main": [
+        [
+          {
+            "node": "Save recipes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save recipes": {
+      "main": [
+        [
+          {
+            "node": "Collect saved recipes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect saved recipes": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate"
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "WtCxxYlkHEkpbyhi",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
   },
-  "versionId": "b6ee5e76-5e3d-4abd-ae24-1b3f4c4e3ffe",
+  "versionId": "23ca1240-e2d9-4921-97b5-ad187fde530b",
   "meta": {
     "instanceId": "ed40ae4b52268f7af8ddc1f55ef685d78d1e3cb6bf9828970417b77a8f646d44"
   },

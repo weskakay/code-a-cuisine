@@ -8,6 +8,10 @@ services:
     environment:
       - GENERIC_TIMEZONE=${GENERIC_TIMEZONE:-Europe/Berlin}
       - TZ=${GENERIC_TIMEZONE:-Europe/Berlin}
+      # Address the error workflow sends its alerts to
+      - ALERT_EMAIL=${ALERT_EMAIL}
+      # Nodes may read the variables above; without this n8n denies it
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
     volumes:
       - n8n_data:/home/node/.n8n
 
