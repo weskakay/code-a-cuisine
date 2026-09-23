@@ -49,3 +49,37 @@ grant select on public.recipes to anon, authenticated;
 
 -- The quota table holds IP addresses and stays invisible to the browser.
 revoke all on public.quota_usage from anon, authenticated;
+
+-- Counts one generation for a visitor and says whether it was allowed.
+-- Limits: three recipes per address and day, twelve per day in total.
+create or replace function public.use_quota(p_ip inet)
+returns table (allowed boolean, remaining integer)
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  ip_count integer;
+  total_count integer;
+begin
+  select coalesce((select q.count from public.quota_usage q
+                   where q.ip = p_ip and q.day = current_date), 0)
+    into ip_count;
+
+  select coalesce(sum(q.count), 0) into total_count
+    from public.quota_usage q where q.day = current_date;
+
+  if ip_count >= 3 or total_count >= 12 then
+    return query select false, 0;
+    return;
+  end if;
+
+  insert into public.quota_usage (ip, day, count) values (p_ip, current_date, 1)
+    on conflict (ip, day) do update set count = public.quota_usage.count + 1;
+
+  return query select true, 2 - ip_count;
+end;
+$$;
+
+-- Only the workflow may call it, never the browser.
+revoke all on function public.use_quota(inet) from anon, authenticated;

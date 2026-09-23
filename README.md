@@ -132,6 +132,13 @@ src/styles           design tokens and base styles
 n8n/workflows        exported automation workflows
 ```
 
+## Hosting note for the workflow
+
+n8n has to sit behind our own reverse proxy in production, with the proxy appending the
+caller address to `x-forwarded-for` and `N8N_PROXY_HOPS` set to the number of proxies.
+The daily limit reads the last entry of that header, so a caller cannot fake an address
+and ask for more recipes than allowed.
+
 ## Data format
 
 The JSON contract between the app and the workflow is described here once it is in place.

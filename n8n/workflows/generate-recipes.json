@@ -13,10 +13,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        0,
-        0
+        -672,
+        160
       ],
-      "id": "8be73b82-e19b-4a1d-8100-c123b4c8f658",
+      "id": "ca8a33bd-cde8-41ba-8d03-5f4723affb94",
       "name": "Webhook",
       "webhookId": "484f3f8a-7edd-48e4-82da-b00c6ac12744",
       "notesInFlow": true,
@@ -31,10 +31,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        672,
-        0
+        0,
+        160
       ],
-      "id": "7b66a314-48e7-475b-967f-dab91b5ed9a8",
+      "id": "104b2f73-6a50-4656-b16d-efb4bb721f72",
       "name": "Respond to Webhook",
       "notesInFlow": true,
       "notes": "Answers the app with the result.\n"
@@ -46,10 +46,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        224,
-        0
+        -448,
+        160
       ],
-      "id": "bb231758-8aea-4488-b14a-ce582c0f7f63",
+      "id": "b85a0a9f-d77b-4379-8543-00e7c8877440",
       "name": "Validate request",
       "notesInFlow": true,
       "notes": "Checks the request: at least one ingredient, portions 1-12, cooks 1-3, known cooking time, cuisine and diet.\n"
@@ -82,10 +82,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        448,
-        0
+        -224,
+        160
       ],
-      "id": "870ab611-d056-4e6a-9750-2d3ecfbe98ca",
+      "id": "d2b6631b-5020-45fc-aeb6-0ec55f12492f",
       "name": "Is valid?",
       "notesInFlow": true,
       "notes": "Splits the flow: valid requests continue, invalid ones get an error.\n"
@@ -101,13 +101,111 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        720,
-        144
+        48,
+        304
       ],
-      "id": "5c76e020-8a72-4ea1-a374-817675e4cbd8",
+      "id": "bb5f0779-9301-4d95-b8c9-16d5c86f087a",
       "name": "Respond with error",
       "notesInFlow": true,
       "notes": "Answers with status 400 and one clear message.\n"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Only the entry our own proxy appends can be trusted, so read from the right.\n// Anything a caller puts in front of it is ignored.\nconst headers = $('Webhook').item.json.headers ?? {};\nconst chain = (headers['x-forwarded-for'] ?? '').split(',').map((part) => part.trim()).filter(Boolean);\nconst ip = chain.length ? chain[chain.length - 1] : (headers['x-real-ip'] ?? '127.0.0.1');\n\nreturn [{ json: { ip, request: $json.request } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c2a3a7dc-2a3c-4dc5-b283-e606282ddf1c",
+      "name": "Read visitor address",
+      "notesInFlow": true,
+      "notes": "Reads the caller address from the last proxy entry, IPv4 or IPv6. Callers cannot spoof it."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://vmyxyvqbmbgmmwydklff.supabase.co/rest/v1/rpc/use_quota",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ p_ip: $json.ip }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "6699b2d2-9ec7-489c-b959-52e090778aca",
+      "name": "Use quota",
+      "notesInFlow": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "9eA71zxV5ucRkFdG",
+          "name": "Supabase code-a-cuisine"
+        }
+      },
+      "notes": "Counts this generation in the database: three per address and day, twelve per day in total."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a1000000-0000-4000-8000-000000000010",
+              "leftValue": "={{ $json.allowed }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        0
+      ],
+      "id": "bb5a101c-81b9-4d58-b1e9-0cea19edd00e",
+      "name": "Quota left?",
+      "notesInFlow": true,
+      "notes": "Stops the flow when the daily limit is reached."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ error: 'You have used all three recipes for today. Please come back tomorrow.' }) }}",
+        "options": {
+          "responseCode": 429
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        672,
+        112
+      ],
+      "id": "cab6d637-f75d-45b0-8d7c-57200e693fc8",
+      "name": "Respond quota reached",
+      "notesInFlow": true,
+      "notes": "Answers with status 429 and tells the visitor when to come back."
     }
   ],
   "pinData": {},
@@ -138,7 +236,7 @@
       "main": [
         [
           {
-            "node": "Respond to Webhook",
+            "node": "Read visitor address",
             "type": "main",
             "index": 0
           }
@@ -151,6 +249,46 @@
           }
         ]
       ]
+    },
+    "Read visitor address": {
+      "main": [
+        [
+          {
+            "node": "Use quota",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Use quota": {
+      "main": [
+        [
+          {
+            "node": "Quota left?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quota left?": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond quota reached",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -158,7 +296,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "fa4ac97b-f039-4064-995d-65b9355c2572",
+  "versionId": "faaffefd-982f-4f86-8b95-40c993fdbe5e",
   "meta": {
     "instanceId": "ed40ae4b52268f7af8ddc1f55ef685d78d1e3cb6bf9828970417b77a8f646d44"
   },
