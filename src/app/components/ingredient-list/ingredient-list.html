@@ -1,0 +1,20 @@
+@if (ingredients().length === 0) {
+  <p class="list__empty">Nothing on the list yet.</p>
+} @else {
+  <ul class="list">
+    @for (item of ingredients(); track $index) {
+      <li class="list__item">
+        <span class="list__amount">{{ item.amount }} {{ item.unit }}</span>
+        <span class="list__name">{{ item.name }}</span>
+        <button
+          type="button"
+          class="list__remove"
+          [attr.aria-label]="'Remove ' + item.name + ' from the list'"
+          (click)="remove($index)"
+        >
+          &times;
+        </button>
+      </li>
+    }
+  </ul>
+}

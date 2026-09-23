@@ -11,10 +11,16 @@
   <div class="step__columns">
     <section class="card" aria-labelledby="ingredient-form-title">
       <h2 id="ingredient-form-title" class="card__title">Ingredient</h2>
+      <app-ingredient-form />
     </section>
 
     <section class="card card--list" aria-labelledby="ingredient-list-title">
       <h2 id="ingredient-list-title" class="card__title">List of your ingredients</h2>
+      <app-ingredient-list />
     </section>
   </div>
+
+  @if (ready()) {
+    <a class="step__next" routerLink="/preferences">Next step</a>
+  }
 </main>

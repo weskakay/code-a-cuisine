@@ -83,3 +83,26 @@
     font-size: var(--cc-fs-body);
   }
 }
+
+.step__next {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--cc-tap-target);
+  padding: var(--cc-space-2xs) var(--cc-space-sm);
+  background: var(--cc-olive);
+  color: var(--cc-cream);
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-semibold);
+  text-decoration: none;
+  transition: background var(--cc-transition);
+
+  &:hover {
+    background: var(--cc-green-pressed);
+  }
+
+  @media (width >= 1024px) {
+    align-self: flex-end;
+    font-size: var(--cc-fs-lg);
+  }
+}

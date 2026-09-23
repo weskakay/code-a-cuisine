@@ -1,0 +1,40 @@
+<form class="form" [formGroup]="form" (ngSubmit)="add()" novalidate>
+  <div class="form__field">
+    <label class="form__label" for="ingredient-name">Ingredient</label>
+    <input
+      id="ingredient-name"
+      class="form__input"
+      type="text"
+      formControlName="name"
+      autocomplete="off"
+      placeholder="Pasta"
+    />
+  </div>
+
+  <div class="form__row">
+    <div class="form__field">
+      <label class="form__label" for="ingredient-amount">Serving size</label>
+      <input
+        id="ingredient-amount"
+        class="form__input form__input--amount"
+        type="number"
+        formControlName="amount"
+        min="1"
+        inputmode="numeric"
+      />
+    </div>
+
+    <div class="form__field">
+      <label class="form__label" for="ingredient-unit">Unit</label>
+      <select id="ingredient-unit" class="form__input" formControlName="unit">
+        @for (unit of units; track unit.value) {
+          <option [value]="unit.value">{{ unit.label }}</option>
+        }
+      </select>
+    </div>
+
+    <button class="form__add" type="submit" aria-label="Add this ingredient to the list">+</button>
+  </div>
+
+  <p class="form__error" role="alert">{{ error() }}</p>
+</form>

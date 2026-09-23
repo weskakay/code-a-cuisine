@@ -1,0 +1,63 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-xs);
+}
+
+.form__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-3xs);
+}
+
+.form__label {
+  color: var(--cc-green-dark);
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-medium);
+}
+
+.form__input {
+  min-height: var(--cc-tap-target);
+  padding: var(--cc-space-2xs) var(--cc-space-xs);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-cream);
+  color: var(--cc-green-dark);
+  font-size: var(--cc-fs-xs);
+
+  &::placeholder {
+    color: var(--cc-green-dark);
+    opacity: 0.5;
+  }
+}
+
+.form__input--amount {
+  max-width: 96px;
+}
+
+.form__row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--cc-space-2xs);
+  flex-wrap: wrap;
+}
+
+.form__add {
+  min-width: var(--cc-tap-target);
+  min-height: var(--cc-tap-target);
+  border-radius: var(--cc-radius-xs);
+  background: var(--cc-cream);
+  color: var(--cc-green);
+  font-size: var(--cc-fs-lg);
+  font-weight: var(--cc-fw-semibold);
+
+  &:hover {
+    background: var(--cc-cream-hover);
+  }
+}
+
+/* Room for the message, so nothing jumps when it appears */
+.form__error {
+  min-height: calc(var(--cc-fs-xs) * 1.5);
+  color: var(--cc-green-mid);
+  font-size: var(--cc-fs-xs);
+}
