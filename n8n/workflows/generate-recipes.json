@@ -242,8 +242,8 @@
       "name": "Ask Gemini",
       "notesInFlow": true,
       "retryOnFail": true,
-      "maxTries": 3,
-      "waitBetweenTries": 2000,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
       "notes": "Sends the order to Gemini and forces the answer into the agreed shape."
     },
     {

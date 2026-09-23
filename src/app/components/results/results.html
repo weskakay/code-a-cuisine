@@ -1,0 +1,34 @@
+<app-menu-bar [onDark]="true" />
+
+<main class="results">
+  <header class="results__intro">
+    <h1 class="results__title">The recipe results</h1>
+    <p class="results__lead">
+      We took what you have and let our kitchen do the thinking. Here are three recipes you can make
+      right now.
+    </p>
+    @if (quota(); as left) {
+      <p class="results__quota">{{ left.remaining }} of {{ left.limit }} recipes left today</p>
+    }
+  </header>
+
+  @if (recipes().length === 0) {
+    <p class="results__empty">
+      Nothing generated yet.
+      <a routerLink="/generate">Start with your ingredients</a>
+    </p>
+  } @else {
+    <ul class="cards">
+      @for (recipe of recipes(); track recipe.id) {
+        <li class="card">
+          <h2 class="card__title">{{ recipe.title }}</h2>
+          <p class="card__time">Cooking time: {{ recipe.cookingMinutes }} min</p>
+          <p class="card__extras">
+            {{ recipe.extraIngredients.length }} extra ingredients · {{ recipe.steps.length }} steps
+          </p>
+          <a class="card__view" [routerLink]="['/recipe', recipe.id]">View</a>
+        </li>
+      }
+    </ul>
+  }
+</main>
