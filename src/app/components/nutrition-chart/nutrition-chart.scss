@@ -1,0 +1,182 @@
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-sm);
+}
+
+.chart__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-xs);
+}
+
+.chart__title {
+  margin: 0;
+  font-family: var(--cc-font-display);
+  font-size: var(--cc-fs-lg);
+  font-weight: var(--cc-fw-semibold);
+  color: var(--cc-green-dark);
+}
+
+/* Switch between one portion and the whole dish */
+.chart__switch {
+  display: flex;
+  gap: var(--cc-space-3xs);
+  padding: var(--cc-space-3xs);
+  background: var(--cc-olive-faint);
+  border-radius: var(--cc-radius-pill);
+}
+
+.chart__tab {
+  flex: 1;
+  min-height: var(--cc-tap-target);
+  padding: var(--cc-space-2xs) var(--cc-space-xs);
+  font-family: var(--cc-font-body);
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-semibold);
+  color: var(--cc-green-dark);
+  cursor: pointer;
+  background: transparent;
+  border: unset;
+  border-radius: var(--cc-radius-pill);
+  transition: background var(--cc-transition), color var(--cc-transition);
+
+  &.is-on {
+    color: var(--cc-white);
+    background: var(--cc-olive);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--cc-green);
+    outline-offset: 2px;
+  }
+}
+
+.chart__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-sm);
+  align-items: center;
+}
+
+.chart__ring {
+  width: 180px;
+  height: 180px;
+  flex: none;
+}
+
+/* Both circles start at twelve o'clock instead of three */
+.chart__track,
+.chart__slice {
+  fill: none;
+  stroke-width: 22;
+  transform: rotate(-90deg);
+  transform-origin: 90px 90px;
+}
+
+.chart__track {
+  stroke: var(--cc-olive-faint);
+}
+
+.chart__slice {
+  transition: stroke-dasharray var(--cc-transition);
+}
+
+.chart__slice--protein {
+  stroke: var(--cc-macro-protein);
+}
+
+.chart__slice--carbs {
+  stroke: var(--cc-macro-carbs);
+}
+
+.chart__slice--fat {
+  stroke: var(--cc-macro-fat);
+}
+
+.chart__kcal {
+  font-family: var(--cc-font-display);
+  font-size: 34px;
+  font-weight: var(--cc-fw-bold);
+  fill: var(--cc-green-dark);
+  text-anchor: middle;
+}
+
+.chart__unit {
+  font-family: var(--cc-font-body);
+  font-size: var(--cc-fs-xs);
+  fill: var(--cc-olive);
+  text-anchor: middle;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-2xs);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legend__row {
+  display: flex;
+  gap: var(--cc-space-2xs);
+  align-items: center;
+  font-size: var(--cc-fs-xs);
+  color: var(--cc-green-dark);
+}
+
+.legend__dot {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  border-radius: var(--cc-radius-xs);
+}
+
+.legend__dot--protein {
+  background: var(--cc-macro-protein);
+}
+
+.legend__dot--carbs {
+  background: var(--cc-macro-carbs);
+}
+
+.legend__dot--fat {
+  background: var(--cc-macro-fat);
+}
+
+.legend__label {
+  font-weight: var(--cc-fw-semibold);
+}
+
+.legend__value {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Side by side as soon as there is room */
+@media (min-width: 600px) {
+  .chart__head {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .chart__switch {
+    flex: none;
+  }
+
+  .chart__body {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--cc-space-lg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chart__tab,
+  .chart__slice {
+    transition: none;
+  }
+}

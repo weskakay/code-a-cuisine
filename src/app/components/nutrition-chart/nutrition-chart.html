@@ -1,0 +1,55 @@
+<section class="chart" aria-labelledby="chart-title">
+  <div class="chart__head">
+    <h3 id="chart-title" class="chart__title">Energy and macros</h3>
+
+    <div class="chart__switch" role="group" aria-label="Show the values for">
+      <button
+        type="button"
+        class="chart__tab"
+        [class.is-on]="mode() === 'portion'"
+        [attr.aria-pressed]="mode() === 'portion'"
+        (click)="show('portion')"
+      >
+        Per portion
+      </button>
+      <button
+        type="button"
+        class="chart__tab"
+        [class.is-on]="mode() === 'total'"
+        [attr.aria-pressed]="mode() === 'total'"
+        (click)="show('total')"
+      >
+        Whole dish
+      </button>
+    </div>
+  </div>
+
+  <div class="chart__body">
+    <svg class="chart__ring" viewBox="0 0 180 180" aria-hidden="true">
+      <circle class="chart__track" cx="90" cy="90" [attr.r]="radius" />
+      @for (slice of slices(); track slice.label) {
+        <circle
+          class="chart__slice"
+          [class]="'chart__slice--' + slice.token"
+          cx="90"
+          cy="90"
+          [attr.r]="radius"
+          [attr.stroke-dasharray]="slice.dash"
+          [attr.stroke-dashoffset]="slice.offset"
+        />
+      }
+      <text class="chart__kcal" x="90" y="86">{{ current().energyKcal }}</text>
+      <text class="chart__unit" x="90" y="108">kcal</text>
+    </svg>
+
+    <ul class="legend">
+      @for (slice of slices(); track slice.label) {
+        <li class="legend__row">
+          <span class="legend__dot" [class]="'legend__dot--' + slice.token" aria-hidden="true"></span>
+          <span class="legend__label">{{ slice.label }}</span>
+          <span class="legend__value">{{ slice.grams }} g &middot; {{ slice.percent }}&nbsp;%</span>
+        </li>
+      }
+    </ul>
+  </div>
+</section>

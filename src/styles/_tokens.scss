@@ -24,6 +24,12 @@
   --cc-chef-2: #ffd9b3;
   --cc-chef-3: rgb(207 215 0 / 30%);
 
+  /* Macros in the nutrition chart, kept apart in brightness so the ring
+     stays readable without colour */
+  --cc-macro-protein: #396039;
+  --cc-macro-carbs: #e0a458;
+  --cc-macro-fat: #8fb08c;
+
   /* Olive with opacity, used for input areas and soft panels */
   --cc-olive-soft: rgb(57 96 57 / 30%);
   --cc-olive-faint: rgb(57 96 57 / 10%);
