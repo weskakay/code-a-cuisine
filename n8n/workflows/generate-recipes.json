@@ -18,7 +18,9 @@
       ],
       "id": "8be73b82-e19b-4a1d-8100-c123b4c8f658",
       "name": "Webhook",
-      "webhookId": "484f3f8a-7edd-48e4-82da-b00c6ac12744"
+      "webhookId": "484f3f8a-7edd-48e4-82da-b00c6ac12744",
+      "notesInFlow": true,
+      "notes": "Entry point. The Angular app posts the ingredients and preferences here.\n"
     },
     {
       "parameters": {
@@ -29,11 +31,83 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        224,
+        672,
         0
       ],
       "id": "7b66a314-48e7-475b-967f-dab91b5ed9a8",
-      "name": "Respond to Webhook"
+      "name": "Respond to Webhook",
+      "notesInFlow": true,
+      "notes": "Answers the app with the result.\n"
+    },
+    {
+      "parameters": {
+        "jsCode": "const request = $json.body;\nconst errors = [];\n\nconst cuisines = ['german', 'italian', 'japanese', 'indian', 'gourmet', 'fusion'];\nconst diets = ['vegetarian', 'vegan', 'keto', 'none'];\nconst times = ['quick', 'medium', 'complex'];\n\nconst list = request.ingredients;\nif (!Array.isArray(list) || list.length === 0) {\n  errors.push('Add at least one ingredient.');\n} else {\n  for (const item of list) {\n    if (!item.name || !(item.amount > 0)) {\n      errors.push('Every ingredient needs a name and an amount.');\n      break;\n    }\n  }\n}\n\nif (!Number.isInteger(request.portions) || request.portions < 1 || request.portions > 12) {\n  errors.push('Portions must be between 1 and 12.');\n}\n\nif (!Number.isInteger(request.helpers) || request.helpers < 1 || request.helpers > 3) {\n  errors.push('Cooks must be between 1 and 3.');\n}\n\nif (!times.includes(request.cookingTime)) {\n  errors.push('Unknown cooking time.');\n}\n\nif (!cuisines.includes(request.cuisine)) {\n  errors.push('Unknown cuisine.');\n}\n\nif (!diets.includes(request.diet)) {\n  errors.push('Unknown diet.');\n}\n\nif (errors.length > 0) {\n  return [{ json: { valid: false, error: errors[0] } }];\n}\n\nreturn [{ json: { valid: true, request } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "bb231758-8aea-4488-b14a-ce582c0f7f63",
+      "name": "Validate request",
+      "notesInFlow": true,
+      "notes": "Checks the request: at least one ingredient, portions 1-12, cooks 1-3, known cooking time, cuisine and diet.\n"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "35018da6-cbad-4644-98aa-53123e34759d",
+              "leftValue": "={{ $json.valid }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        0
+      ],
+      "id": "870ab611-d056-4e6a-9750-2d3ecfbe98ca",
+      "name": "Is valid?",
+      "notesInFlow": true,
+      "notes": "Splits the flow: valid requests continue, invalid ones get an error.\n"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ error: $json.error }) }}\n",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        720,
+        144
+      ],
+      "id": "5c76e020-8a72-4ea1-a374-817675e4cbd8",
+      "name": "Respond with error",
+      "notesInFlow": true,
+      "notes": "Answers with status 400 and one clear message.\n"
     }
   ],
   "pinData": {},
@@ -42,7 +116,36 @@
       "main": [
         [
           {
+            "node": "Validate request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate request": {
+      "main": [
+        [
+          {
+            "node": "Is valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is valid?": {
+      "main": [
+        [
+          {
             "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond with error",
             "type": "main",
             "index": 0
           }
@@ -55,7 +158,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "639e8187-acfc-4228-bf76-3b7fb1500d2b",
+  "versionId": "fa4ac97b-f039-4064-995d-65b9355c2572",
   "meta": {
     "instanceId": "ed40ae4b52268f7af8ddc1f55ef685d78d1e3cb6bf9828970417b77a8f646d44"
   },
