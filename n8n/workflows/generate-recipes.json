@@ -13,10 +13,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -672,
-        160
+        -1968,
+        416
       ],
-      "id": "ca8a33bd-cde8-41ba-8d03-5f4723affb94",
+      "id": "a426fc92-2312-43ad-af47-4d0ed3bef977",
       "name": "Webhook",
       "webhookId": "484f3f8a-7edd-48e4-82da-b00c6ac12744",
       "notesInFlow": true,
@@ -25,16 +25,16 @@
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "{ \"status\": \"ok\" }\n",
+        "responseBody": "={{ JSON.stringify({ recipes: $json.recipes, quota: { remaining: $('Use quota').item.json.remaining, limit: 3 } }) }}",
         "options": {}
       },
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        0,
-        160
+        272,
+        48
       ],
-      "id": "104b2f73-6a50-4656-b16d-efb4bb721f72",
+      "id": "25402560-b5bf-4b8c-88d1-5183efa35de9",
       "name": "Respond to Webhook",
       "notesInFlow": true,
       "notes": "Answers the app with the result.\n"
@@ -46,10 +46,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -448,
-        160
+        -1744,
+        416
       ],
-      "id": "b85a0a9f-d77b-4379-8543-00e7c8877440",
+      "id": "6e25fb00-4515-4ba7-9cb7-80b0eb55509a",
       "name": "Validate request",
       "notesInFlow": true,
       "notes": "Checks the request: at least one ingredient, portions 1-12, cooks 1-3, known cooking time, cuisine and diet.\n"
@@ -82,10 +82,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -224,
-        160
+        -1520,
+        416
       ],
-      "id": "d2b6631b-5020-45fc-aeb6-0ec55f12492f",
+      "id": "81993fa2-2309-4113-b71d-bdf5c4e05da6",
       "name": "Is valid?",
       "notesInFlow": true,
       "notes": "Splits the flow: valid requests continue, invalid ones get an error.\n"
@@ -101,10 +101,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        48,
-        304
+        -1248,
+        560
       ],
-      "id": "bb5f0779-9301-4d95-b8c9-16d5c86f087a",
+      "id": "4943af84-3a35-435b-8df3-27689cc9fcc9",
       "name": "Respond with error",
       "notesInFlow": true,
       "notes": "Answers with status 400 and one clear message.\n"
@@ -116,10 +116,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        0,
-        0
+        -1296,
+        256
       ],
-      "id": "c2a3a7dc-2a3c-4dc5-b283-e606282ddf1c",
+      "id": "e45597ef-b382-43de-8b96-e2b1fe5982fd",
       "name": "Read visitor address",
       "notesInFlow": true,
       "notes": "Reads the caller address from the last proxy entry, IPv4 or IPv6. Callers cannot spoof it."
@@ -138,10 +138,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        224,
-        0
+        -1072,
+        256
       ],
-      "id": "6699b2d2-9ec7-489c-b959-52e090778aca",
+      "id": "c117733c-3e37-4cec-bb0c-c923f7082d64",
       "name": "Use quota",
       "notesInFlow": true,
       "credentials": {
@@ -150,7 +150,10 @@
           "name": "Supabase code-a-cuisine"
         }
       },
-      "notes": "Counts this generation in the database: three per address and day, twelve per day in total."
+      "notes": "Counts this generation in the database: three per address and day, twelve per day in total.",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -180,10 +183,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        448,
-        0
+        -848,
+        256
       ],
-      "id": "bb5a101c-81b9-4d58-b1e9-0cea19edd00e",
+      "id": "98ff4de0-75b9-42cc-b770-65dcb36f38d8",
       "name": "Quota left?",
       "notesInFlow": true,
       "notes": "Stops the flow when the daily limit is reached."
@@ -199,13 +202,157 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        672,
-        112
+        -624,
+        368
       ],
-      "id": "cab6d637-f75d-45b0-8d7c-57200e693fc8",
+      "id": "462a4e81-5115-4cb6-a96f-2ae9de1df0a0",
       "name": "Respond quota reached",
       "notesInFlow": true,
       "notes": "Answers with status 429 and tells the visitor when to come back."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Turns the request into one clear order for the model.\nconst request = $('Read visitor address').item.json.request;\nconst list = request.ingredients\n  .map((item) => `${item.amount} ${item.unit} ${item.name}`)\n  .join(', ');\n\nconst prompt = [\n  'You are a cooking assistant. Create exactly three different recipes.',\n  `Ingredients at home: ${list}.`,\n  `Portions: ${request.portions}. Cooks in the kitchen: ${request.helpers}.`,\n  `Cooking style: ${request.cuisine}. Diet: ${request.diet}.`,\n  `Time frame: ${request.cookingTime} (quick is up to 20 minutes, medium 20 to 45, complex over 45).`,\n  'Every recipe uses at least 70 percent of the ingredients above.',\n  'Every recipe may add at most three basic extra ingredients.',\n  'The three recipes differ in preparation or taste.',\n  'Scale all amounts to the number of portions.',\n  'Steps are chronological. Mark steps that run in parallel and give each step a cook.',\n  'Use waiting times, for example time in the oven, for other steps.',\n  'Give durations in minutes and nutrition per portion and for the whole recipe.',\n].join(' ');\n\nreturn [{ json: { prompt } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -624,
+        96
+      ],
+      "id": "1b91ddbd-ae69-48f7-8b6b-cd372b2319f6",
+      "name": "Build prompt",
+      "notesInFlow": true,
+      "notes": "Turns the request into one order for the model, including the rules from the spec."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "hasOutputParser": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -400,
+        96
+      ],
+      "id": "48d148d5-cf21-4855-9b13-9e91ef2d8338",
+      "name": "Ask Gemini",
+      "notesInFlow": true,
+      "notes": "Sends the order to Gemini and forces the answer into the agreed shape.",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.6-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        304
+      ],
+      "id": "dd817abf-80cc-4b87-bd5e-2835d52a080e",
+      "name": "Gemini model",
+      "notesInFlow": true,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "dariAbbCJIpY5GEN",
+          "name": "Gemini code-a-cuisine"
+        }
+      },
+      "notes": "The language model that writes the recipes. The API key stays in the credential.\n"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"recipes\": {\n      \"type\": \"array\",\n      \"minItems\": 3,\n      \"maxItems\": 3,\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"title\": {\n            \"type\": \"string\"\n          },\n          \"cookingMinutes\": {\n            \"type\": \"number\"\n          },\n          \"yourIngredients\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"properties\": {\n                \"name\": {\n                  \"type\": \"string\"\n                },\n                \"amount\": {\n                  \"type\": \"number\"\n                },\n                \"unit\": {\n                  \"type\": \"string\",\n                  \"enum\": [\n                    \"g\",\n                    \"ml\",\n                    \"piece\"\n                  ]\n                }\n              },\n              \"required\": [\n                \"name\",\n                \"amount\",\n                \"unit\"\n              ]\n            }\n          },\n          \"extraIngredients\": {\n            \"type\": \"array\",\n            \"maxItems\": 3,\n            \"items\": {\n              \"type\": \"object\",\n              \"properties\": {\n                \"name\": {\n                  \"type\": \"string\"\n                },\n                \"amount\": {\n                  \"type\": \"number\"\n                },\n                \"unit\": {\n                  \"type\": \"string\",\n                  \"enum\": [\n                    \"g\",\n                    \"ml\",\n                    \"piece\"\n                  ]\n                }\n              },\n              \"required\": [\n                \"name\",\n                \"amount\",\n                \"unit\"\n              ]\n            }\n          },\n          \"steps\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"properties\": {\n                \"position\": {\n                  \"type\": \"number\"\n                },\n                \"title\": {\n                  \"type\": \"string\"\n                },\n                \"text\": {\n                  \"type\": \"string\"\n                },\n                \"helper\": {\n                  \"type\": \"number\"\n                },\n                \"parallel\": {\n                  \"type\": \"boolean\"\n                },\n                \"durationMinutes\": {\n                  \"type\": \"number\"\n                },\n                \"waitMinutes\": {\n                  \"type\": \"number\"\n                }\n              },\n              \"required\": [\n                \"position\",\n                \"title\",\n                \"text\",\n                \"helper\",\n                \"parallel\",\n                \"durationMinutes\",\n                \"waitMinutes\"\n              ]\n            }\n          },\n          \"nutritionPerPortion\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"energyKcal\": {\n                \"type\": \"number\"\n              },\n              \"proteinG\": {\n                \"type\": \"number\"\n              },\n              \"carbsG\": {\n                \"type\": \"number\"\n              },\n              \"fatG\": {\n                \"type\": \"number\"\n              }\n            },\n            \"required\": [\n              \"energyKcal\",\n              \"proteinG\",\n              \"carbsG\",\n              \"fatG\"\n            ]\n          },\n          \"nutritionTotal\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"energyKcal\": {\n                \"type\": \"number\"\n              },\n              \"proteinG\": {\n                \"type\": \"number\"\n              },\n              \"carbsG\": {\n                \"type\": \"number\"\n              },\n              \"fatG\": {\n                \"type\": \"number\"\n              }\n            },\n            \"required\": [\n              \"energyKcal\",\n              \"proteinG\",\n              \"carbsG\",\n              \"fatG\"\n            ]\n          }\n        },\n        \"required\": [\n          \"title\",\n          \"cookingMinutes\",\n          \"yourIngredients\",\n          \"extraIngredients\",\n          \"steps\",\n          \"nutritionPerPortion\",\n          \"nutritionTotal\"\n        ]\n      }\n    }\n  },\n  \"required\": [\n    \"recipes\"\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        -224,
+        304
+      ],
+      "id": "5ed56b72-738a-43bb-a127-03ddacd684ea",
+      "name": "Recipe shape",
+      "notesInFlow": true,
+      "notes": "Forces the answer into the agreed fields, so the app always gets the same structure.\n"
+    },
+    {
+      "parameters": {
+        "jsCode": "// The model is asked politely, so the answer still has to be checked.\nconst answer = $json.output ?? $json;\nconst recipes = answer.recipes ?? [];\nconst wanted = $('Read visitor address').item.json.request.ingredients;\nconst problems = [];\n\nif (recipes.length !== 3) {\n  problems.push(`Expected three recipes, got ${recipes.length}.`);\n}\n\nfor (const recipe of recipes) {\n  const names = (recipe.yourIngredients ?? []).map((item) => item.name.toLowerCase());\n  const used = wanted.filter((item) => names.includes(item.name.toLowerCase())).length;\n  if (used / wanted.length < 0.7) {\n    problems.push(`\"${recipe.title}\" uses too few of the ingredients.`);\n  }\n  if ((recipe.extraIngredients ?? []).length > 3) {\n    problems.push(`\"${recipe.title}\" asks for more than three extra ingredients.`);\n  }\n}\n\nif (problems.length > 0) {\n  return [{ json: { rulesOk: false, error: problems[0] } }];\n}\n\nreturn [{ json: { rulesOk: true, recipes } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -176,
+        96
+      ],
+      "id": "0ab65a23-50ab-46dd-aedc-6c7b909560b0",
+      "name": "Check rules",
+      "notesInFlow": true,
+      "notes": "Checks the answer: three recipes, at least 70 percent of the ingredients, at most three extras."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b2000000-0000-4000-8000-000000000010",
+              "leftValue": "={{ $json.rulesOk }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        48,
+        96
+      ],
+      "id": "05db18c3-95f1-45bb-9d5f-98eb1a86670c",
+      "name": "Rules ok?",
+      "notesInFlow": true,
+      "notes": "Splits the flow: a sound answer continues, a broken one ends with an error."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ error: 'The recipes could not be generated. Please try again.' }) }}",
+        "options": {
+          "responseCode": 502
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        272,
+        208
+      ],
+      "id": "ccf04085-8b82-4272-8742-4bcb30dcd1df",
+      "name": "Respond generation failed",
+      "notesInFlow": true,
+      "notes": "Answers with status 502 when the model did not keep to the rules."
     }
   ],
   "pinData": {},
@@ -276,7 +423,7 @@
       "main": [
         [
           {
-            "node": "Respond to Webhook",
+            "node": "Build prompt",
             "type": "main",
             "index": 0
           }
@@ -289,6 +436,79 @@
           }
         ]
       ]
+    },
+    "Build prompt": {
+      "main": [
+        [
+          {
+            "node": "Ask Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ask Gemini": {
+      "main": [
+        [
+          {
+            "node": "Check rules",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check rules": {
+      "main": [
+        [
+          {
+            "node": "Rules ok?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rules ok?": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond generation failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Ask Gemini",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recipe shape": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Ask Gemini",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -296,7 +516,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "faaffefd-982f-4f86-8b95-40c993fdbe5e",
+  "versionId": "b6ee5e76-5e3d-4abd-ae24-1b3f4c4e3ffe",
   "meta": {
     "instanceId": "ed40ae4b52268f7af8ddc1f55ef685d78d1e3cb6bf9828970417b77a8f646d44"
   },
