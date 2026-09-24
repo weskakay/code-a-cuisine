@@ -1,0 +1,64 @@
+import { Component, inject, type OnInit, signal } from '@angular/core';
+import { CUISINES, RECIPES_PER_PAGE } from '../../data/options';
+import type { Cuisine, Recipe } from '../../interfaces/recipe.interface';
+import { RecipeService } from '../../services/recipe.service';
+import { MenuBar } from '../menu-bar/menu-bar';
+
+/** The public library: every recipe the app has ever generated. */
+@Component({
+  selector: 'app-cookbook',
+  imports: [MenuBar],
+  templateUrl: './cookbook.html',
+  styleUrl: './cookbook.scss',
+})
+export class Cookbook implements OnInit {
+  private readonly recipeService = inject(RecipeService);
+
+  readonly cuisines = CUISINES;
+  readonly perPage = RECIPES_PER_PAGE;
+
+  readonly recipes = signal<Recipe[]>([]);
+  readonly total = signal(0);
+  readonly page = signal(1);
+  readonly cuisine = signal<Cuisine | undefined>(undefined);
+  readonly loading = signal(false);
+  readonly failed = signal(false);
+
+  ngOnInit(): void {
+    void this.load();
+  }
+
+  /** Shows one cooking style, or all of them again. */
+  filterBy(cuisine: Cuisine | undefined): void {
+    this.cuisine.set(this.cuisine() === cuisine ? undefined : cuisine);
+    this.page.set(1);
+    void this.load();
+  }
+
+  /** Jumps to that page of the library. */
+  goTo(page: number): void {
+    this.page.set(page);
+    void this.load();
+  }
+
+  /** How many pages the current filter fills. */
+  pages(): number[] {
+    const count = Math.ceil(this.total() / this.perPage);
+    return Array.from({ length: count }, (_, index) => index + 1);
+  }
+
+  /** Reads the current page from the database. */
+  private async load(): Promise<void> {
+    this.loading.set(true);
+    this.failed.set(false);
+    try {
+      const page = await this.recipeService.listRecipes(this.page(), this.cuisine());
+      this.recipes.set(page.items);
+      this.total.set(page.total);
+    } catch {
+      this.failed.set(true);
+    } finally {
+      this.loading.set(false);
+    }
+  }
+}

@@ -1,0 +1,116 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  min-height: 100svh;
+  background: var(--cc-white);
+  color: var(--cc-green-dark);
+}
+
+.book {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-lg);
+  max-width: var(--cc-content-max);
+  margin: 0 auto;
+  padding: var(--cc-space-lg) var(--cc-space-xs) var(--cc-space-xl);
+
+  @media (width >= 1024px) {
+    padding: var(--cc-space-xl);
+  }
+}
+
+.book__title {
+  font-size: var(--cc-fs-h2);
+  font-weight: var(--cc-fw-bold);
+  color: var(--cc-green-mid);
+  line-height: 1.2;
+}
+
+.book__lead {
+  font-size: var(--cc-fs-xs);
+  max-width: 60ch;
+
+  @media (width >= 1024px) {
+    font-size: var(--cc-fs-lg);
+  }
+}
+
+.book__subtitle {
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-semibold);
+  color: var(--cc-green-mid);
+  margin-bottom: var(--cc-space-2xs);
+
+  @media (width >= 1024px) {
+    font-size: var(--cc-fs-lg);
+  }
+}
+
+.book__note {
+  font-size: var(--cc-fs-xs);
+}
+
+.styles__tiles {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--cc-space-2xs);
+
+  @media (width >= 600px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (width >= 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--cc-space-sm);
+  }
+}
+
+.tile {
+  min-height: 64px;
+  padding: var(--cc-space-xs);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-olive-faint);
+  color: var(--cc-green-mid);
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-semibold);
+  text-align: left;
+  transition: background var(--cc-transition);
+
+  &:hover {
+    background: var(--cc-olive-soft);
+  }
+
+  @media (width >= 1024px) {
+    min-height: 96px;
+    font-size: var(--cc-fs-lg);
+  }
+}
+
+.tile--active {
+  background: var(--cc-olive);
+  color: var(--cc-cream);
+}
+
+.pages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cc-space-3xs);
+  justify-content: center;
+}
+
+.pages__item {
+  min-width: var(--cc-tap-target);
+  min-height: var(--cc-tap-target);
+  border-radius: var(--cc-radius-xs);
+  color: var(--cc-green-dark);
+  font-size: var(--cc-fs-xs);
+
+  &:hover {
+    background: var(--cc-olive-faint);
+  }
+}
+
+.pages__item--active {
+  background: var(--cc-loader);
+  font-weight: var(--cc-fw-semibold);
+}
