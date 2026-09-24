@@ -6,11 +6,12 @@ import { RecipeDraftService } from '../../services/recipe-draft.service';
 import { RecipeStoreService } from '../../services/recipe-store.service';
 import { LoadingOverlay } from '../loading-overlay/loading-overlay';
 import { MenuBar } from '../menu-bar/menu-bar';
+import { SiteFooter } from '../site-footer/site-footer';
 
 /** Step two: how many people eat, how long it may take and what it should taste like. */
 @Component({
   selector: 'app-preferences',
-  imports: [MenuBar, LoadingOverlay],
+  imports: [MenuBar, LoadingOverlay, SiteFooter],
   templateUrl: './preferences.html',
   styleUrl: './preferences.scss',
 })

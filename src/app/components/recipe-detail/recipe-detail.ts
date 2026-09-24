@@ -4,12 +4,13 @@ import type { Recipe } from '../../interfaces/recipe.interface';
 import { RecipeService } from '../../services/recipe.service';
 import { RecipeStoreService } from '../../services/recipe-store.service';
 import { MenuBar } from '../menu-bar/menu-bar';
+import { SiteFooter } from '../site-footer/site-footer';
 import { NutritionChart } from '../nutrition-chart/nutrition-chart';
 
 /** One recipe in full, with the steps split by cook. */
 @Component({
   selector: 'app-recipe-detail',
-  imports: [MenuBar, NutritionChart, RouterLink],
+  imports: [MenuBar, NutritionChart, RouterLink, SiteFooter],
   templateUrl: './recipe-detail.html',
   styleUrl: './recipe-detail.scss',
 })

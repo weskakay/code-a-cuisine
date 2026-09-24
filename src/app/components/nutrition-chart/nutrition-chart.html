@@ -45,7 +45,11 @@
     <ul class="legend">
       @for (slice of slices(); track slice.label) {
         <li class="legend__row">
-          <span class="legend__dot" [class]="'legend__dot--' + slice.token" aria-hidden="true"></span>
+          <span
+            class="legend__dot"
+            [class]="'legend__dot--' + slice.token"
+            aria-hidden="true"
+          ></span>
           <span class="legend__label">{{ slice.label }}</span>
           <span class="legend__value">{{ slice.grams }} g &middot; {{ slice.percent }}&nbsp;%</span>
         </li>

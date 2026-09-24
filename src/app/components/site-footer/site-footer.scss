@@ -1,0 +1,24 @@
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cc-space-2xs);
+  max-width: var(--cc-content-max);
+  margin: 0 auto;
+  padding: var(--cc-space-sm) var(--cc-space-xs);
+  font-size: var(--cc-fs-xs);
+  color: inherit;
+}
+
+.foot__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--cc-tap-target);
+  padding: 0 var(--cc-space-2xs);
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
+}

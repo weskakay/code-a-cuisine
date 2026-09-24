@@ -38,9 +38,7 @@ export class NutritionChart {
   readonly radius = RADIUS;
   readonly mode = signal<NutritionMode>('portion');
 
-  readonly current = computed(() =>
-    this.mode() === 'portion' ? this.perPortion() : this.total(),
-  );
+  readonly current = computed(() => (this.mode() === 'portion' ? this.perPortion() : this.total()));
 
   readonly slices = computed(() => buildSlices(this.current()));
 

@@ -31,13 +31,6 @@ export class RecipeDraftService {
     this.ingredients.update((list) => list.filter((_, place) => place !== index));
   }
 
-  /** Replaces the ingredient at that place with the edited one. */
-  replaceIngredient(index: number, ingredient: IngredientInput): void {
-    this.ingredients.update((list) =>
-      list.map((item, place) => (place === index ? ingredient : item)),
-    );
-  }
-
   /** Everything the workflow needs, ready to send. */
   toRequest(): RecipeRequest {
     return {

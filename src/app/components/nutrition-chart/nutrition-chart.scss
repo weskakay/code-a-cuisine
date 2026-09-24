@@ -39,7 +39,9 @@
   background: transparent;
   border: unset;
   border-radius: var(--cc-radius-pill);
-  transition: background var(--cc-transition), color var(--cc-transition);
+  transition:
+    background var(--cc-transition),
+    color var(--cc-transition);
 
   &.is-on {
     color: var(--cc-white);

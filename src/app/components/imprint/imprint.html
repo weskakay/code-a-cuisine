@@ -1,0 +1,26 @@
+<app-menu-bar />
+
+<main class="legal">
+  <h1 class="legal__title">Imprint</h1>
+
+  <section class="legal__block" aria-labelledby="provider-title">
+    <h2 id="provider-title" class="legal__subtitle">Provider</h2>
+    <p>Code à Cuisine is a project by {{ imprint.owner }}.</p>
+    <p>
+      The full legal notice and the contact details are on the portfolio:
+      <a [href]="imprint.legalNotice" target="_blank" rel="noopener">{{ imprint.legalNotice }}</a>
+    </p>
+  </section>
+
+  <section class="legal__block" aria-labelledby="liability-title">
+    <h2 id="liability-title" class="legal__subtitle">Liability for content and links</h2>
+    <p>
+      The recipes on this site are written by a language model. Amounts, cooking times and
+      nutritional values are estimates, not advice. Check them before you cook, especially if you
+      have allergies or an illness that asks for a certain diet.
+    </p>
+    <p>This site links to pages of other providers. Their content is their own responsibility.</p>
+  </section>
+</main>
+
+<app-site-footer />

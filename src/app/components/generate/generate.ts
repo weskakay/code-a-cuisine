@@ -4,11 +4,12 @@ import { RecipeDraftService } from '../../services/recipe-draft.service';
 import { IngredientForm } from '../ingredient-form/ingredient-form';
 import { IngredientList } from '../ingredient-list/ingredient-list';
 import { MenuBar } from '../menu-bar/menu-bar';
+import { SiteFooter } from '../site-footer/site-footer';
 
 /** Step one: the visitor lists what is at home. */
 @Component({
   selector: 'app-generate',
-  imports: [MenuBar, IngredientForm, IngredientList, RouterLink],
+  imports: [MenuBar, IngredientForm, IngredientList, RouterLink, SiteFooter],
   templateUrl: './generate.html',
   styleUrl: './generate.scss',
 })
