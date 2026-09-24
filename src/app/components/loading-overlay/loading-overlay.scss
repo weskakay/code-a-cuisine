@@ -1,0 +1,118 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  background: var(--cc-overlay);
+}
+
+.overlay__box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cc-space-xs);
+  padding: var(--cc-space-lg) var(--cc-space-md);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-loader);
+  color: var(--cc-green-dark);
+  text-align: center;
+}
+
+.overlay__label {
+  font-family: var(--cc-font-display);
+  font-size: var(--cc-fs-lg);
+  font-weight: var(--cc-fw-bold);
+}
+
+.overlay__hint {
+  font-size: var(--cc-fs-xs);
+}
+
+/* A pot with three rising clouds of steam */
+.pot {
+  position: relative;
+  width: 96px;
+  height: 96px;
+}
+
+.pot__body {
+  position: absolute;
+  inset: auto 8px 8px;
+  height: 48px;
+  border-radius: 0 0 var(--cc-radius-md) var(--cc-radius-md);
+  background: var(--cc-olive);
+}
+
+.pot__steam {
+  position: absolute;
+  bottom: 56px;
+  width: 10px;
+  height: 10px;
+  border-radius: var(--cc-radius-pill);
+  background: var(--cc-cream);
+  opacity: 0;
+  animation: rise 1.8s ease-in-out infinite;
+}
+
+.pot__steam:nth-child(1) {
+  left: 24px;
+}
+
+.pot__steam:nth-child(2) {
+  left: 44px;
+  animation-delay: 0.3s;
+}
+
+.pot__steam:nth-child(3) {
+  left: 64px;
+  animation-delay: 0.6s;
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translateY(-28px) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* The text stays, the dots leave one by one and come back the same way */
+.dots span {
+  animation: fade 1.5s linear infinite;
+}
+
+.dots span:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.dots span:nth-child(3) {
+  animation-delay: 1s;
+}
+
+@keyframes fade {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pot__steam,
+  .dots span {
+    animation: none;
+    opacity: 1;
+  }
+}

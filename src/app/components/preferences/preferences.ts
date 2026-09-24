@@ -4,12 +4,13 @@ import { COOKING_TIMES, CUISINES, DIETS, HELPERS, PORTIONS } from '../../data/op
 import { GeneratorError, GeneratorService } from '../../services/generator.service';
 import { RecipeDraftService } from '../../services/recipe-draft.service';
 import { RecipeStoreService } from '../../services/recipe-store.service';
+import { LoadingOverlay } from '../loading-overlay/loading-overlay';
 import { MenuBar } from '../menu-bar/menu-bar';
 
 /** Step two: how many people eat, how long it may take and what it should taste like. */
 @Component({
   selector: 'app-preferences',
-  imports: [MenuBar],
+  imports: [MenuBar, LoadingOverlay],
   templateUrl: './preferences.html',
   styleUrl: './preferences.scss',
 })
