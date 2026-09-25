@@ -3,12 +3,13 @@ import { CUISINES, RECIPES_PER_PAGE } from '../../data/options';
 import type { Cuisine, Recipe } from '../../interfaces/recipe.interface';
 import { RecipeService } from '../../services/recipe.service';
 import { MenuBar } from '../menu-bar/menu-bar';
+import { RecipeList } from '../recipe-list/recipe-list';
 import { SiteFooter } from '../site-footer/site-footer';
 
 /** The public library: every recipe the app has ever generated. */
 @Component({
   selector: 'app-cookbook',
-  imports: [MenuBar, SiteFooter],
+  imports: [MenuBar, RecipeList, SiteFooter],
   templateUrl: './cookbook.html',
   styleUrl: './cookbook.scss',
 })

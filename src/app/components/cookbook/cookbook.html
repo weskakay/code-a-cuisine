@@ -39,6 +39,8 @@
       <p class="book__note" role="alert">The library could not be loaded. Please try again.</p>
     } @else if (recipes().length === 0) {
       <p class="book__note">No recipes here yet. Generate the first one.</p>
+    } @else {
+      <app-recipe-list [recipes]="recipes()" />
     }
   </section>
 
