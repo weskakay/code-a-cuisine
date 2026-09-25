@@ -81,5 +81,25 @@ begin
 end;
 $$;
 
--- Only the workflow may call it, never the browser.
-revoke all on function public.use_quota(inet) from anon, authenticated;
+-- Only the workflow may call it, never the browser. Postgres lets everybody run a
+-- function by default, so the right has to be taken from public first.
+revoke all on function public.use_quota(inet) from public, anon, authenticated;
+grant execute on function public.use_quota(inet) to service_role;
+
+-- Gives one generation back when the model or the database failed, so a visitor
+-- does not lose a try for something that was not their fault.
+create or replace function public.refund_quota(p_ip inet)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  update public.quota_usage
+     set count = greatest(count - 1, 0)
+   where ip = p_ip and day = current_date;
+end;
+$$;
+
+revoke all on function public.refund_quota(inet) from public, anon, authenticated;
+grant execute on function public.refund_quota(inet) to service_role;

@@ -244,7 +244,8 @@
       "retryOnFail": true,
       "maxTries": 5,
       "waitBetweenTries": 5000,
-      "notes": "Sends the order to Gemini and forces the answer into the agreed shape."
+      "notes": "Sends the order to Gemini and forces the answer into the agreed shape.",
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -286,7 +287,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// The model is asked politely, so the answer still has to be checked.\nconst answer = $json.output ?? $json;\nconst recipes = answer.recipes ?? [];\nconst wanted = $('Read visitor address').item.json.request.ingredients;\nconst problems = [];\n\nif (recipes.length !== 3) {\n  problems.push(`Expected three recipes, got ${recipes.length}.`);\n}\n\nfor (const recipe of recipes) {\n  const names = (recipe.yourIngredients ?? []).map((item) => item.name.toLowerCase());\n  const used = wanted.filter((item) => names.includes(item.name.toLowerCase())).length;\n  if (used / wanted.length < 0.7) {\n    problems.push(`\"${recipe.title}\" uses too few of the ingredients.`);\n  }\n  if ((recipe.extraIngredients ?? []).length > 3) {\n    problems.push(`\"${recipe.title}\" asks for more than three extra ingredients.`);\n  }\n}\n\nif (problems.length > 0) {\n  return [{ json: { rulesOk: false, error: problems[0] } }];\n}\n\nreturn [{ json: { rulesOk: true, recipes } }];\n"
+        "jsCode": "// The model is asked politely, so the answer still has to be checked.\nconst answer = $json.output ?? $json;\nconst recipes = answer.recipes ?? [];\nconst wanted = $('Read visitor address').item.json.request.ingredients;\nconst problems = [];\n\n// \"Chicken breast\" and \"sliced chicken breasts\" mean the same thing here.\nconst plain = (name) => name.toLowerCase().replace(/[^a-z ]/g, '').trim();\nconst same = (mine, theirs) => {\n  const a = plain(mine);\n  const b = plain(theirs);\n  return a.includes(b) || b.includes(a);\n};\n\nif (recipes.length !== 3) {\n  problems.push(`Expected three recipes, got ${recipes.length}.`);\n}\n\nfor (const recipe of recipes) {\n  const listed = [...(recipe.yourIngredients ?? []), ...(recipe.extraIngredients ?? [])];\n  const used = wanted.filter((item) => listed.some((entry) => same(item.name, entry.name))).length;\n  if (used / wanted.length < 0.7) {\n    problems.push(`\"${recipe.title}\" uses too few of the ingredients.`);\n  }\n  if ((recipe.extraIngredients ?? []).length > 3) {\n    problems.push(`\"${recipe.title}\" asks for more than three extra ingredients.`);\n  }\n}\n\nif (problems.length > 0) {\n  return [{ json: { rulesOk: false, error: problems[0] } }];\n}\n\nreturn [{ json: { rulesOk: true, recipes } }];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -407,7 +408,8 @@
           "name": "Supabase code-a-cuisine"
         }
       },
-      "notes": "Stores the recipes in the library and hands the saved rows back."
+      "notes": "Stores the recipes in the library and hands the saved rows back.",
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -423,6 +425,32 @@
       "name": "Collect saved recipes",
       "notesInFlow": true,
       "notes": "Reads the saved rows back into the shape the app expects, now with ids."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://vmyxyvqbmbgmmwydklff.supabase.co/rest/v1/rpc/refund_quota",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ p_ip: $('Read visitor address').item.json.ip }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        512,
+        352
+      ],
+      "id": "e5000000-0000-4000-8000-000000000001",
+      "name": "Refund quota",
+      "notesInFlow": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "onError": "continueRegularOutput",
+      "notes": "Gives the generation back when the model or the database failed."
     }
   ],
   "pinData": {},
@@ -526,6 +554,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Refund quota",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -551,7 +586,7 @@
         ],
         [
           {
-            "node": "Respond generation failed",
+            "node": "Refund quota",
             "type": "main",
             "index": 0
           }
@@ -599,6 +634,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Refund quota",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -607,6 +649,17 @@
         [
           {
             "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Refund quota": {
+      "main": [
+        [
+          {
+            "node": "Respond generation failed",
             "type": "main",
             "index": 0
           }
