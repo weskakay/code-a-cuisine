@@ -8,10 +8,24 @@ The frontend is an Angular app. The recipes come from an automation workflow in 
 validates the request, asks an AI model for three recipes and writes the result to the
 database.
 
-## Status
+![The start page](docs/home.png)
 
-In development. The setup and the data layer are in place, the workflow and the screens
-follow.
+## What it does
+
+1. You list what is in your kitchen, with amount and unit.
+2. You say how many portions, how many cooks, how much time, which cooking style and
+   which diet.
+3. The workflow asks the model for exactly three recipes, checks the answer and stores it.
+4. You get three suggestions, each with steps split by cook, waiting times and the
+   nutritional values per portion and for the whole dish.
+5. Every recipe stays in the library, browsable without an account.
+
+Three recipes per address and day, twelve per day in total. A failed run gives the
+attempt back.
+
+| Library | One recipe |
+|---|---|
+| ![The library](docs/cookbook.png) | ![A recipe](docs/recipe.png) |
 
 ## Tech stack
 
@@ -110,17 +124,35 @@ The editor runs on http://localhost:5678. Workflows are stored in the Docker vol
 
 ## Scripts
 
+Check the code style:
+
 ```bash
 npm run lint
 ```
+
+Run the tests:
 
 ```bash
 npm test
 ```
 
+Build for production:
+
 ```bash
 npm run build
 ```
+
+## Pages
+
+| Route | Content |
+|---|---|
+| `/` | start page |
+| `/generate` | the ingredients you have |
+| `/preferences` | portions, cooks, time, cuisine, diet |
+| `/results` | the three suggestions |
+| `/recipe/:id` | one recipe in full |
+| `/cookbook` | the library, filtered by cooking style |
+| `/imprint` | legal notice |
 
 ## Project structure
 

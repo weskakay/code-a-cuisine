@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Code à Cuisine">
+  <rect width="64" height="64" rx="14" fill="#faf0e6" />
+
+  <!-- thick stalk, slightly tapered -->
+  <path d="M25 36h14l-1.5 14a6 6 0 0 1-6 5.5h-0.2a6 6 0 0 1-6-5.5z" fill="#9ec49a" />
+  <path d="M31 38h2v17h-2z" fill="#8ab486" opacity="0.6" />
+
+  <!-- head, bumpy outline -->
+  <g fill="#2f5230">
+    <circle cx="32" cy="27" r="15" />
+    <circle cx="18" cy="24" r="8" />
+    <circle cx="46" cy="24" r="8" />
+    <circle cx="23" cy="14" r="8" />
+    <circle cx="41" cy="14" r="8" />
+    <circle cx="32" cy="11" r="8" />
+  </g>
+
+  <!-- floret texture in the upper half only -->
+  <g fill="#43703f">
+    <circle cx="23" cy="15" r="4.5" />
+    <circle cx="32" cy="12" r="4.5" />
+    <circle cx="41" cy="15" r="4.5" />
+    <circle cx="17" cy="23" r="3.6" />
+    <circle cx="47" cy="23" r="3.6" />
+    <circle cx="27" cy="20" r="3.4" />
+    <circle cx="37" cy="20" r="3.4" />
+  </g>
+
+  <!-- face on the clear lower part -->
+  <g fill="#faf0e6">
+    <circle cx="26" cy="29" r="3.6" />
+    <circle cx="38" cy="29" r="3.6" />
+  </g>
+  <g fill="#10310b">
+    <circle cx="26.9" cy="29.7" r="1.8" />
+    <circle cx="38.9" cy="29.7" r="1.8" />
+  </g>
+  <path d="M27.5 35.5q4.5 3.5 9 0" stroke="#10310b" stroke-width="2" stroke-linecap="round" fill="none" />
+</svg>
