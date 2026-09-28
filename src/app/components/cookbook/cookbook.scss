@@ -66,29 +66,76 @@
 }
 
 .tile {
-  min-height: 64px;
-  padding: var(--cc-space-xs);
-  border-radius: var(--cc-radius-lg);
-  background: var(--cc-olive-faint);
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-3xs);
+  padding: 0;
+  background: none;
+  text-align: left;
+}
+
+.tile__name {
+  display: flex;
+  align-items: center;
+  min-height: var(--cc-tap-target);
   color: var(--cc-green-mid);
   font-size: var(--cc-fs-xs);
   font-weight: var(--cc-fw-semibold);
-  text-align: left;
-  transition: background var(--cc-transition);
-
-  &:hover {
-    background: var(--cc-olive-soft);
-  }
+  transition: color var(--cc-transition);
 
   @media (width >= 1024px) {
-    min-height: 96px;
     font-size: var(--cc-fs-lg);
   }
 }
 
-.tile--active {
-  background: var(--cc-olive);
-  color: var(--cc-cream);
+/* Rounded frame, so the picture can move without leaving its corners */
+.tile__frame {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--cc-radius-lg);
+  outline: 4px solid transparent;
+  outline-offset: 4px;
+  transition: outline-color var(--cc-transition);
+}
+
+.tile__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  transition: transform var(--cc-transition);
+}
+
+.tile:hover {
+  .tile__name {
+    color: var(--cc-olive);
+  }
+
+  .tile__frame {
+    outline-color: var(--cc-olive-soft);
+  }
+
+  .tile__image {
+    transform: scale(1.06);
+  }
+}
+
+/* The chosen one keeps its ring, even while the pointer sits on it */
+.tile.tile--active {
+  .tile__name {
+    color: var(--cc-olive);
+  }
+
+  .tile__frame {
+    outline-color: var(--cc-olive);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile:hover .tile__image {
+    transform: none;
+  }
 }
 
 .pages {

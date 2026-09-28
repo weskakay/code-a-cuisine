@@ -19,7 +19,17 @@
           [attr.aria-pressed]="cuisine() === style.value"
           (click)="filterBy(style.value)"
         >
-          {{ style.label }}
+          <span class="tile__name">{{ style.label }} cuisine</span>
+          <span class="tile__frame">
+            <img
+              class="tile__image"
+              [src]="'images/cuisine-' + style.value + '.jpg'"
+              alt=""
+              width="600"
+              height="600"
+              [attr.loading]="$index < 3 ? 'eager' : 'lazy'"
+            />
+          </span>
         </button>
       }
     </div>

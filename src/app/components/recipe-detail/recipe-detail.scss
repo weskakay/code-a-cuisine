@@ -47,6 +47,33 @@
   color: var(--cc-green-mid);
 }
 
+/* Heading with the two drawings from the design at both ends */
+.panel__title--band {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cc-space-xs);
+  text-align: center;
+
+  span {
+    flex: 1;
+  }
+}
+
+.panel__art {
+  display: none;
+
+  @media (width >= 600px) {
+    display: block;
+    width: auto;
+    height: 48px;
+  }
+
+  @media (width >= 1024px) {
+    height: 72px;
+  }
+}
+
 .panel__subtitle {
   font-size: var(--cc-fs-xs);
   font-weight: var(--cc-fw-semibold);
