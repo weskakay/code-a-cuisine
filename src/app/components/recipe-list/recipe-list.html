@@ -2,6 +2,7 @@
   @for (recipe of recipes(); track recipe.id) {
     <li class="list__row">
       <a class="list__link" [routerLink]="['/recipe', recipe.id]">
+        <span class="list__number" aria-hidden="true">{{ $index + 1 + offset() }}.</span>
         <h3 class="list__title">{{ recipe.title }}</h3>
         <p class="list__facts">
           Cooking time: {{ recipe.cookingMinutes }} min · {{ recipe.cuisine }} · {{ recipe.diet }}

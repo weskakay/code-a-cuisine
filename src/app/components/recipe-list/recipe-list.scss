@@ -5,9 +5,13 @@
 }
 
 .list__link {
-  display: flex;
-  flex-direction: column;
-  gap: var(--cc-space-3xs);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    'number title'
+    'number facts';
+  column-gap: var(--cc-space-xs);
+  row-gap: var(--cc-space-3xs);
   min-height: var(--cc-tap-target);
   padding: var(--cc-space-xs);
   border-radius: var(--cc-radius-md);
@@ -21,7 +25,22 @@
   }
 }
 
+.list__number {
+  grid-area: number;
+  align-self: center;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--cc-radius-pill);
+  background: var(--cc-number-circle);
+  color: var(--cc-green-dark);
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-semibold);
+}
+
 .list__title {
+  grid-area: title;
   font-size: var(--cc-fs-xs);
   font-weight: var(--cc-fw-semibold);
   color: var(--cc-green-mid);
@@ -32,5 +51,6 @@
 }
 
 .list__facts {
+  grid-area: facts;
   font-size: var(--cc-fs-xs);
 }

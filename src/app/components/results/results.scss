@@ -103,3 +103,43 @@
     background: var(--cc-cream-hover);
   }
 }
+
+/* The cooking style and the time frame the visitor picked */
+.chosen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cc-space-2xs);
+}
+
+.chosen__tag {
+  padding: var(--cc-space-3xs) var(--cc-space-xs);
+  border-radius: var(--cc-radius-pill);
+  background: var(--cc-cream);
+  color: var(--cc-green-mid);
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-medium);
+}
+
+.results__again {
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cc-space-2xs);
+  text-decoration: none;
+  border: 2px solid var(--cc-cream);
+  min-height: var(--cc-tap-target);
+  padding: var(--cc-space-2xs) var(--cc-space-sm);
+  border-radius: var(--cc-radius-sm);
+  color: var(--cc-cream);
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-semibold);
+  transition: background var(--cc-transition);
+
+  &:hover {
+    background: var(--cc-green-pressed);
+  }
+
+  @media (width >= 1024px) {
+    font-size: var(--cc-fs-lg);
+  }
+}

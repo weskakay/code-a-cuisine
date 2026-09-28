@@ -1,5 +1,11 @@
-<header class="bar" [class.bar--dark]="onDark()">
+<header class="bar">
   <a class="bar__mark" routerLink="/" aria-label="Code à Cuisine, back to the start page">
-    Code à Cuisine
+    <img
+      class="bar__logo"
+      [src]="onDark() ? 'images/logo.svg' : 'images/logo-green.svg'"
+      alt=""
+      width="142"
+      height="48"
+    />
   </a>
 </header>

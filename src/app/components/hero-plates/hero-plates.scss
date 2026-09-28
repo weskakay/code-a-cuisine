@@ -1,4 +1,4 @@
-.plates {
+:host {
   display: none;
 
   /* Only from the wide layout on, the phone shows the words alone */
@@ -13,28 +13,23 @@
   }
 }
 
-.plates__svg {
+.plates {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   height: 100%;
-  width: 100%;
 }
 
-.plate__rim {
-  fill: var(--cc-cream);
-  opacity: 0.25;
-}
+.plates__plate {
+  /* The height keeps them inside the hero on short screens */
+  width: min(100%, 30svh);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
 
-.plate__face {
-  fill: var(--cc-cream);
-}
-
-.food--dark {
-  fill: var(--cc-green-mid);
-}
-
-.food--mid {
-  fill: var(--cc-macro-fat);
-}
-
-.food--light {
-  fill: var(--cc-macro-carbs);
+  & + & {
+    margin-top: -2svh;
+  }
 }

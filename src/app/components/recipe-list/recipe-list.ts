@@ -12,4 +12,7 @@ import type { Recipe } from '../../interfaces/recipe.interface';
 export class RecipeList {
   /** The page of recipes the cookbook handed over. */
   readonly recipes = input.required<Recipe[]>();
+
+  /** How many recipes come before this page, so the numbers keep counting. */
+  readonly offset = input(0);
 }

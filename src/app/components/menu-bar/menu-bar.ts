@@ -9,6 +9,6 @@ import { RouterLink } from '@angular/router';
   styleUrl: './menu-bar.scss',
 })
 export class MenuBar {
-  /** True on the olive pages, where the wordmark turns cream. */
+  /** True on the olive pages, where the logo turns cream. */
   readonly onDark = input(false);
 }

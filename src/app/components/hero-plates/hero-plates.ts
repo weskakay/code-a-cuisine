@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-/** Three plates beside the claim, drawn so the page needs no photos. */
+/** The three plates beside the claim on the start page. */
 @Component({
   selector: 'app-hero-plates',
   templateUrl: './hero-plates.html',

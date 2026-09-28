@@ -7,6 +7,12 @@
       We took what you have and let our kitchen do the thinking. Here are three recipes you can make
       right now.
     </p>
+    <ul class="chosen">
+      @for (label of chosen(); track label) {
+        <li class="chosen__tag">{{ label }}</li>
+      }
+    </ul>
+
     @if (quota(); as left) {
       <p class="results__quota">{{ left.remaining }} of {{ left.limit }} recipes left today</p>
     }
@@ -31,6 +37,11 @@
       }
     </ul>
   }
+
+  <a class="results__again" routerLink="/generate">
+    Generate new recipes
+    <span aria-hidden="true">&rarr;</span>
+  </a>
 </main>
 
 <app-site-footer />

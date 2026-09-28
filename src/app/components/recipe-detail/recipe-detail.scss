@@ -106,3 +106,42 @@
   align-items: center;
   color: var(--cc-green-mid);
 }
+
+/* Sends the reader on to the library, as the design does */
+.invite {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cc-space-xs);
+  padding: var(--cc-space-sm);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-olive-faint);
+}
+
+.invite__text {
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-semibold);
+  color: var(--cc-green-mid);
+
+  @media (width >= 1024px) {
+    font-size: var(--cc-fs-lg);
+  }
+}
+
+.invite__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--cc-tap-target);
+  padding: var(--cc-space-2xs) var(--cc-space-sm);
+  background: var(--cc-olive);
+  color: var(--cc-cream);
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-semibold);
+  text-decoration: none;
+  transition: background var(--cc-transition);
+
+  &:hover {
+    background: var(--cc-green-pressed);
+  }
+}

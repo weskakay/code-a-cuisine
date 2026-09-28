@@ -68,6 +68,11 @@
       </div>
     </section>
 
+    <section class="invite">
+      <p class="invite__text">Find inspiration for your next culinary adventure.</p>
+      <a class="invite__link" routerLink="/cookbook">Cookbook</a>
+    </section>
+
     <a class="dish__back" [routerLink]="backLink()">{{ backLabel() }}</a>
   </main>
 } @else if (loading()) {
