@@ -1,0 +1,40 @@
+.plates {
+  display: none;
+
+  /* Only from the wide layout on, the phone shows the words alone */
+  @media (width >= 1024px) {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: var(--cc-space-xl);
+    bottom: 0;
+    width: 300px;
+    pointer-events: none;
+  }
+}
+
+.plates__svg {
+  height: 100%;
+  width: 100%;
+}
+
+.plate__rim {
+  fill: var(--cc-cream);
+  opacity: 0.25;
+}
+
+.plate__face {
+  fill: var(--cc-cream);
+}
+
+.food--dark {
+  fill: var(--cc-green-mid);
+}
+
+.food--mid {
+  fill: var(--cc-macro-fat);
+}
+
+.food--light {
+  fill: var(--cc-macro-carbs);
+}
