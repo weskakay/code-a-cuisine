@@ -3,13 +3,14 @@ import { RouterLink } from '@angular/router';
 import { COOKING_TIMES, CUISINES } from '../../data/options';
 import { RecipeDraftService } from '../../services/recipe-draft.service';
 import { RecipeStoreService } from '../../services/recipe-store.service';
+import { Icon } from '../icon/icon';
 import { MenuBar } from '../menu-bar/menu-bar';
 import { SiteFooter } from '../site-footer/site-footer';
 
 /** Step three: the three suggestions the workflow sent back. */
 @Component({
   selector: 'app-results',
-  imports: [MenuBar, RouterLink, SiteFooter],
+  imports: [Icon, MenuBar, RouterLink, SiteFooter],
   templateUrl: './results.html',
   styleUrl: './results.scss',
 })

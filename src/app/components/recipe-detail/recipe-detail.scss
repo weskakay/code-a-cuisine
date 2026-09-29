@@ -32,6 +32,34 @@
   color: var(--cc-olive);
 }
 
+.dish__time {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cc-space-3xs);
+}
+
+/* The cooks wear the colours of the design */
+.cook {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cc-space-3xs);
+  padding: var(--cc-space-3xs) var(--cc-space-2xs);
+  border-radius: var(--cc-radius-pill);
+  color: var(--cc-green-dark);
+}
+
+.cook--1 {
+  background: var(--cc-chef-1);
+}
+
+.cook--2 {
+  background: var(--cc-chef-2);
+}
+
+.cook--3 {
+  background: var(--cc-chef-3);
+}
+
 .panel {
   display: flex;
   flex-direction: column;

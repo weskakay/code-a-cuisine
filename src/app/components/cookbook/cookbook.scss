@@ -77,6 +77,9 @@
 }
 
 .liked__time {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cc-space-3xs);
   font-size: var(--cc-fs-xs);
 }
 

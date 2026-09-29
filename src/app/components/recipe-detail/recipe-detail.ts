@@ -4,6 +4,7 @@ import type { Recipe } from '../../interfaces/recipe.interface';
 import { LikesService } from '../../services/likes.service';
 import { RecipeService } from '../../services/recipe.service';
 import { RecipeStoreService } from '../../services/recipe-store.service';
+import { Icon, type IconName } from '../icon/icon';
 import { MenuBar } from '../menu-bar/menu-bar';
 import { SiteFooter } from '../site-footer/site-footer';
 import { NutritionChart } from '../nutrition-chart/nutrition-chart';
@@ -11,7 +12,7 @@ import { NutritionChart } from '../nutrition-chart/nutrition-chart';
 /** One recipe in full, with the steps split by cook. */
 @Component({
   selector: 'app-recipe-detail',
-  imports: [MenuBar, NutritionChart, RouterLink, SiteFooter],
+  imports: [Icon, MenuBar, NutritionChart, RouterLink, SiteFooter],
   templateUrl: './recipe-detail.html',
   styleUrl: './recipe-detail.scss',
 })
@@ -49,6 +50,11 @@ export class RecipeDetail {
   /** The steps of one cook, in the order they happen. */
   stepsOf(cook: number) {
     return (this.recipe()?.steps ?? []).filter((step) => step.helper === cook);
+  }
+
+  /** Cooks take turns between the hat and the spoon, like in the design. */
+  iconFor(cook: number): IconName {
+    return cook % 2 === 1 ? 'hat' : 'spoon';
   }
 
   /** Gives this recipe a heart, or takes the heart back. */

@@ -28,7 +28,10 @@
       @for (recipe of recipes(); track recipe.id) {
         <li class="card">
           <h2 class="card__title">{{ recipe.title }}</h2>
-          <p class="card__time">Cooking time: {{ recipe.cookingMinutes }} min</p>
+          <p class="card__time">
+            <app-icon name="clock" />
+            Cooking time: {{ recipe.cookingMinutes }} min
+          </p>
           <p class="card__extras">
             {{ recipe.extraIngredients.length }} extra ingredients · {{ recipe.steps.length }} steps
           </p>

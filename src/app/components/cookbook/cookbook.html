@@ -15,7 +15,10 @@
         @for (dish of mostLiked(); track dish.id) {
           <li>
             <a class="liked__card" [routerLink]="['/recipe', dish.id]">
-              <span class="liked__time">Cooking time: {{ dish.cookingMinutes }} min</span>
+              <span class="liked__time">
+                <app-icon name="clock" />
+                Cooking time: {{ dish.cookingMinutes }} min
+              </span>
               <span class="liked__title">{{ dish.title }}</span>
               <span class="liked__hearts">
                 <svg class="liked__heart" viewBox="0 0 24 24" aria-hidden="true">

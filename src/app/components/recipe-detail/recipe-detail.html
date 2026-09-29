@@ -3,7 +3,10 @@
 @if (recipe(); as dish) {
   <main class="dish">
     <header class="dish__head">
-      <p class="dish__time">Cooking time: {{ dish.cookingMinutes }} min</p>
+      <p class="dish__time">
+        <app-icon name="clock" />
+        Cooking time: {{ dish.cookingMinutes }} min
+      </p>
       <h1 class="dish__title">{{ dish.title }}</h1>
       <p class="dish__meta">
         {{ dish.portions }} portions · {{ dish.helpers }} cooks · {{ dish.cuisine }}
@@ -50,7 +53,15 @@
       <div class="columns">
         @for (cook of cooks(); track cook) {
           <div>
-            <h3 class="panel__subtitle">Cook {{ cook }}</h3>
+            <h3
+              class="panel__subtitle cook"
+              [class.cook--1]="cook === 1"
+              [class.cook--2]="cook === 2"
+              [class.cook--3]="cook === 3"
+            >
+              <app-icon [name]="iconFor(cook)" />
+              Cook {{ cook }}
+            </h3>
             <ol class="steps">
               @for (step of stepsOf(cook); track step.position) {
                 <li class="step">

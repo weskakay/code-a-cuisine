@@ -85,6 +85,12 @@
   font-size: var(--cc-fs-xs);
 }
 
+.card__time {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cc-space-3xs);
+}
+
 .card__view {
   margin-top: auto;
   align-self: flex-start;
