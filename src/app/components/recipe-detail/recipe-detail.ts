@@ -1,6 +1,7 @@
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import type { Recipe } from '../../interfaces/recipe.interface';
+import { LikesService } from '../../services/likes.service';
 import { RecipeService } from '../../services/recipe.service';
 import { RecipeStoreService } from '../../services/recipe-store.service';
 import { MenuBar } from '../menu-bar/menu-bar';
@@ -17,12 +18,16 @@ import { NutritionChart } from '../nutrition-chart/nutrition-chart';
 export class RecipeDetail {
   private readonly store = inject(RecipeStoreService);
   private readonly recipeService = inject(RecipeService);
+  private readonly likes = inject(LikesService);
 
   /** Comes from the route, for example /recipe/8f2c… */
   readonly id = input.required<string>();
 
   readonly recipe = signal<Recipe | null>(null);
   readonly loading = signal(true);
+  readonly likeCount = signal(0);
+  readonly liked = signal(false);
+  readonly likeFailed = signal(false);
 
   /** Recipes of this session came from the results, the others from the library. */
   readonly backLink = computed(() => (this.store.find(this.id()) ? '/results' : '/cookbook'));
@@ -46,16 +51,34 @@ export class RecipeDetail {
     return (this.recipe()?.steps ?? []).filter((step) => step.helper === cook);
   }
 
+  /** Gives this recipe a heart, or takes the heart back. */
+  async toggleLike(): Promise<void> {
+    const id = this.id();
+    this.likeFailed.set(false);
+    try {
+      this.likeCount.set(await this.likes.toggle(id));
+      this.liked.set(this.likes.has(id));
+    } catch {
+      this.likeFailed.set(true);
+    }
+  }
+
   /** Takes the recipe from this session, or reads it from the library. */
   private async load(id: string): Promise<void> {
     const known = this.store.find(id);
     if (known) {
-      this.recipe.set(known);
-      this.loading.set(false);
+      this.show(known, id);
       return;
     }
     this.loading.set(true);
-    this.recipe.set(await this.recipeService.getRecipe(id).catch(() => null));
+    this.show(await this.recipeService.getRecipe(id).catch(() => null), id);
+  }
+
+  /** Puts the recipe on the page and shows the hearts it has so far. */
+  private show(dish: Recipe | null, id: string): void {
+    this.recipe.set(dish);
+    this.likeCount.set(dish?.likes ?? 0);
+    this.liked.set(this.likes.has(id));
     this.loading.set(false);
   }
 }

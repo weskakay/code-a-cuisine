@@ -135,6 +135,60 @@
 }
 
 /* Sends the reader on to the library, as the design does */
+/* The heart, right under the last step */
+.cheer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cc-space-xs);
+  padding: 0 var(--cc-space-2xs);
+}
+
+.cheer__text {
+  font-size: var(--cc-fs-xs);
+
+  strong {
+    font-weight: var(--cc-fw-semibold);
+  }
+}
+
+.cheer__note {
+  font-size: var(--cc-fs-xs);
+  color: var(--cc-green-mid);
+}
+
+.heart {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cc-space-3xs);
+  min-height: var(--cc-tap-target);
+  padding: var(--cc-space-3xs) var(--cc-space-xs);
+  border-radius: var(--cc-radius-pill);
+  background: var(--cc-olive-faint);
+  color: var(--cc-green);
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-semibold);
+  transition: background var(--cc-transition);
+
+  &:hover {
+    background: var(--cc-olive-soft);
+  }
+}
+
+.heart__icon {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  transition: fill var(--cc-transition);
+}
+
+.heart--on .heart__icon {
+  fill: currentColor;
+}
+
 .invite {
   display: flex;
   flex-wrap: wrap;

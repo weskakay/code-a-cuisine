@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, type HttpResponse } from '@angular/common/http
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { RECIPES_PER_PAGE } from '../data/options';
+import { MOST_LIKED_COUNT, RECIPES_PER_PAGE } from '../data/options';
 import type { Cuisine, Recipe } from '../interfaces/recipe.interface';
 
 /** A row as the database returns it, with snake_case columns. */
@@ -57,6 +57,26 @@ export class RecipeService {
       this.http.get<RecipeRow[]>(url, { headers: this.headers(0, 0) }),
     );
     return rows.length ? toRecipe(rows[0]) : null;
+  }
+
+  /** Reads the recipes with the most hearts, for the row in the library. */
+  async listMostLiked(count = MOST_LIKED_COUNT): Promise<Recipe[]> {
+    const url = `${this.endpoint}?select=*&order=likes.desc,created_at.desc&limit=${count}`;
+    const rows = await firstValueFrom(
+      this.http.get<RecipeRow[]>(url, { headers: this.headers(0, count - 1) }),
+    );
+    return rows.map(toRecipe);
+  }
+
+  /**
+   * Moves the heart of a recipe by one and answers with the new count.
+   * The database only accepts a step of 1 or -1, so the number cannot be set.
+   */
+  async like(id: string, step: 1 | -1): Promise<number> {
+    const url = `${environment.supabaseUrl}/rest/v1/rpc/like_recipe`;
+    return firstValueFrom(
+      this.http.post<number>(url, { p_id: id, p_step: step }, { headers: this.headers(0, 0) }),
+    );
   }
 
   /** Key, token and the range the database should answer with. */

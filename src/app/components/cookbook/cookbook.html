@@ -8,6 +8,30 @@
     </p>
   </header>
 
+  @if (mostLiked().length > 0) {
+    <section class="liked" aria-labelledby="liked-title">
+      <h2 id="liked-title" class="book__subtitle">Most liked recipes</h2>
+      <ul class="liked__row">
+        @for (dish of mostLiked(); track dish.id) {
+          <li>
+            <a class="liked__card" [routerLink]="['/recipe', dish.id]">
+              <span class="liked__time">Cooking time: {{ dish.cookingMinutes }} min</span>
+              <span class="liked__title">{{ dish.title }}</span>
+              <span class="liked__hearts">
+                <svg class="liked__heart" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 20.6 4 12.5a4.8 4.8 0 0 1 0-6.8 4.8 4.8 0 0 1 6.8 0l1.2 1.2 1.2-1.2a4.8 4.8 0 0 1 6.8 0 4.8 4.8 0 0 1 0 6.8z"
+                  />
+                </svg>
+                {{ dish.likes }}
+              </span>
+            </a>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+
   <section class="styles" aria-labelledby="styles-title">
     <h2 id="styles-title" class="book__subtitle">Cuisine categories</h2>
     <div class="styles__tiles">

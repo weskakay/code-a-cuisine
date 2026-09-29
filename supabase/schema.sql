@@ -103,3 +103,34 @@ $$;
 
 revoke all on function public.refund_quota(inet) from public, anon, authenticated;
 grant execute on function public.refund_quota(inet) to service_role;
+
+-- The heart under a recipe. The browser may only move the number by one, up or
+-- down, so nobody can set it from outside. Writing the table stays forbidden.
+create or replace function public.like_recipe(p_id uuid, p_step integer)
+returns integer
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  new_count integer;
+begin
+  if p_step is null or p_step not in (-1, 1) then
+    raise exception 'step must be 1 or -1';
+  end if;
+
+  update public.recipes
+     set likes = greatest(likes + p_step, 0)
+   where id = p_id
+  returning likes into new_count;
+
+  if new_count is null then
+    raise exception 'recipe not found';
+  end if;
+
+  return new_count;
+end;
+$$;
+
+revoke all on function public.like_recipe(uuid, integer) from public;
+grant execute on function public.like_recipe(uuid, integer) to anon, authenticated;

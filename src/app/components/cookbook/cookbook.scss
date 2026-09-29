@@ -50,6 +50,57 @@
   font-size: var(--cc-fs-xs);
 }
 
+/* The hearts row. It scrolls sideways when the cards do not fit */
+.liked__row {
+  display: flex;
+  gap: var(--cc-space-2xs);
+  overflow-x: auto;
+  padding-bottom: var(--cc-space-3xs);
+}
+
+.liked__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-3xs);
+  width: 260px;
+  min-height: var(--cc-tap-target);
+  padding: var(--cc-space-xs);
+  border-radius: var(--cc-radius-md);
+  background: var(--cc-card);
+  color: var(--cc-green-dark);
+  text-decoration: none;
+  transition: background var(--cc-transition);
+
+  &:hover {
+    background: var(--cc-card-alt);
+  }
+}
+
+.liked__time {
+  font-size: var(--cc-fs-xs);
+}
+
+.liked__title {
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-semibold);
+  color: var(--cc-green-mid);
+}
+
+.liked__hearts {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cc-space-3xs);
+  margin-top: auto;
+  font-size: var(--cc-fs-xs);
+  color: var(--cc-green);
+}
+
+.liked__heart {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
 .styles__tiles {
   display: grid;
   grid-template-columns: 1fr;

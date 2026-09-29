@@ -19,6 +19,9 @@ export const MAX_EXTRA_INGREDIENTS = 3;
 /** Recipes shown per page in the library. */
 export const RECIPES_PER_PAGE = 20;
 
+/** Recipes in the row of the most liked ones. */
+export const MOST_LIKED_COUNT = 5;
+
 /** Units an amount can be given in. */
 export const UNITS: Option<Unit>[] = [
   { value: 'g', label: 'gram' },

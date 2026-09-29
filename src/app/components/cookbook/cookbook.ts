@@ -1,4 +1,5 @@
 import { Component, inject, type OnInit, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { CUISINES, RECIPES_PER_PAGE } from '../../data/options';
 import type { Cuisine, Recipe } from '../../interfaces/recipe.interface';
 import { RecipeService } from '../../services/recipe.service';
@@ -9,7 +10,7 @@ import { SiteFooter } from '../site-footer/site-footer';
 /** The public library: every recipe the app has ever generated. */
 @Component({
   selector: 'app-cookbook',
-  imports: [MenuBar, RecipeList, SiteFooter],
+  imports: [MenuBar, RecipeList, RouterLink, SiteFooter],
   templateUrl: './cookbook.html',
   styleUrl: './cookbook.scss',
 })
@@ -20,6 +21,7 @@ export class Cookbook implements OnInit {
   readonly perPage = RECIPES_PER_PAGE;
 
   readonly recipes = signal<Recipe[]>([]);
+  readonly mostLiked = signal<Recipe[]>([]);
   readonly total = signal(0);
   readonly page = signal(1);
   readonly cuisine = signal<Cuisine | undefined>(undefined);
@@ -28,6 +30,7 @@ export class Cookbook implements OnInit {
 
   ngOnInit(): void {
     void this.load();
+    void this.loadMostLiked();
   }
 
   /** Shows one cooking style, or all of them again. */
@@ -47,6 +50,12 @@ export class Cookbook implements OnInit {
   pages(): number[] {
     const count = Math.ceil(this.total() / this.perPage);
     return Array.from({ length: count }, (_, index) => index + 1);
+  }
+
+  /** Reads the recipes with the most hearts. Stays empty until someone likes one. */
+  private async loadMostLiked(): Promise<void> {
+    const liked = await this.recipeService.listMostLiked().catch(() => []);
+    this.mostLiked.set(liked.filter((dish) => dish.likes > 0));
   }
 
   /** Reads the current page from the database. */
