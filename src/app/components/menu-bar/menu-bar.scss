@@ -1,6 +1,8 @@
 .bar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: var(--cc-space-xs);
   padding: var(--cc-space-xs);
   max-width: var(--cc-content-max);
   margin: 0 auto;
@@ -22,5 +24,39 @@
 
   @media (width >= 1024px) {
     height: 48px;
+  }
+}
+
+.langs {
+  display: flex;
+  gap: var(--cc-space-3xs);
+}
+
+.langs__button {
+  min-width: var(--cc-tap-target);
+  min-height: var(--cc-tap-target);
+  border-radius: var(--cc-radius-pill);
+  color: var(--cc-green-mid);
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-semibold);
+  transition: background var(--cc-transition);
+
+  &:hover {
+    background: var(--cc-olive-faint);
+  }
+
+  &.is-on {
+    background: var(--cc-olive-faint);
+    text-decoration: underline;
+  }
+}
+
+/* On the olive pages the bar writes in cream */
+.bar--dark .langs__button {
+  color: var(--cc-cream);
+
+  &:hover,
+  &.is-on {
+    background: color-mix(in srgb, var(--cc-cream) 20%, transparent);
   }
 }

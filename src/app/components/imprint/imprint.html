@@ -1,25 +1,23 @@
 <app-menu-bar />
 
 <main class="legal">
-  <h1 class="legal__title">Imprint</h1>
+  <h1 class="legal__title">{{ text().titles.imprint }}</h1>
 
   <section class="legal__block" aria-labelledby="provider-title">
-    <h2 id="provider-title" class="legal__subtitle">Provider</h2>
-    <p>Code à Cuisine is a project by {{ imprint.owner }}.</p>
+    <h2 id="provider-title" class="legal__subtitle">{{ text().imprint.providerTitle }}</h2>
+    <p>{{ text().imprint.providerText }} {{ imprint.owner }}.</p>
     <p>
-      The full legal notice and the contact details are on the portfolio:
+      {{ text().imprint.noticeText }}
       <a [href]="imprint.legalNotice" target="_blank" rel="noopener">{{ imprint.legalNotice }}</a>
     </p>
   </section>
 
   <section class="legal__block" aria-labelledby="liability-title">
-    <h2 id="liability-title" class="legal__subtitle">Liability for content and links</h2>
+    <h2 id="liability-title" class="legal__subtitle">{{ text().imprint.liabilityTitle }}</h2>
     <p>
-      The recipes on this site are written by a language model. Amounts, cooking times and
-      nutritional values are estimates, not advice. Check them before you cook, especially if you
-      have allergies or an illness that asks for a certain diet.
+      {{ text().imprint.liabilityText }}
     </p>
-    <p>This site links to pages of other providers. Their content is their own responsibility.</p>
+    <p>{{ text().imprint.linksText }}</p>
   </section>
 </main>
 

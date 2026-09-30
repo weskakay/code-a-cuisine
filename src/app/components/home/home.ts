@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { LanguageService } from '../../services/language.service';
 import { HeroPlates } from '../hero-plates/hero-plates';
 import { MenuBar } from '../menu-bar/menu-bar';
 import { SiteFooter } from '../site-footer/site-footer';
@@ -11,4 +12,6 @@ import { SiteFooter } from '../site-footer/site-footer';
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
-export class Home {}
+export class Home {
+  readonly text = inject(LanguageService).t;
+}

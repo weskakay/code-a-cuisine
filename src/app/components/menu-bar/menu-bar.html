@@ -1,5 +1,5 @@
-<header class="bar">
-  <a class="bar__mark" routerLink="/" aria-label="Code à Cuisine, back to the start page">
+<header class="bar" [class.bar--dark]="onDark()">
+  <a class="bar__mark" routerLink="/" [attr.aria-label]="text().menu.home">
     <img
       class="bar__logo"
       [src]="onDark() ? 'images/logo.svg' : 'images/logo-green.svg'"
@@ -8,4 +8,27 @@
       height="48"
     />
   </a>
+
+  <div class="langs" role="group" [attr.aria-label]="text().language.label">
+    <button
+      type="button"
+      class="langs__button"
+      [class.is-on]="language() === 'en'"
+      [attr.aria-pressed]="language() === 'en'"
+      [attr.aria-label]="text().language.en"
+      (click)="use('en')"
+    >
+      EN
+    </button>
+    <button
+      type="button"
+      class="langs__button"
+      [class.is-on]="language() === 'de'"
+      [attr.aria-pressed]="language() === 'de'"
+      [attr.aria-label]="text().language.de"
+      (click)="use('de')"
+    >
+      DE
+    </button>
+  </div>
 </header>
