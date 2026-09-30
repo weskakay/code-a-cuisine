@@ -18,6 +18,9 @@ export class RecipeDraftService {
   readonly cuisine = signal<Cuisine>('italian');
   readonly diet = signal<Diet>('none');
 
+  /** The place of the ingredient the visitor is changing, or null. */
+  readonly editing = signal<number | null>(null);
+
   /** True as soon as one ingredient is on the list, which the next step needs. */
   readonly ready = computed(() => this.ingredients().length > 0);
 
@@ -29,6 +32,25 @@ export class RecipeDraftService {
   /** Removes the ingredient at that place. */
   removeIngredient(index: number): void {
     this.ingredients.update((list) => list.filter((_, place) => place !== index));
+    this.editing.set(null);
+  }
+
+  /** Puts the ingredient at that place into the form, ready to be changed. */
+  startEdit(index: number): void {
+    this.editing.set(index);
+  }
+
+  /** Writes the changed ingredient back and closes the editing. */
+  updateIngredient(index: number, ingredient: IngredientInput): void {
+    this.ingredients.update((list) =>
+      list.map((item, place) => (place === index ? ingredient : item)),
+    );
+    this.editing.set(null);
+  }
+
+  /** Leaves the editing without changing anything. */
+  cancelEdit(): void {
+    this.editing.set(null);
   }
 
   /** Everything the workflow needs, ready to send. */

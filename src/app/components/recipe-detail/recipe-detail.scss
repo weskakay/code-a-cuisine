@@ -204,19 +204,6 @@
   }
 }
 
-.heart__icon {
-  width: 24px;
-  height: 24px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  transition: fill var(--cc-transition);
-}
-
-.heart--on .heart__icon {
-  fill: currentColor;
-}
-
 .invite {
   display: flex;
   flex-wrap: wrap;

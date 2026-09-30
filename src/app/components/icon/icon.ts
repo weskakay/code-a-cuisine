@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 
 /** The small drawings the app uses next to a label. */
-export type IconName = 'clock' | 'hat' | 'spoon';
+export type IconName = 'clock' | 'hat' | 'heart' | 'spoon';
 
 /** One line drawing, taking the colour and the size of the text around it. */
 @Component({
@@ -11,4 +11,7 @@ export type IconName = 'clock' | 'hat' | 'spoon';
 })
 export class Icon {
   readonly name = input.required<IconName>();
+
+  /** Only the heart uses it: filled once the visitor gave it. */
+  readonly filled = input(false);
 }

@@ -33,7 +33,9 @@
   flex: 1 1 auto;
 }
 
-.list__remove {
+.list__action {
+  display: grid;
+  place-items: center;
   min-width: var(--cc-tap-target);
   min-height: var(--cc-tap-target);
   border-radius: var(--cc-radius-xs);
@@ -43,4 +45,20 @@
   &:hover {
     background: var(--cc-cream-hover);
   }
+}
+
+.list__pencil {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The row that sits in the form right now */
+.list__item--editing {
+  background: var(--cc-cream);
+  outline: 2px solid var(--cc-olive-soft);
 }

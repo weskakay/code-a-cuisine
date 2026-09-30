@@ -11,9 +11,15 @@ export class IngredientList {
   private readonly draft = inject(RecipeDraftService);
 
   readonly ingredients = this.draft.ingredients;
+  readonly editing = this.draft.editing;
 
   /** Takes the ingredient at that place off the list. */
   remove(index: number): void {
     this.draft.removeIngredient(index);
+  }
+
+  /** Opens the ingredient at that place in the form above. */
+  edit(index: number): void {
+    this.draft.startEdit(index);
   }
 }

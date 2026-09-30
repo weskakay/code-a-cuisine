@@ -61,3 +61,25 @@
   color: var(--cc-green-mid);
   font-size: var(--cc-fs-xs);
 }
+
+/* Suggestions while typing, right under the field */
+.hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cc-space-3xs);
+  margin-top: var(--cc-space-3xs);
+}
+
+.hints__item {
+  min-height: var(--cc-tap-target);
+  padding: var(--cc-space-3xs) var(--cc-space-2xs);
+  border-radius: var(--cc-radius-pill);
+  background: var(--cc-cream);
+  color: var(--cc-green-mid);
+  font-size: var(--cc-fs-xs);
+  transition: background var(--cc-transition);
+
+  &:hover {
+    background: var(--cc-cream-hover);
+  }
+}

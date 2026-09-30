@@ -100,11 +100,7 @@
         [attr.aria-label]="liked() ? 'Take back your heart' : 'Give this recipe a heart'"
         (click)="toggleLike()"
       >
-        <svg class="heart__icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="M12 20.6 4 12.5a4.8 4.8 0 0 1 0-6.8 4.8 4.8 0 0 1 6.8 0l1.2 1.2 1.2-1.2a4.8 4.8 0 0 1 6.8 0 4.8 4.8 0 0 1 0 6.8z"
-          />
-        </svg>
+        <app-icon name="heart" [filled]="liked()" />
         <span class="heart__count">{{ likeCount() }}</span>
       </button>
     </section>

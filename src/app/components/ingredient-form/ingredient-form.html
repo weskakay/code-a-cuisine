@@ -9,6 +9,16 @@
       autocomplete="off"
       placeholder="Pasta"
     />
+
+    @if (suggestions().length > 0) {
+      <ul class="hints">
+        @for (hint of suggestions(); track hint) {
+          <li>
+            <button type="button" class="hints__item" (click)="pick(hint)">{{ hint }}</button>
+          </li>
+        }
+      </ul>
+    }
   </div>
 
   <div class="form__row">
@@ -33,7 +43,16 @@
       </select>
     </div>
 
-    <button class="form__add" type="submit" aria-label="Add this ingredient to the list">+</button>
+    @if (editing() === null) {
+      <button class="form__add" type="submit" aria-label="Add this ingredient to the list">
+        +
+      </button>
+    } @else {
+      <button class="form__add" type="submit" aria-label="Save this ingredient">&check;</button>
+      <button class="form__add" type="button" aria-label="Cancel the change" (click)="cancel()">
+        &times;
+      </button>
+    }
   </div>
 
   <p class="form__error" role="alert">{{ error() }}</p>

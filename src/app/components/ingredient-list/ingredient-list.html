@@ -3,12 +3,23 @@
 } @else {
   <ul class="list">
     @for (item of ingredients(); track $index) {
-      <li class="list__item">
+      <li class="list__item" [class.list__item--editing]="editing() === $index">
         <span class="list__amount">{{ item.amount }} {{ item.unit }}</span>
         <span class="list__name">{{ item.name }}</span>
         <button
           type="button"
-          class="list__remove"
+          class="list__action"
+          [attr.aria-label]="'Change ' + item.name"
+          (click)="edit($index)"
+        >
+          <svg class="list__pencil" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 20h4L19.5 8.5a2.8 2.8 0 0 0-4-4L4 16z" />
+            <path d="M14.5 6 18 9.5" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          class="list__action"
           [attr.aria-label]="'Remove ' + item.name + ' from the list'"
           (click)="remove($index)"
         >
