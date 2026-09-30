@@ -9,8 +9,10 @@
       </p>
       <h1 class="dish__title">{{ dish.title }}</h1>
       <p class="dish__meta">
-        {{ dish.portions }} {{ text().recipe.portions }} · {{ dish.helpers }}
-        {{ text().recipe.cooks }} · {{ text().cuisines[dish.cuisine] }}
+        {{ dish.portions }}
+        {{ dish.portions === 1 ? text().recipe.portion : text().recipe.portions }} ·
+        {{ dish.helpers }} {{ dish.helpers === 1 ? text().recipe.cook : text().recipe.cooks }} ·
+        {{ text().cuisines[dish.cuisine] }}
       </p>
     </header>
 

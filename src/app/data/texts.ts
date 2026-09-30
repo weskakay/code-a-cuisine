@@ -96,6 +96,7 @@ export const EN = {
   },
   recipe: {
     cookingTime: 'Cooking time',
+    portion: 'portion',
     portions: 'portions',
     cooks: 'cooks',
     nutrition: 'Nutritional information',
@@ -245,6 +246,7 @@ export const DE: Texts = {
   },
   recipe: {
     cookingTime: 'Kochzeit',
+    portion: 'Portion',
     portions: 'Portionen',
     cooks: 'Köche',
     nutrition: 'Nährwerte',

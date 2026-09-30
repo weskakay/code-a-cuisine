@@ -4,6 +4,9 @@ Recipe generator that turns the ingredients you already have at home into three 
 ideas. Every generated recipe is stored and stays available in a public library, so
 nobody needs an account to browse them.
 
+The interface speaks English and German, the recipes are written in the language that was
+chosen when they were generated.
+
 The frontend is an Angular app. The recipes come from an automation workflow in n8n that
 validates the request, asks an AI model for three recipes and writes the result to the
 database.
@@ -182,13 +185,15 @@ The app posts this to the workflow:
   "cookingTime": "quick",
   "cuisine": "italian",
   "diet": "vegetarian",
-  "helpers": 2
+  "helpers": 2,
+  "language": "en"
 }
 ```
 
 `unit` is `g`, `ml` or `piece`. `cookingTime` is `quick`, `medium` or `complex`. `cuisine`
 is one of german, italian, japanese, indian, gourmet, fusion. `diet` is vegetarian, vegan,
-keto or none. Portions run from 1 to 12, helpers from 1 to 3.
+keto or none. Portions run from 1 to 12, helpers from 1 to 3. `language` is `en` or `de`
+and decides which language the model writes the recipes in.
 
 The answer holds three saved recipes and what is left of the daily limit:
 

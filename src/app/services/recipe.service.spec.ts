@@ -19,6 +19,7 @@ const row = {
   nutrition_per_portion: { energyKcal: 630, proteinG: 18, carbsG: 58, fatG: 24 },
   nutrition_total: { energyKcal: 1260, proteinG: 36, carbsG: 116, fatG: 48 },
   likes: 66,
+  language: 'en',
 };
 
 describe('RecipeService', () => {

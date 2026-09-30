@@ -1,4 +1,4 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { HELPERS, PORTIONS } from '../data/options';
 import type {
   CookingTime,
@@ -7,10 +7,13 @@ import type {
   IngredientInput,
   RecipeRequest,
 } from '../interfaces/recipe.interface';
+import { LanguageService } from './language.service';
 
 /** Holds what the visitor picked while walking through the steps. */
 @Injectable({ providedIn: 'root' })
 export class RecipeDraftService {
+  private readonly languages = inject(LanguageService);
+
   readonly ingredients = signal<IngredientInput[]>([]);
   readonly portions = signal(PORTIONS.default);
   readonly helpers = signal(HELPERS.default);
@@ -62,6 +65,7 @@ export class RecipeDraftService {
       cuisine: this.cuisine(),
       diet: this.diet(),
       helpers: this.helpers(),
+      language: this.languages.current(),
     };
   }
 }

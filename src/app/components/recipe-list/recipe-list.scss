@@ -6,10 +6,10 @@
 
 .list__link {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto auto;
   grid-template-areas:
-    'number title hearts'
-    'number facts hearts';
+    'number title lang hearts'
+    'number facts lang hearts';
   column-gap: var(--cc-space-xs);
   row-gap: var(--cc-space-3xs);
   min-height: var(--cc-tap-target);
@@ -63,4 +63,16 @@
   gap: var(--cc-space-3xs);
   font-size: var(--cc-fs-xs);
   color: var(--cc-green);
+}
+
+/* Marks a recipe that is not written in the chosen language */
+.list__lang {
+  grid-area: lang;
+  align-self: center;
+  padding: var(--cc-space-3xs) var(--cc-space-2xs);
+  border-radius: var(--cc-radius-pill);
+  background: var(--cc-olive-faint);
+  color: var(--cc-green-mid);
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-semibold);
 }

@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { MOST_LIKED_COUNT, RECIPES_PER_PAGE } from '../data/options';
+import type { Language } from '../data/texts';
 import type { Cuisine, Recipe } from '../interfaces/recipe.interface';
 
 /** A row as the database returns it, with snake_case columns. */
@@ -22,6 +23,7 @@ interface RecipeRow {
   nutrition_per_portion: Recipe['nutritionPerPortion'];
   nutrition_total: Recipe['nutritionTotal'];
   likes: number;
+  language: Language;
 }
 
 /** One page of the library plus how many recipes match the filter. */
@@ -101,22 +103,29 @@ type RecipeContent = Omit<Recipe, keyof RecipeFacts>;
 
 /** Turns a database row into the type the app works with. */
 function toRecipe(row: RecipeRow): Recipe {
-  return { ...toFacts(row), ...toContent(row) };
+  return { ...toFacts(row), ...toStyle(row), ...toContent(row) };
 }
 
-/** Copies the plain columns. */
-function toFacts(row: RecipeRow): RecipeFacts {
+/** Copies what names the recipe. */
+function toFacts(row: RecipeRow): Pick<RecipeFacts, 'id' | 'createdAt' | 'title' | 'likes'> {
   return {
     id: row.id,
     createdAt: row.created_at,
     title: row.title,
+    likes: row.likes,
+  };
+}
+
+/** Copies what describes the cooking. */
+function toStyle(row: RecipeRow): Omit<RecipeFacts, 'id' | 'createdAt' | 'title' | 'likes'> {
+  return {
     cuisine: row.cuisine,
     diet: row.diet,
     cookingTime: row.cooking_time,
     cookingMinutes: row.cooking_minutes,
     portions: row.portions,
     helpers: row.helpers,
-    likes: row.likes,
+    language: row.language,
   };
 }
 

@@ -11,6 +11,7 @@ const request: RecipeRequest = {
   cuisine: 'italian',
   diet: 'vegetarian',
   helpers: 2,
+  language: 'en',
 };
 
 describe('GeneratorService', () => {

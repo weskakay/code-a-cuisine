@@ -1,3 +1,5 @@
+import type { Language } from '../data/texts';
+
 /** Unit an ingredient amount is measured in. */
 export type Unit = 'g' | 'ml' | 'piece';
 
@@ -25,6 +27,8 @@ export interface RecipeRequest {
   cuisine: Cuisine;
   diet: Diet;
   helpers: number;
+  /** The language the recipes are written in. */
+  language: Language;
 }
 
 /** One step of the instructions, assigned to a cook. */
@@ -65,6 +69,8 @@ export interface Recipe {
   nutritionPerPortion: Nutrition;
   nutritionTotal: Nutrition;
   likes: number;
+  /** The language this recipe was written in. */
+  language: Language;
 }
 
 /** How many generations are left for this visitor today. */
