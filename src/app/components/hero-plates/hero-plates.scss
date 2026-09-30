@@ -1,35 +1,48 @@
 :host {
-  display: none;
+  /* A narrow band at the right edge. It clips what sticks out, so the plates
+     look cut like in the design without giving the page a scrollbar. */
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: clamp(84px, 28vw, 150px);
+  overflow: hidden;
+  pointer-events: none;
 
-  /* Only from the wide layout on, the phone shows the words alone */
   @media (width >= 1024px) {
-    display: block;
-    position: absolute;
-    top: 0;
     right: var(--cc-space-xl);
-    bottom: 0;
     width: 300px;
-    pointer-events: none;
+    overflow: visible;
   }
 }
 
 .plates {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   height: 100%;
+
+  @media (width >= 1024px) {
+    align-items: center;
+  }
 }
 
 .plates__plate {
-  /* The height keeps them inside the hero on short screens */
-  width: min(100%, 30svh);
+  /* Wider than the band on purpose, the right half stays outside */
+  width: 200px;
   height: auto;
   aspect-ratio: 1;
   object-fit: cover;
   border-radius: 50%;
+  margin-right: -50px;
 
   & + & {
     margin-top: -2svh;
+  }
+
+  @media (width >= 1024px) {
+    width: min(100%, 30svh);
+    margin-right: 0;
   }
 }

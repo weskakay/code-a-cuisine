@@ -11,7 +11,7 @@ The frontend is an Angular app. The recipes come from an automation workflow in 
 validates the request, asks an AI model for three recipes and writes the result to the
 database.
 
-![The start page](docs/home.png)
+![The start page](docs/home.jpg)
 
 ## What it does
 
@@ -28,7 +28,7 @@ attempt back.
 
 | Library | One recipe |
 |---|---|
-| ![The library](docs/cookbook.png) | ![A recipe](docs/recipe.png) |
+| ![The library](docs/cookbook.jpg) | ![A recipe](docs/recipe.jpg) |
 
 ## Tech stack
 

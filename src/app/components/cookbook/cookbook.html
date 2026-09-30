@@ -10,8 +10,30 @@
 
   @if (mostLiked().length > 0) {
     <section class="liked" aria-labelledby="liked-title">
-      <h2 id="liked-title" class="book__subtitle">{{ text().cookbook.mostLiked }}</h2>
-      <ul class="liked__row">
+      <div class="liked__head">
+        <h2 id="liked-title" class="book__subtitle">{{ text().cookbook.mostLiked }}</h2>
+        @if (rowScrolls()) {
+          <div class="liked__arrows">
+            <button
+              type="button"
+              class="liked__arrow"
+              [attr.aria-label]="text().cookbook.scrollLeft"
+              (click)="scrollLiked(-1)"
+            >
+              &larr;
+            </button>
+            <button
+              type="button"
+              class="liked__arrow"
+              [attr.aria-label]="text().cookbook.scrollRight"
+              (click)="scrollLiked(1)"
+            >
+              &rarr;
+            </button>
+          </div>
+        }
+      </div>
+      <ul class="liked__row" #likedRow>
         @for (dish of mostLiked(); track dish.id) {
           <li>
             <a class="liked__card" [routerLink]="['/recipe', dish.id]">

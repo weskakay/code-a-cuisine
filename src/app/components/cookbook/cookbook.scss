@@ -51,11 +51,53 @@
 }
 
 /* The hearts row. It scrolls sideways when the cards do not fit */
+/* Heading and arrows in one line, the cards below with room to breathe */
+.liked {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-2xs);
+}
+
+.liked__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cc-space-xs);
+
+  .book__subtitle {
+    margin-bottom: 0;
+  }
+}
+
+.liked__arrows {
+  display: flex;
+  gap: var(--cc-space-3xs);
+}
+
+.liked__arrow {
+  min-width: var(--cc-tap-target);
+  min-height: var(--cc-tap-target);
+  border-radius: var(--cc-radius-pill);
+  background: var(--cc-olive-faint);
+  color: var(--cc-green-mid);
+  font-size: var(--cc-fs-xs);
+  transition: background var(--cc-transition);
+
+  &:hover {
+    background: var(--cc-olive-soft);
+  }
+}
+
 .liked__row {
   display: flex;
   gap: var(--cc-space-2xs);
   overflow-x: auto;
-  padding-bottom: var(--cc-space-3xs);
+  scroll-snap-type: x proximity;
+  padding-bottom: var(--cc-space-2xs);
+
+  > li {
+    scroll-snap-align: start;
+  }
 }
 
 .liked__card {

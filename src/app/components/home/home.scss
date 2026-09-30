@@ -32,6 +32,8 @@
   gap: var(--cc-space-lg);
 
   /* Leaves the right column to the plates */
+  max-width: calc(100% - 96px);
+
   @media (width >= 1024px) {
     max-width: calc(100% - 340px);
   }
@@ -67,6 +69,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: var(--cc-space-xs);
+  max-width: calc(100% - 96px);
 
   @media (width >= 1024px) {
     max-width: calc(100% - 340px);

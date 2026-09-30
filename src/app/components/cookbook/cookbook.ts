@@ -1,4 +1,13 @@
-import { Component, inject, type OnInit, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  effect,
+  ElementRef,
+  inject,
+  type OnInit,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CUISINES, RECIPES_PER_PAGE } from '../../data/options';
 import type { Cuisine, Recipe } from '../../interfaces/recipe.interface';
@@ -32,9 +41,42 @@ export class Cookbook implements OnInit {
   readonly loading = signal(false);
   readonly failed = signal(false);
 
+  /** True while the row of the most liked recipes is wider than its box. */
+  readonly rowScrolls = signal(false);
+
+  private readonly likedRow = viewChild<ElementRef<HTMLElement>>('likedRow');
+
+  constructor() {
+    effect(() => this.watchRow(this.mostLiked()));
+    const onResize = () => this.measureRow();
+    window.addEventListener('resize', onResize);
+    inject(DestroyRef).onDestroy(() => window.removeEventListener('resize', onResize));
+  }
+
   ngOnInit(): void {
     void this.load();
     void this.loadMostLiked();
+  }
+
+  /** Moves the row of the most liked recipes by about one card. */
+  scrollLiked(direction: -1 | 1): void {
+    const row = this.likedRow()?.nativeElement;
+    row?.scrollBy({ left: direction * 280, behavior: 'smooth' });
+  }
+
+  /** Waits for the row to be drawn, then looks whether it can scroll. */
+  private watchRow(liked: Recipe[]): void {
+    if (liked.length === 0) {
+      this.rowScrolls.set(false);
+      return;
+    }
+    setTimeout(() => this.measureRow());
+  }
+
+  /** Arrows only make sense when there is something left to see. */
+  private measureRow(): void {
+    const row = this.likedRow()?.nativeElement;
+    this.rowScrolls.set(!!row && row.scrollWidth > row.clientWidth + 8);
   }
 
   /** Shows one cooking style, or all of them again. */

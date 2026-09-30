@@ -101,6 +101,7 @@
         [class.heart--on]="liked()"
         [attr.aria-pressed]="liked()"
         [attr.aria-label]="liked() ? text().recipe.likeOn : text().recipe.likeOff"
+        [disabled]="likeBusy()"
         (click)="toggleLike()"
       >
         <app-icon name="heart" [filled]="liked()" />

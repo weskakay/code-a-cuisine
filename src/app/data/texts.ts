@@ -139,6 +139,8 @@ export const EN = {
     page: 'Page',
     heart: 'heart',
     hearts: 'hearts',
+    scrollLeft: 'Show the recipes before',
+    scrollRight: 'Show more recipes',
   },
   imprint: {
     providerTitle: 'Provider',
@@ -149,6 +151,9 @@ export const EN = {
       'The recipes on this site are written by a language model. Amounts, cooking times and nutritional values are estimates, not advice. Check them before you cook, especially if you have allergies or an illness that asks for a certain diet.',
     linksText:
       'This site links to pages of other providers. Their content is their own responsibility.',
+    heartsTitle: 'The hearts',
+    heartsText:
+      'A heart can be given without an account, so the number says what people liked, not how many people there were. Take it as a hint, not as a measurement.',
   },
 };
 
@@ -289,6 +294,8 @@ export const DE: Texts = {
     page: 'Seite',
     heart: 'Herz',
     hearts: 'Herzen',
+    scrollLeft: 'Die Rezepte davor zeigen',
+    scrollRight: 'Weitere Rezepte zeigen',
   },
   imprint: {
     providerTitle: 'Anbieter',
@@ -299,5 +306,8 @@ export const DE: Texts = {
       'Die Rezepte auf dieser Seite schreibt ein Sprachmodell. Mengen, Garzeiten und Nährwerte sind Schätzungen, keine Beratung. Prüfe sie vor dem Kochen, besonders bei Allergien oder einer Krankheit, die eine bestimmte Ernährung verlangt.',
     linksText:
       'Diese Seite verlinkt auf Angebote anderer. Für deren Inhalte sind sie selbst verantwortlich.',
+    heartsTitle: 'Die Herzen',
+    heartsText:
+      'Ein Herz lässt sich ohne Konto vergeben. Die Zahl sagt also, was gefallen hat, nicht wie viele Menschen es waren. Nimm sie als Hinweis, nicht als Messwert.',
   },
 };

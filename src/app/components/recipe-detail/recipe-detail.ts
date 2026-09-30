@@ -33,6 +33,7 @@ export class RecipeDetail {
   readonly likeCount = signal(0);
   readonly liked = signal(false);
   readonly likeFailed = signal(false);
+  readonly likeBusy = signal(false);
 
   /** Recipes of this session came from the results, the others from the library. */
   readonly backLink = computed(() => (this.store.find(this.id()) ? '/results' : '/cookbook'));
@@ -63,8 +64,17 @@ export class RecipeDetail {
 
   /** Gives this recipe a heart, or takes the heart back. */
   async toggleLike(): Promise<void> {
-    const id = this.id();
+    if (this.likeBusy()) {
+      return;
+    }
+    this.likeBusy.set(true);
     this.likeFailed.set(false);
+    await this.sendLike(this.id());
+    this.likeBusy.set(false);
+  }
+
+  /** Moves the heart in the database and shows what came back. */
+  private async sendLike(id: string): Promise<void> {
     try {
       this.likeCount.set(await this.likes.toggle(id));
       this.liked.set(this.likes.has(id));
