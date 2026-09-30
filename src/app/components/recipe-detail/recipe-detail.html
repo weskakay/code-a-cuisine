@@ -5,39 +5,40 @@
     <header class="dish__head">
       <p class="dish__time">
         <app-icon name="clock" />
-        Cooking time: {{ dish.cookingMinutes }} min
+        {{ text().recipe.cookingTime }}: {{ dish.cookingMinutes }} {{ text().recipe.minutes }}
       </p>
       <h1 class="dish__title">{{ dish.title }}</h1>
       <p class="dish__meta">
-        {{ dish.portions }} portions · {{ dish.helpers }} cooks · {{ dish.cuisine }}
+        {{ dish.portions }} {{ text().recipe.portions }} · {{ dish.helpers }}
+        {{ text().recipe.cooks }} · {{ text().cuisines[dish.cuisine] }}
       </p>
     </header>
 
     <section class="panel" aria-labelledby="nutrition-title">
-      <h2 id="nutrition-title" class="panel__title">Nutritional information</h2>
+      <h2 id="nutrition-title" class="panel__title">{{ text().recipe.nutrition }}</h2>
       <app-nutrition-chart [perPortion]="dish.nutritionPerPortion" [total]="dish.nutritionTotal" />
     </section>
 
     <section class="panel" aria-labelledby="ingredients-title">
       <h2 id="ingredients-title" class="panel__title panel__title--band">
         <img class="panel__art" src="images/art-bowl.png" alt="" width="269" height="151" />
-        <span>Ingredients</span>
+        <span>{{ text().recipe.ingredients }}</span>
         <img class="panel__art" src="images/art-oil.png" alt="" width="252" height="237" />
       </h2>
       <div class="columns">
         <div>
-          <h3 class="panel__subtitle">Your ingredients</h3>
+          <h3 class="panel__subtitle">{{ text().recipe.yours }}</h3>
           <ul>
             @for (item of dish.yourIngredients; track item.name) {
-              <li>{{ item.amount }} {{ item.unit }} {{ item.name }}</li>
+              <li>{{ item.amount }} {{ text().unitsShort[item.unit] }} {{ item.name }}</li>
             }
           </ul>
         </div>
         <div>
-          <h3 class="panel__subtitle">Extra ingredients</h3>
+          <h3 class="panel__subtitle">{{ text().recipe.extras }}</h3>
           <ul>
             @for (item of dish.extraIngredients; track item.name) {
-              <li>{{ item.amount }} {{ item.unit }} {{ item.name }}</li>
+              <li>{{ item.amount }} {{ text().unitsShort[item.unit] }} {{ item.name }}</li>
             }
           </ul>
         </div>
@@ -47,7 +48,7 @@
     <section class="panel" aria-labelledby="directions-title">
       <h2 id="directions-title" class="panel__title panel__title--band">
         <img class="panel__art" src="images/art-basil.png" alt="" width="222" height="151" />
-        <span>Directions</span>
+        <span>{{ text().recipe.directions }}</span>
         <img class="panel__art" src="images/art-rice.png" alt="" width="300" height="179" />
       </h2>
       <div class="columns">
@@ -60,7 +61,7 @@
               [class.cook--3]="cook === 3"
             >
               <app-icon [name]="iconFor(cook)" />
-              Cook {{ cook }}
+              {{ text().recipe.cook }} {{ cook }}
             </h3>
             <ol class="steps">
               @for (step of stepsOf(cook); track step.position) {
@@ -70,12 +71,12 @@
                     <h4 class="step__title">{{ step.title }}</h4>
                     <p>{{ step.text }}</p>
                     <p class="step__times">
-                      {{ step.durationMinutes }} min
+                      {{ step.durationMinutes }} {{ text().recipe.minutes }}
                       @if (step.waitMinutes > 0) {
-                        · {{ step.waitMinutes }} min waiting
+                        · {{ step.waitMinutes }} {{ text().recipe.waiting }}
                       }
                       @if (step.parallel) {
-                        · runs in parallel
+                        · {{ text().recipe.parallel }}
                       }
                     </p>
                   </div>
@@ -89,15 +90,15 @@
 
     <section class="cheer">
       <p class="cheer__text">
-        <strong>Just finished this meal?</strong>
-        Give it a heart, so the others know it is delicious.
+        <strong>{{ text().recipe.cheerStrong }}</strong>
+        {{ text().recipe.cheerText }}
       </p>
       <button
         type="button"
         class="heart"
         [class.heart--on]="liked()"
         [attr.aria-pressed]="liked()"
-        [attr.aria-label]="liked() ? 'Take back your heart' : 'Give this recipe a heart'"
+        [attr.aria-label]="liked() ? text().recipe.likeOn : text().recipe.likeOff"
         (click)="toggleLike()"
       >
         <app-icon name="heart" [filled]="liked()" />
@@ -106,25 +107,25 @@
     </section>
 
     @if (likeFailed()) {
-      <p class="cheer__note" role="alert">The heart could not be saved. Please try again.</p>
+      <p class="cheer__note" role="alert">{{ text().recipe.likeFailed }}</p>
     }
 
     <section class="invite">
-      <p class="invite__text">Find inspiration for your next culinary adventure.</p>
-      <a class="invite__link" routerLink="/cookbook">Cookbook</a>
+      <p class="invite__text">{{ text().recipe.invite }}</p>
+      <a class="invite__link" routerLink="/cookbook">{{ text().recipe.inviteLink }}</a>
     </section>
 
     <a class="dish__back" [routerLink]="backLink()">{{ backLabel() }}</a>
   </main>
 } @else if (loading()) {
   <main class="dish">
-    <p>Loading the recipe …</p>
+    <p>{{ text().recipe.loading }}</p>
   </main>
 } @else {
   <main class="dish">
     <p>
-      This recipe does not exist.
-      <a routerLink="/cookbook">Back to the cookbook</a>
+      {{ text().recipe.notFound }}
+      <a routerLink="/cookbook">{{ text().recipe.backCookbook }}</a>
     </p>
   </main>
 }

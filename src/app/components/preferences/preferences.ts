@@ -2,6 +2,7 @@ import { Component, effect, ElementRef, inject, signal, viewChild } from '@angul
 import { Router } from '@angular/router';
 import { COOKING_TIMES, CUISINES, DIETS, HELPERS, PORTIONS } from '../../data/options';
 import { GeneratorError, GeneratorService } from '../../services/generator.service';
+import { LanguageService } from '../../services/language.service';
 import { RecipeDraftService } from '../../services/recipe-draft.service';
 import { RecipeStoreService } from '../../services/recipe-store.service';
 import { LoadingOverlay } from '../loading-overlay/loading-overlay';
@@ -20,7 +21,9 @@ export class Preferences {
   private readonly generator = inject(GeneratorService);
   private readonly store = inject(RecipeStoreService);
   private readonly router = inject(Router);
+  private readonly languages = inject(LanguageService);
 
+  readonly text = this.languages.t;
   readonly times = COOKING_TIMES;
   readonly cuisines = CUISINES;
   readonly diets = DIETS;
@@ -91,7 +94,7 @@ export class Preferences {
       this.blocked.set(true);
       return;
     }
-    this.error.set(failure.message);
+    this.error.set(this.text().preferences.failed);
   }
 }
 

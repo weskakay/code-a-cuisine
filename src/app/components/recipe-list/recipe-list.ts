@@ -1,6 +1,7 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import type { Recipe } from '../../interfaces/recipe.interface';
+import { LanguageService } from '../../services/language.service';
 import { Icon } from '../icon/icon';
 
 /** Shows the recipes of the library, newest first. */
@@ -11,6 +12,8 @@ import { Icon } from '../icon/icon';
   styleUrl: './recipe-list.scss',
 })
 export class RecipeList {
+  readonly text = inject(LanguageService).t;
+
   /** The page of recipes the cookbook handed over. */
   readonly recipes = input.required<Recipe[]>();
 

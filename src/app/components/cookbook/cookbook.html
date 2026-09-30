@@ -2,22 +2,22 @@
 
 <main class="book">
   <header class="book__intro">
-    <h1 class="book__title">Cookbook</h1>
+    <h1 class="book__title">{{ text().titles.cookbook }}</h1>
     <p class="book__lead">
-      From quick bites to gourmet delights, browse every recipe this kitchen has come up with.
+      {{ text().cookbook.lead }}
     </p>
   </header>
 
   @if (mostLiked().length > 0) {
     <section class="liked" aria-labelledby="liked-title">
-      <h2 id="liked-title" class="book__subtitle">Most liked recipes</h2>
+      <h2 id="liked-title" class="book__subtitle">{{ text().cookbook.mostLiked }}</h2>
       <ul class="liked__row">
         @for (dish of mostLiked(); track dish.id) {
           <li>
             <a class="liked__card" [routerLink]="['/recipe', dish.id]">
               <span class="liked__time">
                 <app-icon name="clock" />
-                Cooking time: {{ dish.cookingMinutes }} min
+                {{ text().recipe.cookingTime }}: {{ dish.cookingMinutes }} {{ text().recipe.minutes }}
               </span>
               <span class="liked__title">{{ dish.title }}</span>
               <span class="liked__hearts">
@@ -32,21 +32,21 @@
   }
 
   <section class="styles" aria-labelledby="styles-title">
-    <h2 id="styles-title" class="book__subtitle">Cuisine categories</h2>
+    <h2 id="styles-title" class="book__subtitle">{{ text().cookbook.categories }}</h2>
     <div class="styles__tiles">
-      @for (style of cuisines; track style.value) {
+      @for (style of cuisines; track style) {
         <button
           type="button"
           class="tile"
-          [class.tile--active]="cuisine() === style.value"
-          [attr.aria-pressed]="cuisine() === style.value"
-          (click)="filterBy(style.value)"
+          [class.tile--active]="cuisine() === style"
+          [attr.aria-pressed]="cuisine() === style"
+          (click)="filterBy(style)"
         >
-          <span class="tile__name">{{ style.label }} cuisine</span>
+          <span class="tile__name">{{ text().cuisineTitles[style] }}</span>
           <span class="tile__frame">
             <img
               class="tile__image"
-              [src]="'images/cuisine-' + style.value + '.jpg'"
+              [src]="'images/cuisine-' + style + '.jpg'"
               alt=""
               width="600"
               height="600"
@@ -60,25 +60,25 @@
 
   <section class="book__list" aria-labelledby="list-title">
     <h2 id="list-title" class="book__subtitle">
-      {{ total() }} recipes
+      {{ total() }} {{ text().cookbook.recipes }}
       @if (cuisine()) {
-        in this cuisine
+        {{ text().cookbook.inThisCuisine }}
       }
     </h2>
 
     @if (loading()) {
-      <p class="book__note">Loading the library …</p>
+      <p class="book__note">{{ text().cookbook.loading }}</p>
     } @else if (failed()) {
-      <p class="book__note" role="alert">The library could not be loaded. Please try again.</p>
+      <p class="book__note" role="alert">{{ text().cookbook.failed }}</p>
     } @else if (recipes().length === 0) {
-      <p class="book__note">No recipes here yet. Generate the first one.</p>
+      <p class="book__note">{{ text().cookbook.empty }}</p>
     } @else {
       <app-recipe-list [recipes]="recipes()" [offset]="(page() - 1) * perPage" />
     }
   </section>
 
   @if (pages().length > 1) {
-    <nav class="pages" aria-label="Pages of the library">
+    <nav class="pages" [attr.aria-label]="text().cookbook.page">
       @for (number of pages(); track number) {
         <button
           type="button"

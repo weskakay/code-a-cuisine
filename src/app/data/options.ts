@@ -1,12 +1,5 @@
 import type { CookingTime, Cuisine, Diet, Unit } from '../interfaces/recipe.interface';
 
-/** An option as it is offered in the form. */
-export interface Option<T> {
-  value: T;
-  label: string;
-  hint?: string;
-}
-
 /** Portions the user can ask for. */
 export const PORTIONS = { min: 1, max: 12, default: 2 };
 
@@ -22,34 +15,14 @@ export const RECIPES_PER_PAGE = 20;
 /** Recipes in the row of the most liked ones. */
 export const MOST_LIKED_COUNT = 5;
 
-/** Units an amount can be given in. */
-export const UNITS: Option<Unit>[] = [
-  { value: 'g', label: 'gram' },
-  { value: 'ml', label: 'ml' },
-  { value: 'piece', label: 'piece' },
-];
+/** Units an amount can be given in, in the order of the form. */
+export const UNITS: Unit[] = ['g', 'ml', 'piece'];
 
-/** Time frames, the hint is what the user reads under the label. */
-export const COOKING_TIMES: Option<CookingTime>[] = [
-  { value: 'quick', label: 'Quick', hint: 'up to 20 min' },
-  { value: 'medium', label: 'Medium', hint: '20 to 45 min' },
-  { value: 'complex', label: 'Complex', hint: 'over 45 min' },
-];
+/** Time frames the visitor can pick. */
+export const COOKING_TIMES: CookingTime[] = ['quick', 'medium', 'complex'];
 
 /** Cooking styles, in the order of the design. */
-export const CUISINES: Option<Cuisine>[] = [
-  { value: 'german', label: 'German' },
-  { value: 'italian', label: 'Italian' },
-  { value: 'indian', label: 'Indian' },
-  { value: 'japanese', label: 'Japanese' },
-  { value: 'gourmet', label: 'Gourmet' },
-  { value: 'fusion', label: 'Fusion' },
-];
+export const CUISINES: Cuisine[] = ['german', 'italian', 'indian', 'japanese', 'gourmet', 'fusion'];
 
 /** Diets the recipes have to respect. */
-export const DIETS: Option<Diet>[] = [
-  { value: 'vegetarian', label: 'Vegetarian' },
-  { value: 'vegan', label: 'Vegan' },
-  { value: 'keto', label: 'Keto' },
-  { value: 'none', label: 'No preferences' },
-];
+export const DIETS: Diet[] = ['vegetarian', 'vegan', 'keto', 'none'];

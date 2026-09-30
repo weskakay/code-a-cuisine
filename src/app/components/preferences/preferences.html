@@ -1,30 +1,30 @@
 <app-menu-bar />
 
 <main class="prefs">
-  <h1 class="prefs__title">Choose your preferences</h1>
+  <h1 class="prefs__title">{{ text().titles.preferences }}</h1>
 
   <div class="counters">
     <section class="counter">
-      <h2 class="counter__label">How many portions do you need?</h2>
+      <h2 class="counter__label">{{ text().preferences.portionsQuestion }}</h2>
       <div class="counter__row">
-        <button type="button" aria-label="One portion less" (click)="changePortions(-1)">
+        <button type="button" [attr.aria-label]="text().preferences.portionLess" (click)="changePortions(-1)">
           &minus;
         </button>
         <output class="counter__value">{{ portions() }}</output>
-        <span class="counter__unit">Portions</span>
-        <button type="button" aria-label="One portion more" (click)="changePortions(1)">+</button>
+        <span class="counter__unit">{{ text().preferences.portions }}</span>
+        <button type="button" [attr.aria-label]="text().preferences.portionMore" (click)="changePortions(1)">+</button>
       </div>
     </section>
 
     <section class="counter">
-      <h2 class="counter__label">How many are cooking?</h2>
+      <h2 class="counter__label">{{ text().preferences.cooksQuestion }}</h2>
       <div class="counter__row">
-        <button type="button" aria-label="One cook less" (click)="changeHelpers(-1)">
+        <button type="button" [attr.aria-label]="text().preferences.cookLess" (click)="changeHelpers(-1)">
           &minus;
         </button>
         <output class="counter__value">{{ helpers() }}</output>
-        <span class="counter__unit">Cooks</span>
-        <button type="button" aria-label="One cook more" (click)="changeHelpers(1)">+</button>
+        <span class="counter__unit">{{ text().preferences.cooks }}</span>
+        <button type="button" [attr.aria-label]="text().preferences.cookMore" (click)="changeHelpers(1)">+</button>
       </div>
     </section>
   </div>
@@ -42,21 +42,21 @@
             stroke-linecap="round"
           />
         </svg>
-        Cooking time
+        {{ text().preferences.time }}
       </h2>
       <div class="group__tags">
-        @for (time of times; track time.value) {
+        @for (time of times; track time) {
           <div class="timing">
             <button
               type="button"
               class="tag"
-              [class.tag--active]="cookingTime() === time.value"
-              [attr.aria-pressed]="cookingTime() === time.value"
-              (click)="cookingTime.set(time.value)"
+              [class.tag--active]="cookingTime() === time"
+              [attr.aria-pressed]="cookingTime() === time"
+              (click)="cookingTime.set(time)"
             >
-              {{ time.label }}
+              {{ text().times[time] }}
             </button>
-            <small class="timing__hint">{{ time.hint }}</small>
+            <small class="timing__hint">{{ text().timeHints[time] }}</small>
           </div>
         }
       </div>
@@ -73,18 +73,18 @@
             stroke-width="2"
           />
         </svg>
-        Cuisine
+        {{ text().preferences.cuisine }}
       </h2>
       <div class="group__tags">
-        @for (style of cuisines; track style.value) {
+        @for (style of cuisines; track style) {
           <button
             type="button"
             class="tag"
-            [class.tag--active]="cuisine() === style.value"
-            [attr.aria-pressed]="cuisine() === style.value"
-            (click)="cuisine.set(style.value)"
+            [class.tag--active]="cuisine() === style"
+            [attr.aria-pressed]="cuisine() === style"
+            (click)="cuisine.set(style)"
           >
-            {{ style.label }}
+            {{ text().cuisines[style] }}
           </button>
         }
       </div>
@@ -108,18 +108,18 @@
             stroke-linecap="round"
           />
         </svg>
-        Diet preferences
+        {{ text().preferences.diet }}
       </h2>
       <div class="group__tags">
-        @for (option of diets; track option.value) {
+        @for (option of diets; track option) {
           <button
             type="button"
             class="tag"
-            [class.tag--active]="diet() === option.value"
-            [attr.aria-pressed]="diet() === option.value"
-            (click)="diet.set(option.value)"
+            [class.tag--active]="diet() === option"
+            [attr.aria-pressed]="diet() === option"
+            (click)="diet.set(option)"
           >
-            {{ option.label }}
+            {{ text().diets[option] }}
           </button>
         }
       </div>
@@ -127,23 +127,22 @@
   </div>
 
   <button class="prefs__submit" type="button" [disabled]="busy()" (click)="generate()">
-    {{ busy() ? 'Generating …' : 'Generate a recipe' }}
+    {{ busy() ? text().preferences.busy : text().preferences.submit }}
   </button>
 
   <p class="prefs__error" role="alert">{{ error() }}</p>
 </main>
 
 @if (busy()) {
-  <app-loading-overlay label="Generating your recipes" />
+  <app-loading-overlay [label]="text().preferences.loading" />
 }
 
 <dialog #quotaDialog class="quota" aria-labelledby="quota-title" (close)="dismiss()">
-  <h2 id="quota-title" class="quota__title">Ups!</h2>
+  <h2 id="quota-title" class="quota__title">{{ text().preferences.quotaTitle }}</h2>
   <p class="quota__text">
-    You have used all three recipes for today. The kitchen opens again tomorrow, so come back and
-    bring your ingredients with you.
+    {{ text().preferences.quotaText }}
   </p>
-  <button class="quota__close" type="button" (click)="dismiss()">Alright</button>
+  <button class="quota__close" type="button" (click)="dismiss()">{{ text().preferences.quotaClose }}</button>
 </dialog>
 
 <app-site-footer />

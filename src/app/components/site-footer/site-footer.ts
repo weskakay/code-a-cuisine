@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { LanguageService } from '../../services/language.service';
 
 /** Sits at the bottom of every page and holds the legal link. */
 @Component({
@@ -9,5 +10,6 @@ import { RouterLink } from '@angular/router';
   styleUrl: './site-footer.scss',
 })
 export class SiteFooter {
+  readonly text = inject(LanguageService).t;
   readonly year = new Date().getFullYear();
 }

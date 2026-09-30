@@ -5,12 +5,15 @@
         <span class="list__number" aria-hidden="true">{{ $index + 1 + offset() }}.</span>
         <h3 class="list__title">{{ recipe.title }}</h3>
         <p class="list__facts">
-          Cooking time: {{ recipe.cookingMinutes }} min · {{ recipe.cuisine }} · {{ recipe.diet }}
+          {{ text().recipe.cookingTime }}: {{ recipe.cookingMinutes }} {{ text().recipe.minutes }} ·
+          {{ text().cuisines[recipe.cuisine] }} · {{ text().diets[recipe.diet] }}
         </p>
         @if (recipe.likes > 0) {
           <span
             class="list__hearts"
-            [attr.aria-label]="recipe.likes === 1 ? '1 heart' : recipe.likes + ' hearts'"
+            [attr.aria-label]="
+              recipe.likes + ' ' + (recipe.likes === 1 ? text().cookbook.heart : text().cookbook.hearts)
+            "
           >
             <app-icon name="heart" [filled]="true" />
             {{ recipe.likes }}

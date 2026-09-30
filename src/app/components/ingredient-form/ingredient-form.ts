@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { COMMON_INGREDIENTS } from '../../data/ingredients';
 import { UNITS } from '../../data/options';
 import type { IngredientInput, Unit } from '../../interfaces/recipe.interface';
+import { LanguageService } from '../../services/language.service';
 import { RecipeDraftService } from '../../services/recipe-draft.service';
 
 /** How many suggestions the field offers at most. */
@@ -19,8 +20,10 @@ const MAX_SUGGESTIONS = 5;
 export class IngredientForm {
   private readonly draft = inject(RecipeDraftService);
   private readonly builder = inject(FormBuilder);
+  private readonly languages = inject(LanguageService);
 
   readonly units = UNITS;
+  readonly text = this.languages.t;
   readonly error = signal('');
   readonly editing = this.draft.editing;
 
@@ -49,7 +52,7 @@ export class IngredientForm {
   /** Puts the ingredient on the list, or writes back the one being changed. */
   add(): void {
     if (this.form.invalid) {
-      this.error.set('Enter a name and an amount above zero.');
+      this.error.set(this.text().generate.error);
       return;
     }
     const place = this.editing();

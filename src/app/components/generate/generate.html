@@ -2,26 +2,26 @@
 
 <main class="step">
   <header class="step__intro">
-    <h1 class="step__title">Generate recipe</h1>
+    <h1 class="step__title">{{ text().titles.generate }}</h1>
     <p class="step__lead">
-      Got random stuff in your kitchen? Pop it in, we have got the perfect recipe waiting.
+      {{ text().generate.lead }}
     </p>
   </header>
 
   <div class="step__columns">
     <section class="card" aria-labelledby="ingredient-form-title">
-      <h2 id="ingredient-form-title" class="card__title">Add an ingredient</h2>
+      <h2 id="ingredient-form-title" class="card__title">{{ text().generate.addCard }}</h2>
       <app-ingredient-form />
     </section>
 
     <section class="card card--list" aria-labelledby="ingredient-list-title">
-      <h2 id="ingredient-list-title" class="card__title">List of your ingredients</h2>
+      <h2 id="ingredient-list-title" class="card__title">{{ text().generate.listCard }}</h2>
       <app-ingredient-list />
     </section>
   </div>
 
   @if (ready()) {
-    <a class="step__next" routerLink="/preferences">Next step</a>
+    <a class="step__next" routerLink="/preferences">{{ text().generate.next }}</a>
   }
 </main>
 

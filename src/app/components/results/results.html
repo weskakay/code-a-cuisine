@@ -2,10 +2,9 @@
 
 <main class="results">
   <header class="results__intro">
-    <h1 class="results__title">The recipe results</h1>
+    <h1 class="results__title">{{ text().titles.results }}</h1>
     <p class="results__lead">
-      We took what you have and let our kitchen do the thinking. Here are three recipes you can make
-      right now.
+      {{ text().results.lead }}
     </p>
     <ul class="chosen">
       @for (label of chosen(); track label) {
@@ -14,14 +13,17 @@
     </ul>
 
     @if (quota(); as left) {
-      <p class="results__quota">{{ left.remaining }} of {{ left.limit }} recipes left today</p>
+      <p class="results__quota">
+        {{ left.remaining }} {{ text().results.quotaJoin }} {{ left.limit }}
+        {{ text().results.quota }}
+      </p>
     }
   </header>
 
   @if (recipes().length === 0) {
     <p class="results__empty">
-      Nothing generated yet.
-      <a routerLink="/generate">Start with your ingredients</a>
+      {{ text().results.empty }}
+      <a routerLink="/generate">{{ text().results.emptyLink }}</a>
     </p>
   } @else {
     <ul class="cards">
@@ -30,19 +32,20 @@
           <h2 class="card__title">{{ recipe.title }}</h2>
           <p class="card__time">
             <app-icon name="clock" />
-            Cooking time: {{ recipe.cookingMinutes }} min
+            {{ text().recipe.cookingTime }}: {{ recipe.cookingMinutes }} {{ text().recipe.minutes }}
           </p>
           <p class="card__extras">
-            {{ recipe.extraIngredients.length }} extra ingredients · {{ recipe.steps.length }} steps
+            {{ recipe.extraIngredients.length }} {{ text().results.extras }} ·
+            {{ recipe.steps.length }} {{ text().results.steps }}
           </p>
-          <a class="card__view" [routerLink]="['/recipe', recipe.id]">View</a>
+          <a class="card__view" [routerLink]="['/recipe', recipe.id]">{{ text().results.view }}</a>
         </li>
       }
     </ul>
   }
 
   <a class="results__again" routerLink="/generate">
-    Generate new recipes
+    {{ text().results.again }}
     <span aria-hidden="true">&rarr;</span>
   </a>
 </main>

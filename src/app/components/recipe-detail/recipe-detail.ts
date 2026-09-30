@@ -1,6 +1,7 @@
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import type { Recipe } from '../../interfaces/recipe.interface';
+import { LanguageService } from '../../services/language.service';
 import { LikesService } from '../../services/likes.service';
 import { RecipeService } from '../../services/recipe.service';
 import { RecipeStoreService } from '../../services/recipe-store.service';
@@ -20,6 +21,9 @@ export class RecipeDetail {
   private readonly store = inject(RecipeStoreService);
   private readonly recipeService = inject(RecipeService);
   private readonly likes = inject(LikesService);
+  private readonly languages = inject(LanguageService);
+
+  readonly text = this.languages.t;
 
   /** Comes from the route, for example /recipe/8f2c… */
   readonly id = input.required<string>();
@@ -34,7 +38,7 @@ export class RecipeDetail {
   readonly backLink = computed(() => (this.store.find(this.id()) ? '/results' : '/cookbook'));
 
   readonly backLabel = computed(() =>
-    this.backLink() === '/results' ? 'Back to the results' : 'Back to the cookbook',
+    this.backLink() === '/results' ? this.text().recipe.backResults : this.text().recipe.backCookbook,
   );
 
   /** The cooks that have at least one step, so the page can list them. */

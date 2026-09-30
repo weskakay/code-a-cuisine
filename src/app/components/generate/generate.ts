@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { LanguageService } from '../../services/language.service';
 import { RecipeDraftService } from '../../services/recipe-draft.service';
 import { IngredientForm } from '../ingredient-form/ingredient-form';
 import { IngredientList } from '../ingredient-list/ingredient-list';
@@ -15,6 +16,8 @@ import { SiteFooter } from '../site-footer/site-footer';
 })
 export class Generate {
   private readonly draft = inject(RecipeDraftService);
+
+  readonly text = inject(LanguageService).t;
 
   /** True once at least one ingredient is on the list. */
   readonly ready = this.draft.ready;

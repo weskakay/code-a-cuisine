@@ -1,5 +1,6 @@
-import { Component, computed, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import type { Nutrition } from '../../interfaces/recipe.interface';
+import { LanguageService } from '../../services/language.service';
 
 /** Radius of the ring, shared by the maths here and the viewBox in the template. */
 const RADIUS = 70;
@@ -13,6 +14,13 @@ interface Macro {
   label: string;
   grams: number;
   token: string;
+}
+
+/** The three macro names, read from the texts so they follow the language. */
+interface MacroLabels {
+  protein: string;
+  carbs: string;
+  fat: string;
 }
 
 /** One slice of the ring, ready to draw. */
@@ -32,6 +40,9 @@ export interface MacroSlice extends Macro {
   styleUrl: './nutrition-chart.scss',
 })
 export class NutritionChart {
+  private readonly languages = inject(LanguageService);
+
+  readonly text = this.languages.t;
   readonly perPortion = input.required<Nutrition>();
   readonly total = input.required<Nutrition>();
 
@@ -40,7 +51,7 @@ export class NutritionChart {
 
   readonly current = computed(() => (this.mode() === 'portion' ? this.perPortion() : this.total()));
 
-  readonly slices = computed(() => buildSlices(this.current()));
+  readonly slices = computed(() => buildSlices(this.current(), this.text().recipe));
 
   /** Switches between one portion and the whole dish. */
   show(mode: NutritionMode): void {
@@ -49,11 +60,11 @@ export class NutritionChart {
 }
 
 /** The three macros in the order they appear in the ring. */
-function macrosOf(values: Nutrition): Macro[] {
+function macrosOf(values: Nutrition, labels: MacroLabels): Macro[] {
   return [
-    { label: 'Protein', grams: values.proteinG, token: 'protein' },
-    { label: 'Carbs', grams: values.carbsG, token: 'carbs' },
-    { label: 'Fat', grams: values.fatG, token: 'fat' },
+    { label: labels.protein, grams: values.proteinG, token: 'protein' },
+    { label: labels.carbs, grams: values.carbsG, token: 'carbs' },
+    { label: labels.fat, grams: values.fatG, token: 'fat' },
   ];
 }
 
@@ -61,8 +72,8 @@ function macrosOf(values: Nutrition): Macro[] {
  * Turns the macros into ring slices. The share is measured against the summed
  * grams, not against the calories, so the legend and the ring tell the same story.
  */
-function buildSlices(values: Nutrition): MacroSlice[] {
-  const macros = macrosOf(values);
+function buildSlices(values: Nutrition, labels: MacroLabels): MacroSlice[] {
+  const macros = macrosOf(values, labels);
   const sum = macros.reduce((all, macro) => all + macro.grams, 0);
   let used = 0;
   return macros.map((macro) => {

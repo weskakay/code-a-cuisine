@@ -1,8 +1,8 @@
 <section class="chart" aria-labelledby="chart-title">
   <div class="chart__head">
-    <h3 id="chart-title" class="chart__title">Energy and macros</h3>
+    <h3 id="chart-title" class="chart__title">{{ text().recipe.energy }}</h3>
 
-    <div class="chart__switch" role="group" aria-label="Show the values for">
+    <div class="chart__switch" role="group" [attr.aria-label]="text().recipe.switchLabel">
       <button
         type="button"
         class="chart__tab"
@@ -10,7 +10,7 @@
         [attr.aria-pressed]="mode() === 'portion'"
         (click)="show('portion')"
       >
-        Per portion
+        {{ text().recipe.perPortion }}
       </button>
       <button
         type="button"
@@ -19,7 +19,7 @@
         [attr.aria-pressed]="mode() === 'total'"
         (click)="show('total')"
       >
-        Whole dish
+        {{ text().recipe.wholeDish }}
       </button>
     </div>
   </div>

@@ -2,6 +2,7 @@ import { Component, inject, type OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CUISINES, RECIPES_PER_PAGE } from '../../data/options';
 import type { Cuisine, Recipe } from '../../interfaces/recipe.interface';
+import { LanguageService } from '../../services/language.service';
 import { RecipeService } from '../../services/recipe.service';
 import { Icon } from '../icon/icon';
 import { MenuBar } from '../menu-bar/menu-bar';
@@ -17,6 +18,8 @@ import { SiteFooter } from '../site-footer/site-footer';
 })
 export class Cookbook implements OnInit {
   private readonly recipeService = inject(RecipeService);
+
+  readonly text = inject(LanguageService).t;
 
   readonly cuisines = CUISINES;
   readonly perPage = RECIPES_PER_PAGE;

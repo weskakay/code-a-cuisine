@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { LanguageService } from '../../services/language.service';
 import { RecipeDraftService } from '../../services/recipe-draft.service';
 
 /** Shows what is on the list so far and lets the visitor take items off again. */
@@ -9,6 +10,8 @@ import { RecipeDraftService } from '../../services/recipe-draft.service';
 })
 export class IngredientList {
   private readonly draft = inject(RecipeDraftService);
+
+  readonly text = inject(LanguageService).t;
 
   readonly ingredients = this.draft.ingredients;
   readonly editing = this.draft.editing;

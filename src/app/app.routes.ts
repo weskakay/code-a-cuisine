@@ -7,13 +7,14 @@ import { Preferences } from './components/preferences/preferences';
 import { RecipeDetail } from './components/recipe-detail/recipe-detail';
 import { Results } from './components/results/results';
 
+/** The title is the key of the text, the strategy turns it into words. */
 export const routes: Routes = [
-  { path: '', component: Home, title: 'Code à Cuisine' },
-  { path: 'generate', component: Generate, title: 'Generate recipe' },
-  { path: 'preferences', component: Preferences, title: 'Choose your preferences' },
-  { path: 'cookbook', component: Cookbook, title: 'Cookbook' },
-  { path: 'results', component: Results, title: 'The recipe results' },
-  { path: 'recipe/:id', component: RecipeDetail, title: 'Recipe' },
-  { path: 'imprint', component: Imprint, title: 'Imprint' },
+  { path: '', component: Home, title: 'home' },
+  { path: 'generate', component: Generate, title: 'generate' },
+  { path: 'preferences', component: Preferences, title: 'preferences' },
+  { path: 'cookbook', component: Cookbook, title: 'cookbook' },
+  { path: 'results', component: Results, title: 'results' },
+  { path: 'recipe/:id', component: RecipeDetail, title: 'recipe' },
+  { path: 'imprint', component: Imprint, title: 'imprint' },
   { path: '**', redirectTo: '' },
 ];

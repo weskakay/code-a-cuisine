@@ -1,6 +1,6 @@
 <form class="form" [formGroup]="form" (ngSubmit)="add()" novalidate>
   <div class="form__field">
-    <label class="form__label" for="ingredient-name">Ingredient</label>
+    <label class="form__label" for="ingredient-name">{{ text().generate.ingredient }}</label>
     <input
       id="ingredient-name"
       class="form__input"
@@ -23,7 +23,7 @@
 
   <div class="form__row">
     <div class="form__field">
-      <label class="form__label" for="ingredient-amount">Serving size</label>
+      <label class="form__label" for="ingredient-amount">{{ text().generate.servingSize }}</label>
       <input
         id="ingredient-amount"
         class="form__input form__input--amount"
@@ -35,21 +35,21 @@
     </div>
 
     <div class="form__field">
-      <label class="form__label" for="ingredient-unit">Unit</label>
+      <label class="form__label" for="ingredient-unit">{{ text().generate.unit }}</label>
       <select id="ingredient-unit" class="form__input" formControlName="unit">
-        @for (unit of units; track unit.value) {
-          <option [value]="unit.value">{{ unit.label }}</option>
+        @for (unit of units; track unit) {
+          <option [value]="unit">{{ text().units[unit] }}</option>
         }
       </select>
     </div>
 
     @if (editing() === null) {
-      <button class="form__add" type="submit" aria-label="Add this ingredient to the list">
+      <button class="form__add" type="submit" [attr.aria-label]="text().generate.add">
         +
       </button>
     } @else {
-      <button class="form__add" type="submit" aria-label="Save this ingredient">&check;</button>
-      <button class="form__add" type="button" aria-label="Cancel the change" (click)="cancel()">
+      <button class="form__add" type="submit" [attr.aria-label]="text().generate.save">&check;</button>
+      <button class="form__add" type="button" [attr.aria-label]="text().generate.cancel" (click)="cancel()">
         &times;
       </button>
     }
