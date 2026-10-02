@@ -108,13 +108,17 @@
   min-height: var(--cc-tap-target);
   padding: var(--cc-space-xs);
   border-radius: var(--cc-radius-md);
-  background: var(--cc-card);
+  background: var(--cc-card-soft);
   color: var(--cc-green-dark);
   text-decoration: none;
-  transition: background var(--cc-transition);
+  transition:
+    background var(--cc-transition),
+    box-shadow var(--cc-transition);
 
+  /* Ring as a shadow, so the focus outline stays free */
   &:hover {
-    background: var(--cc-card-alt);
+    background: var(--cc-card);
+    box-shadow: 0 0 0 2px var(--cc-olive-soft);
   }
 }
 
