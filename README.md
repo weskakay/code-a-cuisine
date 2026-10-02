@@ -21,7 +21,8 @@ database.
 3. The workflow asks the model for exactly three recipes, checks the answer and stores it.
 4. You get three suggestions, each with steps split by cook, waiting times and the
    nutritional values per portion and for the whole dish.
-5. Every recipe stays in the library, browsable without an account.
+5. Every recipe stays in the library, browsable without an account, and anyone can
+   give it a heart.
 
 Three recipes per address and day, twelve per day in total. A failed run gives the
 attempt back.
@@ -62,12 +63,6 @@ Install the dependencies:
 npm ci
 ```
 
-Copy the environment file:
-
-```bash
-cp .env.example .env
-```
-
 Start the app:
 
 ```bash
@@ -94,12 +89,6 @@ Install the dependencies:
 npm ci
 ```
 
-Copy the environment file:
-
-```powershell
-copy .env.example .env
-```
-
 Start the app:
 
 ```powershell
@@ -108,7 +97,34 @@ npm start
 
 The app runs on http://localhost:4200.
 
+## Configuration
+
+The app keeps its two addresses in `src/environments/environment.ts`:
+
+| Value | Meaning |
+|---|---|
+| `supabaseUrl`, `supabaseKey` | the public database connection, used to read the library |
+| `webhookUrl` | where the workflow listens, by default the local n8n |
+
+Both values are meant to be public. The database only answers read requests; writing is
+done by the workflow with a key that never leaves n8n. **If n8n runs on another port or
+on a server, change `webhookUrl` here.**
+
+The `.env` file is read by Docker only, never by the Angular app.
+
 ## Running n8n
+
+Copy the environment file. It holds the timezone and the address that receives alerts:
+
+```bash
+cp .env.example .env
+```
+
+On Windows:
+
+```powershell
+copy .env.example .env
+```
 
 Start n8n in the background:
 
