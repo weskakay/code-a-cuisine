@@ -106,3 +106,21 @@
     font-size: var(--cc-fs-lg);
   }
 }
+
+/* Shown on the hosted page, where the workflow is not reachable */
+.step__notice {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--cc-space-3xs);
+  color: var(--cc-green-mid);
+  font-size: var(--cc-fs-xs);
+  text-align: center;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--cc-tap-target);
+    text-decoration: underline;
+  }
+}

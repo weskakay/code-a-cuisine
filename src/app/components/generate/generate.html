@@ -8,6 +8,13 @@
     </p>
   </header>
 
+  @if (!generationOn) {
+    <p class="step__notice">
+      {{ text().preferences.localOnly }}
+      <a routerLink="/cookbook">{{ text().preferences.localOnlyLink }}</a>
+    </p>
+  }
+
   <div class="step__columns">
     <section class="card" aria-labelledby="ingredient-form-title">
       <h2 id="ingredient-form-title" class="card__title">{{ text().generate.addCard }}</h2>

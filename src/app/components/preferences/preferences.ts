@@ -1,5 +1,6 @@
 import { Component, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { environment } from '../../../environments/environment';
 import { COOKING_TIMES, CUISINES, DIETS, HELPERS, PORTIONS } from '../../data/options';
 import { GeneratorError, GeneratorService } from '../../services/generator.service';
 import { LanguageService } from '../../services/language.service';
@@ -33,6 +34,9 @@ export class Preferences {
   readonly cookingTime = this.draft.cookingTime;
   readonly cuisine = this.draft.cuisine;
   readonly diet = this.draft.diet;
+
+  /** False on the hosted page, where the workflow cannot be reached. */
+  readonly generationOn = environment.generation;
 
   /** False while no ingredient is on the list, so nothing can be generated. */
   readonly ready = this.draft.ready;

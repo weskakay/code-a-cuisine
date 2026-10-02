@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { environment } from '../../../environments/environment';
 import { LanguageService } from '../../services/language.service';
 import { RecipeDraftService } from '../../services/recipe-draft.service';
 import { IngredientForm } from '../ingredient-form/ingredient-form';
@@ -18,6 +19,9 @@ export class Generate {
   private readonly draft = inject(RecipeDraftService);
 
   readonly text = inject(LanguageService).t;
+
+  /** False on the hosted page, where the workflow cannot be reached. */
+  readonly generationOn = environment.generation;
 
   /** True once at least one ingredient is on the list. */
   readonly ready = this.draft.ready;

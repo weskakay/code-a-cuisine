@@ -11,6 +11,9 @@ The frontend is an Angular app. The recipes come from an automation workflow in 
 validates the request, asks an AI model for three recipes and writes the result to the
 database.
 
+**Live: https://cuisine.weskakay.de**. It shows the library with every recipe generated
+so far. Writing new ones runs locally, see [The hosted version](#the-hosted-version).
+
 ![The start page](docs/home.jpg)
 
 ## What it does
@@ -111,6 +114,36 @@ done by the workflow with a key that never leaves n8n. **If n8n runs on another 
 on a server, change `webhookUrl` here.**
 
 The `.env` file is read by Docker only, never by the Angular app.
+
+A production build swaps that file for `src/environments/environment.production.ts`
+through `fileReplacements` in `angular.json`. The hosted version therefore reads the same
+database but has no webhook address.
+
+## The hosted version
+
+https://cuisine.weskakay.de
+
+The workflow runs in Docker on a local machine, so the hosted page cannot reach it. It
+shows the library with every recipe generated so far; the generator says so on both of
+its screens and points to the library instead. Switching it on later means one value:
+
+```ts
+// src/environments/environment.production.ts
+webhookUrl: 'https://your-n8n-host/webhook/generate-recipes',
+generation: true,
+```
+
+n8n then needs to allow the origin of the page, and the hosting note further down applies.
+
+Build and upload:
+
+```bash
+npm run build
+```
+
+Upload everything inside `dist/code-a-cuisine/browser` to the web space. The `.htaccess`
+in that folder forces https and answers every unknown path with `index.html`, so a shared
+recipe link opens the recipe instead of a 404.
 
 ## Running n8n
 

@@ -126,7 +126,12 @@
     </section>
   </div>
 
-  @if (!ready()) {
+  @if (!generationOn) {
+    <p class="prefs__notice">
+      {{ text().preferences.localOnly }}
+      <a routerLink="/cookbook">{{ text().preferences.localOnlyLink }}</a>
+    </p>
+  } @else if (!ready()) {
     <p class="prefs__notice">
       {{ text().preferences.empty }}
       <a routerLink="/generate">{{ text().preferences.emptyLink }}</a>
@@ -136,7 +141,7 @@
   <button
     class="prefs__submit"
     type="button"
-    [disabled]="busy() || !ready()"
+    [disabled]="busy() || !ready() || !generationOn"
     (click)="generate()"
   >
     {{ busy() ? text().preferences.busy : text().preferences.submit }}
