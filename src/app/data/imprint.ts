@@ -6,6 +6,6 @@ export interface ImprintData {
 
 /** The legal notice of this installation. */
 export const IMPRINT: ImprintData = {
-  owner: '',
+  owner: 'weskakay.de',
   legalNotice: 'https://weskakay.de/impressum',
 };

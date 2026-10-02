@@ -142,7 +142,7 @@
   font-size: var(--cc-fs-xs);
   font-weight: var(--cc-fw-medium);
 
-  &:hover {
+  &:hover:not(.tag--active) {
     background: var(--cc-cream-hover);
   }
 }
@@ -155,13 +155,11 @@
 
 .prefs__submit {
   align-self: center;
-  min-height: var(--cc-tap-target);
   padding: var(--cc-space-2xs) var(--cc-space-sm);
   background: var(--cc-olive);
   color: var(--cc-cream);
   font-size: var(--cc-fs-xs);
   font-weight: var(--cc-fw-semibold);
-  transition: background var(--cc-transition);
 
   &:hover:enabled {
     background: var(--cc-green-pressed);
@@ -174,6 +172,24 @@
 
   @media (width >= 1024px) {
     font-size: var(--cc-fs-lg);
+  }
+}
+
+/* Shown when someone lands here without ingredients, for example after a reload */
+.prefs__notice {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--cc-space-3xs);
+  color: var(--cc-green-mid);
+  font-size: var(--cc-fs-xs);
+  text-align: center;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--cc-tap-target);
+    text-decoration: underline;
   }
 }
 
@@ -214,29 +230,13 @@
 
 .quota__close {
   width: 100%;
-  min-height: var(--cc-tap-target);
-  font-family: var(--cc-font-body);
   font-size: var(--cc-fs-xs);
   font-weight: var(--cc-fw-semibold);
   color: var(--cc-white);
-  cursor: pointer;
   background: var(--cc-olive);
-  border: unset;
   border-radius: var(--cc-radius-pill);
-  transition: background var(--cc-transition);
 
   &:hover {
     background: var(--cc-green-pressed);
-  }
-
-  &:focus-visible {
-    outline: 3px solid var(--cc-green);
-    outline-offset: 2px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .quota__close {
-    transition: none;
   }
 }

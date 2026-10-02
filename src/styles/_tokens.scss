@@ -75,5 +75,11 @@
   --cc-content-max: 1440px;
   --cc-tap-target: 44px;
   --cc-transition: 100ms;
+
+  /* Focus ring, switched to cream on the olive pages */
+  --cc-focus: var(--cc-green);
+
+  /* The plates cast their shadow the other way round on wide screens */
   --cc-shadow-plate: -6px 2px 4px rgb(0 0 0 / 25%);
+  --cc-shadow-plate-wide: 6px -2px 4px rgb(0 0 0 / 25%);
 }

@@ -75,8 +75,11 @@ export const EN = {
     cuisine: 'Cuisine',
     diet: 'Diet preferences',
     submit: 'Generate a recipe',
+    empty: 'Your list is still empty.',
+    emptyLink: 'Add at least one ingredient',
     busy: 'Generating …',
     loading: 'Generating your recipes',
+    loadingHint: 'This takes about half a minute.',
     failed: 'Something went wrong in the kitchen. Please try again.',
     quotaTitle: 'Ups!',
     quotaText:
@@ -230,8 +233,11 @@ export const DE: Texts = {
     cuisine: 'Küche',
     diet: 'Ernährung',
     submit: 'Rezepte erstellen',
+    empty: 'Deine Liste ist noch leer.',
+    emptyLink: 'Trag mindestens eine Zutat ein',
     busy: 'Wird erstellt …',
     loading: 'Deine Rezepte entstehen',
+    loadingHint: 'Das dauert etwa eine halbe Minute.',
     failed: 'In der Küche ist etwas schiefgegangen. Bitte versuch es noch einmal.',
     quotaTitle: 'Ups!',
     quotaText:

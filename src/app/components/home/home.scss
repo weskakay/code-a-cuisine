@@ -1,6 +1,11 @@
 :host {
   display: block;
   background: var(--cc-olive);
+
+  color: var(--cc-cream);
+
+  /* Green on olive is barely visible, so the ring turns cream here */
+  --cc-focus: var(--cc-cream);
   min-height: 100vh;
   min-height: 100svh;
 }
@@ -32,7 +37,7 @@
   gap: var(--cc-space-lg);
 
   /* Leaves the right column to the plates */
-  max-width: calc(100% - 96px);
+  max-width: calc(100% - 116px);
 
   @media (width >= 1024px) {
     max-width: calc(100% - 340px);
@@ -69,7 +74,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: var(--cc-space-xs);
-  max-width: calc(100% - 96px);
+  max-width: calc(100% - 116px);
 
   @media (width >= 1024px) {
     max-width: calc(100% - 340px);

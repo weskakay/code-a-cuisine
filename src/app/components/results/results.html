@@ -3,14 +3,16 @@
 <main class="results">
   <header class="results__intro">
     <h1 class="results__title">{{ text().titles.results }}</h1>
-    <p class="results__lead">
-      {{ text().results.lead }}
-    </p>
-    <ul class="chosen">
-      @for (label of chosen(); track label) {
-        <li class="chosen__tag">{{ label }}</li>
-      }
-    </ul>
+    @if (hasRecipes()) {
+      <p class="results__lead">
+        {{ text().results.lead }}
+      </p>
+      <ul class="chosen">
+        @for (label of chosen(); track label) {
+          <li class="chosen__tag">{{ label }}</li>
+        }
+      </ul>
+    }
 
     @if (quota(); as left) {
       <p class="results__quota">
@@ -20,11 +22,12 @@
     }
   </header>
 
-  @if (recipes().length === 0) {
-    <p class="results__empty">
-      {{ text().results.empty }}
-      <a routerLink="/generate">{{ text().results.emptyLink }}</a>
-    </p>
+  @if (!hasRecipes()) {
+    <p class="results__empty">{{ text().results.empty }}</p>
+    <a class="results__again results__again--start" routerLink="/generate">
+      {{ text().results.emptyLink }}
+      <span aria-hidden="true">&rarr;</span>
+    </a>
   } @else {
     <ul class="cards">
       @for (recipe of recipes(); track recipe.id) {
@@ -42,12 +45,11 @@
         </li>
       }
     </ul>
+    <a class="results__again" routerLink="/generate">
+      {{ text().results.again }}
+      <span aria-hidden="true">&rarr;</span>
+    </a>
   }
-
-  <a class="results__again" routerLink="/generate">
-    {{ text().results.again }}
-    <span aria-hidden="true">&rarr;</span>
-  </a>
 </main>
 
 <app-site-footer />

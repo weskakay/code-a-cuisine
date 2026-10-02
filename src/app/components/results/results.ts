@@ -22,6 +22,9 @@ export class Results {
   readonly text = this.languages.t;
 
   readonly recipes = this.store.recipes;
+
+  /** False before the first generation, so the page skips the promise and the tags. */
+  readonly hasRecipes = computed(() => this.recipes().length > 0);
   readonly quota = this.store.quota;
 
   /** The cooking style and the time frame the visitor asked for. */

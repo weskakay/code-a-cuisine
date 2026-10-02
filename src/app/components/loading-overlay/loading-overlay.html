@@ -10,6 +10,8 @@
       {{ label()
       }}<span class="dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span>
     </p>
-    <p class="overlay__hint">This takes about half a minute.</p>
+    @if (hint()) {
+      <p class="overlay__hint">{{ hint() }}</p>
+    }
   </div>
 </div>

@@ -9,6 +9,10 @@
   padding: var(--cc-space-sm) var(--cc-space-xs);
   font-size: var(--cc-fs-xs);
   color: inherit;
+
+  @media (width >= 1024px) {
+    padding: var(--cc-space-sm) var(--cc-space-xl);
+  }
 }
 
 .foot__link {

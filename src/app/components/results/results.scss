@@ -1,5 +1,6 @@
 :host {
   display: block;
+  --cc-focus: var(--cc-cream);
   min-height: 100vh;
   min-height: 100svh;
   background: var(--cc-olive);
@@ -47,10 +48,6 @@
 
 .results__empty {
   font-size: var(--cc-fs-xs);
-
-  a {
-    color: var(--cc-cream);
-  }
 }
 
 .cards {
@@ -148,4 +145,9 @@
   @media (width >= 1024px) {
     font-size: var(--cc-fs-lg);
   }
+}
+
+/* In the empty view this is the only action, so it leads instead of trailing */
+.results__again--start {
+  align-self: flex-start;
 }

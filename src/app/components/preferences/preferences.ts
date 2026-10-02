@@ -1,5 +1,5 @@
 import { Component, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { COOKING_TIMES, CUISINES, DIETS, HELPERS, PORTIONS } from '../../data/options';
 import { GeneratorError, GeneratorService } from '../../services/generator.service';
 import { LanguageService } from '../../services/language.service';
@@ -12,7 +12,7 @@ import { SiteFooter } from '../site-footer/site-footer';
 /** Step two: how many people eat, how long it may take and what it should taste like. */
 @Component({
   selector: 'app-preferences',
-  imports: [MenuBar, LoadingOverlay, SiteFooter],
+  imports: [MenuBar, LoadingOverlay, SiteFooter, RouterLink],
   templateUrl: './preferences.html',
   styleUrl: './preferences.scss',
 })
@@ -33,6 +33,9 @@ export class Preferences {
   readonly cookingTime = this.draft.cookingTime;
   readonly cuisine = this.draft.cuisine;
   readonly diet = this.draft.diet;
+
+  /** False while no ingredient is on the list, so nothing can be generated. */
+  readonly ready = this.draft.ready;
 
   readonly busy = signal(false);
   readonly error = signal('');

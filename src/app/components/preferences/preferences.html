@@ -126,7 +126,19 @@
     </section>
   </div>
 
-  <button class="prefs__submit" type="button" [disabled]="busy()" (click)="generate()">
+  @if (!ready()) {
+    <p class="prefs__notice">
+      {{ text().preferences.empty }}
+      <a routerLink="/generate">{{ text().preferences.emptyLink }}</a>
+    </p>
+  }
+
+  <button
+    class="prefs__submit"
+    type="button"
+    [disabled]="busy() || !ready()"
+    (click)="generate()"
+  >
     {{ busy() ? text().preferences.busy : text().preferences.submit }}
   </button>
 
@@ -134,7 +146,10 @@
 </main>
 
 @if (busy()) {
-  <app-loading-overlay [label]="text().preferences.loading" />
+  <app-loading-overlay
+    [label]="text().preferences.loading"
+    [hint]="text().preferences.loadingHint"
+  />
 }
 
 <dialog #quotaDialog class="quota" aria-labelledby="quota-title" (close)="dismiss()">
