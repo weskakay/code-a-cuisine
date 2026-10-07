@@ -1,0 +1,52 @@
+<div class="head__main">
+  <p class="head__time">
+    <app-icon name="clock" />
+    {{ text().recipe.cookingTime }}: {{ dish().cookingMinutes }} {{ text().recipe.minutes }}
+  </p>
+  <h1 class="head__title">{{ dish().title }}</h1>
+  <p class="head__meta">
+    {{ dish().portions }}
+    {{ dish().portions === 1 ? text().recipe.portion : text().recipe.portions }}
+    @for (cook of cooks(); track cook) {
+      <app-cook-label [cook]="cook" />
+    }
+  </p>
+</div>
+
+<div class="head__side">
+  <p class="tags">
+    @if (dish().diet !== 'none') {
+      <span class="tag">{{ text().diets[dish().diet] }}</span>
+    }
+    <span class="tag">{{ text().times[dish().cookingTime] }}</span>
+    <span
+      class="tag tag--hearts"
+      role="img"
+      [attr.aria-label]="
+        likeCount() + ' ' + (likeCount() === 1 ? text().cookbook.heart : text().cookbook.hearts)
+      "
+    >
+      <app-icon name="heart" [filled]="liked()" />
+      {{ likeCount() }}
+    </span>
+  </p>
+  <p class="head__label">{{ text().recipe.nutrition }} ({{ text().recipe.perPortion }})</p>
+  <dl class="facts">
+    <div>
+      <dt>{{ text().recipe.energyShort }}</dt>
+      <dd>{{ dish().nutritionPerPortion.energyKcal }} kcal</dd>
+    </div>
+    <div>
+      <dt>{{ text().recipe.protein }}</dt>
+      <dd>{{ dish().nutritionPerPortion.proteinG }} g</dd>
+    </div>
+    <div>
+      <dt>{{ text().recipe.fat }}</dt>
+      <dd>{{ dish().nutritionPerPortion.fatG }} g</dd>
+    </div>
+    <div>
+      <dt>{{ text().recipe.carbs }}</dt>
+      <dd>{{ dish().nutritionPerPortion.carbsG }} g</dd>
+    </div>
+  </dl>
+</div>

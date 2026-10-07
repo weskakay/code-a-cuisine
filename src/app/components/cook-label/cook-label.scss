@@ -1,0 +1,21 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cc-space-3xs);
+  padding: var(--cc-space-3xs) var(--cc-space-2xs);
+  border-radius: var(--cc-radius-sm);
+  color: var(--cc-green-dark);
+  font-size: var(--cc-fs-xs);
+}
+
+:host(.cook--1) {
+  background: var(--cc-chef-1);
+}
+
+:host(.cook--2) {
+  background: var(--cc-chef-2);
+}
+
+:host(.cook--3) {
+  background: var(--cc-chef-3);
+}
