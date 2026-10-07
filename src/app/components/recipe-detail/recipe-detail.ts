@@ -1,5 +1,6 @@
 import { Component, computed, effect, inject, input, signal, untracked } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { CUISINES } from '../../data/options';
 import type { Recipe } from '../../interfaces/recipe.interface';
 import { LanguageService } from '../../services/language.service';
 import { LikesService } from '../../services/likes.service';
@@ -22,6 +23,7 @@ export class RecipeDetail {
   private readonly recipeService = inject(RecipeService);
   private readonly likes = inject(LikesService);
   private readonly languages = inject(LanguageService);
+  private readonly router = inject(Router);
 
   readonly text = this.languages.t;
 
@@ -37,15 +39,30 @@ export class RecipeDetail {
   readonly likeFailed = signal(false);
   readonly likeBusy = signal(false);
 
-  /** Where the reader came from, set by the link that opened the recipe. */
+  /** Where the reader came from: results, or the cuisine page and its page number. */
   readonly from = input<string>();
+  readonly page = input<string>();
 
-  /** Back to the results when the generator opened the recipe, else to the cookbook. */
-  readonly backLink = computed(() => (this.from() === 'results' ? '/results' : '/cookbook'));
+  private readonly fromStyle = computed(() => CUISINES.find((style) => style === this.from()));
 
-  readonly backLabel = computed(() =>
-    this.from() === 'results' ? this.text().recipe.backResults : this.text().titles.cookbook,
-  );
+  /** Back to the results, to the cuisine page the recipe was opened from, or to the cookbook. */
+  readonly backLink = computed(() => {
+    const style = this.fromStyle();
+    if (style) {
+      return this.router.createUrlTree(['/cookbook', style], {
+        queryParams: { page: this.page() },
+      });
+    }
+    return this.from() === 'results' ? '/results' : '/cookbook';
+  });
+
+  readonly backLabel = computed(() => {
+    const style = this.fromStyle();
+    if (style) {
+      return this.text().cuisineTitles[style];
+    }
+    return this.from() === 'results' ? this.text().recipe.backResults : this.text().titles.cookbook;
+  });
 
   /** The cooks that have at least one step, so the page can list them. */
   readonly cooks = computed(() => {
