@@ -11,8 +11,8 @@ The frontend is an Angular app. The recipes come from an automation workflow in 
 validates the request, asks an AI model for three recipes and writes the result to the
 database.
 
-**Live: https://cuisine.weskakay.de**. It shows the library with every recipe generated
-so far. Writing new ones runs locally, see [The hosted version](#the-hosted-version).
+**Live: https://cuisine.weskakay.de**. Generating works there, and every recipe stays in
+the library, see [The hosted version](#the-hosted-version).
 
 ![The start page](docs/home.jpg)
 
@@ -38,13 +38,14 @@ attempt back.
 
 - Angular 22, standalone components, signals, reactive forms
 - SCSS with design tokens
-- n8n for the automation workflow, running in Docker
+- n8n for the automation workflow, in Docker locally and on n8n Cloud for the hosted page
 - Supabase as the database
 
 ## Requirements
 
 - Node.js 24 and npm 11
-- Docker Desktop
+- Docker Desktop, for running n8n locally
+- A Groq API key for the model, free at https://console.groq.com/keys
 
 ## Setup on macOS
 
@@ -102,38 +103,45 @@ The app runs on http://localhost:4200.
 
 ## Configuration
 
-The app keeps its two addresses in `src/environments/environment.ts`:
+The app keeps its settings in `src/environments/environment.ts`:
 
 | Value | Meaning |
 |---|---|
 | `supabaseUrl`, `supabaseKey` | the public database connection, used to read the library |
 | `webhookUrl` | where the workflow listens, by default the local n8n |
+| `generation` | `false` hides the generator: both step screens point to the library and the submit button stays disabled |
 
-Both values are meant to be public. The database only answers read requests; writing is
-done by the workflow with a key that never leaves n8n. **If n8n runs on another port or
-on a server, change `webhookUrl` here.**
+The two Supabase values are meant to be public. The database only answers read requests;
+writing is done by the workflow with a key that never leaves n8n. **If n8n runs on another
+port or on a server, change `webhookUrl` here.**
 
 The `.env` file is read by Docker only, never by the Angular app.
 
 A production build swaps that file for `src/environments/environment.production.ts`
-through `fileReplacements` in `angular.json`. The hosted version therefore reads the same
-database but has no webhook address.
+through `fileReplacements` in `angular.json`, and `angular.json` makes `production` the
+default, so a bare `ng build` already picks it.
 
 ## The hosted version
 
 https://cuisine.weskakay.de
 
-The workflow runs in Docker on a local machine, so the hosted page cannot reach it. It
-shows the library with every recipe generated so far; the generator says so on both of
-its screens and points to the library instead. Switching it on later means one value:
+The page generates recipes. The workflow for it runs on n8n Cloud, because a shared web
+space cannot host a program that has to stay awake. Locally the same workflow runs in
+Docker, and `src/environments/environment.ts` keeps pointing at `localhost:5678`, so a
+local run never eats from the daily limit of the hosted one.
+
+The hosted address lives in `src/environments/environment.production.ts`:
 
 ```ts
-// src/environments/environment.production.ts
-webhookUrl: 'https://your-n8n-host/webhook/generate-recipes',
+webhookUrl: 'https://<instance>.app.n8n.cloud/webhook/generate-recipes',
 generation: true,
 ```
 
-n8n then needs to allow the origin of the page, and the hosting note further down applies.
+Switching the generator off again is the same file: an empty `webhookUrl` and
+`generation: false`. The library keeps every recipe either way.
+
+The webhook node lists both origins under *Allowed Origins*, the local one and the hosted
+one, so the browser is allowed to call it from either.
 
 Build and upload:
 
@@ -216,12 +224,28 @@ src/styles           design tokens and base styles
 n8n/workflows        exported automation workflows
 ```
 
-## Hosting note for the workflow
+## How the daily limit finds the visitor
 
-n8n has to sit behind our own reverse proxy in production, with the proxy appending the
-caller address to `x-forwarded-for` and `N8N_PROXY_HOPS` set to the number of proxies.
-The daily limit reads the last entry of that header, so a caller cannot fake an address
-and ask for more recipes than allowed.
+Both limits live in `supabase/schema.sql`, in the function `use_quota`: three recipes per
+address and day, twelve per day in total.
+
+The node `Read visitor address` decides whose address that is. Reading the chain in
+`x-forwarded-for` from the right only works behind a proxy we own; behind n8n Cloud the
+last entry is Cloudflare, the same for everybody, which would lock out every visitor after
+three recipes. So the node prefers `cf-connecting-ip`, which Cloudflare overwrites and a
+caller therefore cannot fake. Without that header it falls back to the first entry of
+`x-forwarded-for` that is a real public address, and to `127.0.0.1` if nothing is left.
+
+Addresses are normalised first, so `[2001:db8::1]:443` and `::ffff:1.2.3.4` do not end up
+as a second row for the same visitor. Anything that is not an address falls back to
+`127.0.0.1` instead of reaching the database, which expects the `inet` type.
+
+To look at the counters:
+
+```sql
+select ip::text, family(ip) as version, day, count
+  from public.quota_usage where day = current_date order by count desc;
+```
 
 ## Data format
 
@@ -257,6 +281,20 @@ Errors come back as `{ "error": "one sentence" }` with status 400 for a bad requ
 when the limit is reached and 502 when the model broke the rules. The types live in
 `src/app/interfaces/recipe.interface.ts`.
 
+## The workflows
+
+`Generate recipes` takes the request, counts it against the daily limit, asks the model,
+checks the answer against the rules and stores the three recipes. Every branch ends in an
+answer: 400 for a bad request, 429 when the limit is used up, 502 when the model broke the
+rules, and in that case the generation is given back.
+
+![The recipe workflow](docs/workflow-generate.jpg)
+
+`Error handler` is registered as the error workflow of the first one. It runs whenever a
+node fails for real, collects what happened and sends one mail.
+
+![The error workflow](docs/workflow-error.jpg)
+
 ## Importing the workflows
 
 The exported workflows live in `n8n/workflows/`.
@@ -269,12 +307,18 @@ nodes that need them:
 
 | Credential | Used by |
 |---|---|
-| Google Gemini(PaLM) API | Gemini model |
-| Supabase API, service role secret | Use quota, Save recipes |
+| Groq API | Groq Chat Model1, Groq Chat Model |
+| Supabase API, service role secret | Use quota, Save recipes, Refund quota |
 | SMTP account | Send alert mail |
 
 Publish `Error handler`, then open the settings of `Generate recipes` and pick it as the
-error workflow. Publish `Generate recipes` last.
+error workflow. The id stored in the export belongs to another installation and will not
+match. Publish `Generate recipes` last.
+
+On n8n Cloud two things differ from a local run: environment variables are blocked, so the
+alert address has to be typed into `Send alert mail` instead of reading `$env.ALERT_EMAIL`,
+and the model needs room for three recipes at once, which is why both Groq nodes set
+*Maximum Number of Tokens* to 16000.
 
 The database part lives in `supabase/schema.sql`. Run it once in the Supabase SQL editor.
 

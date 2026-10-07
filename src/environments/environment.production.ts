@@ -2,7 +2,7 @@
 export const environment = {
   supabaseUrl: 'https://vmyxyvqbmbgmmwydklff.supabase.co',
   supabaseKey: 'sb_publishable_DLb8gSUKqrdtixzSK9kJwA_FINRRJj6',
-  webhookUrl: '',
-  /** The workflow runs on a local machine, so the hosted page only reads the library. */
-  generation: false,
+  webhookUrl: 'https://rockey107.app.n8n.cloud/webhook/generate-recipes',
+  /** The workflow runs on n8n Cloud, so the hosted page can generate too. */
+  generation: true,
 };

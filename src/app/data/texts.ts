@@ -81,8 +81,9 @@ export const EN = {
     emptyLink: 'Add at least one ingredient',
     busy: 'Generating …',
     loading: 'Generating your recipes',
-    loadingHint: 'This takes about half a minute.',
+    loadingHint: 'This takes up to a minute.',
     failed: 'Something went wrong in the kitchen. Please try again.',
+    offline: 'The generator cannot be reached right now. The library is still open.',
     quotaTitle: 'Ups!',
     quotaText:
       'You have used all three recipes for today. The kitchen opens again tomorrow, so come back and bring your ingredients with you.',
@@ -241,8 +242,9 @@ export const DE: Texts = {
     emptyLink: 'Trag mindestens eine Zutat ein',
     busy: 'Wird erstellt …',
     loading: 'Deine Rezepte entstehen',
-    loadingHint: 'Das dauert etwa eine halbe Minute.',
+    loadingHint: 'Das dauert bis zu einer Minute.',
     failed: 'In der Küche ist etwas schiefgegangen. Bitte versuch es noch einmal.',
+    offline: 'Der Generator ist gerade nicht erreichbar. Die Bibliothek ist weiter offen.',
     quotaTitle: 'Ups!',
     quotaText:
       'Du hast deine drei Rezepte für heute aufgebraucht. Morgen öffnet die Küche wieder, dann kannst du deine Zutaten wieder mitbringen.',

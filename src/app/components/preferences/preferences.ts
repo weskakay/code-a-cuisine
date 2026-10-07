@@ -101,7 +101,8 @@ export class Preferences {
       this.blocked.set(true);
       return;
     }
-    this.error.set(this.text().preferences.failed);
+    const texts = this.text().preferences;
+    this.error.set(failure.offline ? texts.offline : texts.failed);
   }
 }
 
