@@ -31,4 +31,15 @@
       DE
     </button>
   </div>
+
+  @if (back(); as target) {
+    <a
+      class="bar__back"
+      [routerLink]="target"
+      [attr.aria-label]="text().menu.back + ' ' + backLabel()"
+    >
+      <app-icon name="arrow" />
+      <span class="bar__back-text">{{ backLabel() }}</span>
+    </a>
+  }
 </header>

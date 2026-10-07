@@ -1,8 +1,8 @@
 .bar {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--cc-space-xs);
+  gap: var(--cc-space-2xs) var(--cc-space-xs);
   padding: var(--cc-space-xs);
   max-width: var(--cc-content-max);
   margin: 0 auto;
@@ -14,6 +14,7 @@
 
 .bar__mark {
   display: flex;
+  justify-self: start;
   align-items: center;
   min-height: var(--cc-tap-target);
 }
@@ -51,7 +52,47 @@
   }
 }
 
+/* Back link under the logo, only the arrow on small screens */
+.bar__back {
+  position: relative;
+  display: inline-flex;
+  grid-column: 1;
+  align-items: center;
+  justify-self: start;
+  gap: var(--cc-space-2xs);
+  min-width: var(--cc-tap-target);
+  min-height: var(--cc-tap-target);
+  color: var(--cc-green-mid);
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-medium);
+  text-decoration: none;
+
+  &:hover .bar__back-text,
+  &:focus-visible .bar__back-text {
+    text-decoration: underline;
+  }
+}
+
+.bar__back-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  clip-path: inset(50%);
+  white-space: nowrap;
+
+  @media (width >= 1024px) {
+    position: static;
+    width: auto;
+    height: auto;
+    clip-path: none;
+  }
+}
+
 /* On the olive pages the bar writes in cream */
+.bar--dark .bar__back {
+  color: var(--cc-cream);
+}
+
 .bar--dark .langs__button {
   color: var(--cc-cream);
 

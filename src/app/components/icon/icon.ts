@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 
 /** The small drawings the app uses next to a label. */
-export type IconName = 'clock' | 'hat' | 'heart' | 'spoon';
+export type IconName = 'arrow' | 'clock' | 'hat' | 'heart' | 'spoon';
 
 /** One line drawing, taking the colour and the size of the text around it. */
 @Component({

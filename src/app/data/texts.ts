@@ -8,7 +8,7 @@ export type Language = 'en' | 'de';
  */
 export const EN = {
   language: { label: 'Language', en: 'English', de: 'German' },
-  menu: { home: 'Code à Cuisine, back to the start page' },
+  menu: { home: 'Code à Cuisine, back to the start page', back: 'Back to' },
   footer: { imprint: 'Imprint' },
   titles: {
     home: 'Code à Cuisine',
@@ -63,6 +63,7 @@ export const EN = {
     next: 'Next step',
   },
   preferences: {
+    back: 'Ingredients',
     portionsQuestion: 'How many portions do you need?',
     portions: 'Portions',
     portionLess: 'One portion less',
@@ -169,7 +170,7 @@ export type Texts = typeof EN;
 /** The German set. */
 export const DE: Texts = {
   language: { label: 'Sprache', en: 'Englisch', de: 'Deutsch' },
-  menu: { home: 'Code à Cuisine, zurück zur Startseite' },
+  menu: { home: 'Code à Cuisine, zurück zur Startseite', back: 'Zurück zu' },
   footer: { imprint: 'Impressum' },
   titles: {
     home: 'Code à Cuisine',
@@ -224,6 +225,7 @@ export const DE: Texts = {
     next: 'Weiter',
   },
   preferences: {
+    back: 'Zutaten',
     portionsQuestion: 'Für wie viele Portionen?',
     portions: 'Portionen',
     portionLess: 'Eine Portion weniger',
