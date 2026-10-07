@@ -17,4 +17,11 @@ export class RecipeStoreService {
   find(id: string): Recipe | undefined {
     return this.recipes().find((recipe) => recipe.id === id);
   }
+
+  /** Keeps the count of hearts in step, so a recipe opened again shows the new number. */
+  updateLikes(id: string, likes: number): void {
+    this.recipes.update((list) =>
+      list.map((recipe) => (recipe.id === id ? { ...recipe, likes } : recipe)),
+    );
+  }
 }

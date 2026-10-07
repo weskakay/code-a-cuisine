@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal, untracked } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import type { Recipe } from '../../interfaces/recipe.interface';
 import { LanguageService } from '../../services/language.service';
@@ -31,7 +31,9 @@ export class RecipeDetail {
   readonly recipe = signal<Recipe | null>(null);
   readonly loading = signal(true);
   readonly likeCount = signal(0);
-  readonly liked = signal(false);
+
+  /** Read from the browser, so it is right at once and after a reload. */
+  readonly liked = computed(() => this.likes.has(this.id()));
   readonly likeFailed = signal(false);
   readonly likeBusy = signal(false);
 
@@ -39,7 +41,9 @@ export class RecipeDetail {
   readonly backLink = computed(() => (this.store.find(this.id()) ? '/results' : '/cookbook'));
 
   readonly backLabel = computed(() =>
-    this.backLink() === '/results' ? this.text().recipe.backResults : this.text().recipe.backCookbook,
+    this.backLink() === '/results'
+      ? this.text().recipe.backResults
+      : this.text().recipe.backCookbook,
   );
 
   /** The cooks that have at least one step, so the page can list them. */
@@ -49,7 +53,10 @@ export class RecipeDetail {
   });
 
   constructor() {
-    effect(() => void this.load(this.id()));
+    effect(() => {
+      const id = this.id();
+      untracked(() => void this.load(id));
+    });
   }
 
   /** The steps of one cook, in the order they happen. */
@@ -73,12 +80,16 @@ export class RecipeDetail {
     this.likeBusy.set(false);
   }
 
-  /** Moves the heart in the database and shows what came back. */
+  /** Shows the new count at once, then takes the one the database answers. */
   private async sendLike(id: string): Promise<void> {
+    const before = this.likeCount();
+    this.likeCount.set(before + (this.liked() ? -1 : 1));
     try {
-      this.likeCount.set(await this.likes.toggle(id));
-      this.liked.set(this.likes.has(id));
+      const count = await this.likes.toggle(id);
+      this.likeCount.set(count);
+      this.store.updateLikes(id, count);
     } catch {
+      this.likeCount.set(before);
       this.likeFailed.set(true);
     }
   }
@@ -87,18 +98,17 @@ export class RecipeDetail {
   private async load(id: string): Promise<void> {
     const known = this.store.find(id);
     if (known) {
-      this.show(known, id);
+      this.show(known);
       return;
     }
     this.loading.set(true);
-    this.show(await this.recipeService.getRecipe(id).catch(() => null), id);
+    this.show(await this.recipeService.getRecipe(id).catch(() => null));
   }
 
   /** Puts the recipe on the page and shows the hearts it has so far. */
-  private show(dish: Recipe | null, id: string): void {
+  private show(dish: Recipe | null): void {
     this.recipe.set(dish);
     this.likeCount.set(dish?.likes ?? 0);
-    this.liked.set(this.likes.has(id));
     this.loading.set(false);
   }
 }

@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { RecipeService } from './recipe.service';
 
 const STORAGE_KEY = 'cc-liked';
@@ -11,25 +11,42 @@ const STORAGE_KEY = 'cc-liked';
 @Injectable({ providedIn: 'root' })
 export class LikesService {
   private readonly recipes = inject(RecipeService);
-  private readonly liked = new Set<string>(read());
+  private readonly liked = signal<ReadonlySet<string>>(new Set(read()));
 
-  /** True when this browser already gave that recipe a heart. */
+  /** True when this browser already gave that recipe a heart. Reactive. */
   has(id: string): boolean {
-    return this.liked.has(id);
+    return this.liked().has(id);
   }
 
-  /** Adds a heart or takes it back, and answers with the new count. */
+  /**
+   * Adds a heart or takes it back and answers with the new count. The browser
+   * remembers it at once; if the database says no, the heart goes back.
+   */
   async toggle(id: string): Promise<number> {
-    const step = this.liked.has(id) ? -1 : 1;
-    const count = await this.recipes.like(id, step);
-    if (step === 1) {
-      this.liked.add(id);
-    } else {
-      this.liked.delete(id);
+    const step = this.liked().has(id) ? -1 : 1;
+    this.remember(flip(this.liked(), id));
+    try {
+      return await this.recipes.like(id, step);
+    } catch (error) {
+      this.remember(flip(this.liked(), id));
+      throw error;
     }
-    save(this.liked);
-    return count;
   }
+
+  /** Keeps the hearts in the signal and in the browser storage. */
+  private remember(ids: ReadonlySet<string>): void {
+    this.liked.set(ids);
+    save(ids);
+  }
+}
+
+/** A copy of the ids with that one added or removed. */
+function flip(ids: ReadonlySet<string>, id: string): Set<string> {
+  const next = new Set(ids);
+  if (!next.delete(id)) {
+    next.add(id);
+  }
+  return next;
 }
 
 /** Reads the ids out of the browser storage, which may be switched off. */
@@ -43,7 +60,7 @@ function read(): string[] {
 }
 
 /** Writes the ids back. A private window may forbid it, then nothing happens. */
-function save(ids: Set<string>): void {
+function save(ids: ReadonlySet<string>): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify([...ids]));
   } catch {
