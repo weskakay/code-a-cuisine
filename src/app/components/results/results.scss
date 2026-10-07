@@ -21,9 +21,31 @@
 }
 
 .results__intro {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: var(--cc-space-2xs);
+  align-content: start;
+
+  @media (width >= 1024px) {
+    grid-template-columns: minmax(0, 1fr) min(var(--cc-results-visual), 45%);
+    column-gap: var(--cc-space-2xl);
+  }
+}
+
+/* Text on the left, the photo on the right; on phones it sits under the title */
+.results__visual {
+  align-self: start;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 574 / 222;
+  object-fit: cover;
+  border-radius: var(--cc-radius-lg);
+  margin-block: var(--cc-space-2xs);
+
+  @media (width >= 1024px) {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+    margin-block: 0;
+  }
 }
 
 .results__title {
