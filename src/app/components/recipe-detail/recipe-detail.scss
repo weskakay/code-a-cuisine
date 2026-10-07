@@ -10,103 +10,99 @@
   display: flex;
   flex-direction: column;
   gap: var(--cc-space-lg);
-  max-width: var(--cc-content-max);
+  max-width: var(--cc-recipe-max);
   margin: 0 auto;
-  padding: var(--cc-space-lg) var(--cc-space-xs) var(--cc-space-xl);
+  padding: var(--cc-space-sm) var(--cc-space-2xs) var(--cc-space-xl);
   font-size: var(--cc-fs-xs);
 
   @media (width >= 1024px) {
-    padding: var(--cc-space-xl);
+    gap: var(--cc-space-xl);
+    padding-inline: var(--cc-space-xl);
   }
 }
 
-.dish__title {
-  font-size: var(--cc-fs-h2);
-  font-weight: var(--cc-fw-semibold);
-  color: var(--cc-green-mid);
-  line-height: 1.2;
-}
-
-.dish__time,
-.dish__meta {
-  color: var(--cc-olive);
-}
-
-.dish__time {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--cc-space-3xs);
-}
-
-/* The cooks wear the colours of the design */
-.cook {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--cc-space-3xs);
-  padding: var(--cc-space-3xs) var(--cc-space-2xs);
-  border-radius: var(--cc-radius-pill);
-  color: var(--cc-green-dark);
-}
-
-.cook--1 {
-  background: var(--cc-chef-1);
-}
-
-.cook--2 {
-  background: var(--cc-chef-2);
-}
-
-.cook--3 {
-  background: var(--cc-chef-3);
-}
-
-.panel {
+/* One card holds the whole recipe, as in the design */
+.card {
   display: flex;
   flex-direction: column;
-  gap: var(--cc-space-2xs);
-  padding: var(--cc-space-sm);
+  gap: var(--cc-space-lg);
+  padding: var(--cc-space-2xs) var(--cc-space-2xs) var(--cc-space-md);
+  border: var(--cc-border-card) solid var(--cc-cream);
   border-radius: var(--cc-radius-lg);
-  background: var(--cc-olive-faint);
-}
-
-.panel__title {
-  font-size: var(--cc-fs-lg);
-  font-weight: var(--cc-fw-semibold);
-  color: var(--cc-green-mid);
-}
-
-/* Heading with the two drawings from the design at both ends */
-.panel__title--band {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--cc-space-xs);
-  text-align: center;
-
-  span {
-    flex: 1;
-  }
-}
-
-.panel__art {
-  display: none;
-
-  @media (width >= 600px) {
-    display: block;
-    width: auto;
-    height: 48px;
-  }
+  background: var(--cc-cream-card);
 
   @media (width >= 1024px) {
-    height: 72px;
+    gap: var(--cc-space-xl);
+    padding: var(--cc-space-lg) var(--cc-space-xl);
   }
 }
 
-.panel__subtitle {
-  font-size: var(--cc-fs-xs);
+.part {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cc-space-sm);
+}
+
+/* Drawn band with the title in the middle */
+.band {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+
+.band__image {
+  width: 100%;
+  height: auto;
+}
+
+.band__title {
+  position: absolute;
+  color: var(--cc-green-mid);
+  font-size: var(--cc-fs-band);
   font-weight: var(--cc-fw-semibold);
-  color: var(--cc-green);
-  margin-bottom: var(--cc-space-3xs);
+}
+
+/* The nutrition has no drawing, only the cream band */
+.band--plain {
+  min-height: var(--cc-band-plain);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-cream);
+
+  .band__title {
+    position: static;
+  }
+}
+
+/* Only phones fold the parts away */
+.part__toggle {
+  padding: var(--cc-space-3xs) var(--cc-space-xs);
+  border: 1px solid var(--cc-olive-soft);
+  border-radius: var(--cc-radius-md);
+  color: var(--cc-olive);
+
+  &:hover,
+  &:active {
+    border-color: var(--cc-olive);
+  }
+
+  @media (width >= 768px) {
+    display: none;
+  }
+}
+
+.part__body {
+  width: 100%;
+  max-width: var(--cc-steps-max);
+
+  &.is-closed {
+    display: none;
+
+    @media (width >= 768px) {
+      display: flex;
+    }
+  }
 }
 
 .columns {
@@ -116,6 +112,7 @@
 
   @media (width >= 768px) {
     flex-direction: row;
+    gap: var(--cc-space-xl);
 
     > * {
       flex: 1 1 0;
@@ -123,112 +120,110 @@
   }
 }
 
-.steps {
-  display: flex;
-  flex-direction: column;
-  gap: var(--cc-space-2xs);
-}
-
-.step {
-  display: flex;
-  gap: var(--cc-space-2xs);
-}
-
-.step__number {
-  flex: 0 0 auto;
-  width: 32px;
-  height: 32px;
-  display: grid;
-  place-items: center;
-  border-radius: var(--cc-radius-pill);
-  background: var(--cc-cream);
-  font-weight: var(--cc-fw-semibold);
-}
-
-.step__title {
-  font-size: var(--cc-fs-xs);
-  font-weight: var(--cc-fw-semibold);
-}
-
-.step__times {
-  color: var(--cc-olive);
-}
-
-/* The heart, right under the last step */
-.cheer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--cc-space-xs);
-  padding: 0 var(--cc-space-2xs);
-}
-
-.cheer__text {
-  font-size: var(--cc-fs-xs);
-
-  strong {
-    font-weight: var(--cc-fw-semibold);
-  }
-}
-
-.cheer__note {
-  font-size: var(--cc-fs-xs);
-  color: var(--cc-green-mid);
-}
-
-.heart {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--cc-space-3xs);
-  min-height: var(--cc-tap-target);
-  padding: var(--cc-space-3xs) var(--cc-space-xs);
-  border-radius: var(--cc-radius-pill);
-  background: var(--cc-olive-faint);
+.columns__title {
+  margin-bottom: var(--cc-space-xs);
   color: var(--cc-green);
-  font-size: var(--cc-fs-xs);
+  font-size: var(--cc-fs-sm);
   font-weight: var(--cc-fw-semibold);
-  transition: background var(--cc-transition);
-
-  &:hover {
-    background: var(--cc-olive-soft);
-  }
-}
-
-.invite {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--cc-space-xs);
-  padding: var(--cc-space-sm);
-  border-radius: var(--cc-radius-lg);
-  background: var(--cc-olive-faint);
-}
-
-.invite__text {
-  font-size: var(--cc-fs-xs);
-  font-weight: var(--cc-fw-semibold);
-  color: var(--cc-green-mid);
 
   @media (width >= 1024px) {
     font-size: var(--cc-fs-lg);
   }
 }
 
-.invite__link {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--cc-tap-target);
-  padding: var(--cc-space-2xs) var(--cc-space-sm);
-  background: var(--cc-olive);
-  color: var(--cc-cream);
-  font-size: var(--cc-fs-xs);
-  font-weight: var(--cc-fw-semibold);
-  text-decoration: none;
-  transition: background var(--cc-transition);
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-3xs);
+  padding-left: var(--cc-space-sm);
+  list-style: disc;
 
-  &:hover {
-    background: var(--cc-green-pressed);
+  @media (width >= 1024px) {
+    font-size: var(--cc-fs-body);
+  }
+
+  span {
+    display: inline-block;
+    min-width: 5ch;
+    margin-right: var(--cc-space-xs);
+  }
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-md);
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-2xs);
+}
+
+.step__title {
+  display: flex;
+  align-items: center;
+  gap: var(--cc-space-2xs);
+  font-size: var(--cc-fs-sm);
+  font-weight: var(--cc-fw-medium);
+
+  @media (width >= 1024px) {
+    font-size: var(--cc-fs-lg);
+  }
+}
+
+.step__number {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--cc-space-md);
+  height: var(--cc-space-md);
+  border-radius: var(--cc-radius-pill);
+  background: var(--cc-cream);
+  font-size: var(--cc-fs-xs);
+}
+
+.step__times {
+  color: var(--cc-olive);
+}
+
+/* The heart at the end of the card */
+.cheer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cc-space-2xs) var(--cc-space-sm);
+  text-align: center;
+}
+
+.cheer__text strong {
+  display: block;
+  font-size: var(--cc-fs-sm);
+  font-weight: var(--cc-fw-semibold);
+
+  @media (width >= 768px) {
+    display: inline;
+    margin-right: var(--cc-space-2xs);
+  }
+}
+
+.cheer__note {
+  flex-basis: 100%;
+  color: var(--cc-green-mid);
+}
+
+.heart {
+  display: grid;
+  place-items: center;
+  min-width: var(--cc-tap-target);
+  border-radius: var(--cc-radius-xs);
+  color: var(--cc-green);
+  font-size: var(--cc-fs-lg);
+
+  &:hover,
+  &:active {
+    background: var(--cc-sage-hover);
   }
 }

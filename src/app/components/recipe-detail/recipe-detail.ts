@@ -6,15 +6,27 @@ import { LanguageService } from '../../services/language.service';
 import { LikesService } from '../../services/likes.service';
 import { RecipeService } from '../../services/recipe.service';
 import { RecipeStoreService } from '../../services/recipe-store.service';
-import { Icon, type IconName } from '../icon/icon';
+import { CookLabel } from '../cook-label/cook-label';
 import { MenuBar } from '../menu-bar/menu-bar';
+import { RecipeHead } from '../recipe-head/recipe-head';
+import { RecipeInvite } from '../recipe-invite/recipe-invite';
+import { Icon } from '../icon/icon';
 import { SiteFooter } from '../site-footer/site-footer';
 import { NutritionChart } from '../nutrition-chart/nutrition-chart';
 
 /** One recipe in full, with the steps split by cook. */
 @Component({
   selector: 'app-recipe-detail',
-  imports: [Icon, MenuBar, NutritionChart, RouterLink, SiteFooter],
+  imports: [
+    CookLabel,
+    Icon,
+    MenuBar,
+    NutritionChart,
+    RecipeHead,
+    RecipeInvite,
+    RouterLink,
+    SiteFooter,
+  ],
   templateUrl: './recipe-detail.html',
   styleUrl: './recipe-detail.scss',
 })
@@ -38,6 +50,10 @@ export class RecipeDetail {
   readonly liked = computed(() => this.likes.has(this.id()));
   readonly likeFailed = signal(false);
   readonly likeBusy = signal(false);
+
+  /** On phones ingredients and directions fold away, like in the design. */
+  readonly openIngredients = signal(true);
+  readonly openDirections = signal(true);
 
   /** Where the reader came from: results, or the cuisine page and its page number. */
   readonly from = input<string>();
@@ -82,9 +98,10 @@ export class RecipeDetail {
     return (this.recipe()?.steps ?? []).filter((step) => step.helper === cook);
   }
 
-  /** Cooks take turns between the hat and the spoon, like in the design. */
-  iconFor(cook: number): IconName {
-    return cook % 2 === 1 ? 'hat' : 'spoon';
+  /** Folds a part of the recipe in or out. */
+  toggle(part: 'ingredients' | 'directions'): void {
+    const open = part === 'ingredients' ? this.openIngredients : this.openDirections;
+    open.update((value) => !value);
   }
 
   /** Gives this recipe a heart, or takes the heart back. */
