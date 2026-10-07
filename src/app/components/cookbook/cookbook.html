@@ -1,4 +1,4 @@
-<app-menu-bar />
+<app-menu-bar back="/" [backLabel]="text().titles.home" />
 
 <main class="book">
   <header class="book__intro">
@@ -39,7 +39,8 @@
             <a class="liked__card" [routerLink]="['/recipe', dish.id]">
               <span class="liked__time">
                 <app-icon name="clock" />
-                {{ text().recipe.cookingTime }}: {{ dish.cookingMinutes }} {{ text().recipe.minutes }}
+                {{ text().recipe.cookingTime }}: {{ dish.cookingMinutes }}
+                {{ text().recipe.minutes }}
               </span>
               <span class="liked__title">{{ dish.title }}</span>
               <span class="liked__hearts">
@@ -57,13 +58,7 @@
     <h2 id="styles-title" class="book__subtitle">{{ text().cookbook.categories }}</h2>
     <div class="styles__tiles">
       @for (style of cuisines; track style) {
-        <button
-          type="button"
-          class="tile"
-          [class.tile--active]="cuisine() === style"
-          [attr.aria-pressed]="cuisine() === style"
-          (click)="filterBy(style)"
-        >
+        <a class="tile" [routerLink]="['/cookbook', style]">
           <span class="tile__name">{{ text().cuisineTitles[style] }}</span>
           <span class="tile__frame">
             <img
@@ -75,45 +70,10 @@
               [attr.loading]="$index < 3 ? 'eager' : 'lazy'"
             />
           </span>
-        </button>
+        </a>
       }
     </div>
   </section>
-
-  <section class="book__list" aria-labelledby="list-title">
-    <h2 id="list-title" class="book__subtitle">
-      {{ total() }} {{ text().cookbook.recipes }}
-      @if (cuisine()) {
-        {{ text().cookbook.inThisCuisine }}
-      }
-    </h2>
-
-    @if (loading()) {
-      <p class="book__note">{{ text().cookbook.loading }}</p>
-    } @else if (failed()) {
-      <p class="book__note" role="alert">{{ text().cookbook.failed }}</p>
-    } @else if (recipes().length === 0) {
-      <p class="book__note">{{ text().cookbook.empty }}</p>
-    } @else {
-      <app-recipe-list [recipes]="recipes()" [offset]="(page() - 1) * perPage" />
-    }
-  </section>
-
-  @if (pages().length > 1) {
-    <nav class="pages" [attr.aria-label]="text().cookbook.page">
-      @for (number of pages(); track number) {
-        <button
-          type="button"
-          class="pages__item"
-          [class.pages__item--active]="page() === number"
-          [attr.aria-current]="page() === number ? 'page' : null"
-          (click)="goTo(number)"
-        >
-          {{ number }}
-        </button>
-      }
-    </nav>
-  }
 </main>
 
 <app-site-footer />
