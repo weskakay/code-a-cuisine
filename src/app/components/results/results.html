@@ -41,7 +41,12 @@
             {{ recipe.extraIngredients.length }} {{ text().results.extras }} ·
             {{ recipe.steps.length }} {{ text().results.steps }}
           </p>
-          <a class="card__view" [routerLink]="['/recipe', recipe.id]">{{ text().results.view }}</a>
+          <a
+            class="card__view"
+            [routerLink]="['/recipe', recipe.id]"
+            [queryParams]="{ from: 'results' }"
+            >{{ text().results.view }}</a
+          >
         </li>
       }
     </ul>

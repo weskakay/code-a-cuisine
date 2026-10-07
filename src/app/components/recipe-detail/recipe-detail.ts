@@ -37,13 +37,14 @@ export class RecipeDetail {
   readonly likeFailed = signal(false);
   readonly likeBusy = signal(false);
 
-  /** Recipes of this session came from the results, the others from the library. */
-  readonly backLink = computed(() => (this.store.find(this.id()) ? '/results' : '/cookbook'));
+  /** Where the reader came from, set by the link that opened the recipe. */
+  readonly from = input<string>();
+
+  /** Back to the results when the generator opened the recipe, else to the cookbook. */
+  readonly backLink = computed(() => (this.from() === 'results' ? '/results' : '/cookbook'));
 
   readonly backLabel = computed(() =>
-    this.backLink() === '/results'
-      ? this.text().recipe.backResults
-      : this.text().recipe.backCookbook,
+    this.from() === 'results' ? this.text().recipe.backResults : this.text().titles.cookbook,
   );
 
   /** The cooks that have at least one step, so the page can list them. */

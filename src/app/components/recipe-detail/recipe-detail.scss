@@ -154,15 +154,6 @@
   color: var(--cc-olive);
 }
 
-.dish__back {
-  align-self: flex-start;
-  min-height: var(--cc-tap-target);
-  display: inline-flex;
-  align-items: center;
-  color: var(--cc-green-mid);
-}
-
-/* Sends the reader on to the library, as the design does */
 /* The heart, right under the last step */
 .cheer {
   display: flex;
