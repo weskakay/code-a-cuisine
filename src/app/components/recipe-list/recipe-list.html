@@ -1,29 +1,36 @@
 <ul class="list">
   @for (recipe of recipes(); track recipe.id) {
-    <li class="list__row">
-      <a class="list__link" [routerLink]="['/recipe', recipe.id]">
+    <li>
+      <a class="list__link" [routerLink]="['/recipe', recipe.id]" [queryParams]="origin()">
         <span class="list__number" aria-hidden="true">{{ $index + 1 + offset() }}.</span>
-        <h3 class="list__title">{{ recipe.title }}</h3>
-        @if (recipe.language !== language()) {
-          <span class="list__lang" [attr.aria-label]="text().language[recipe.language]">
-            {{ recipe.language === 'de' ? 'DE' : 'EN' }}
-          </span>
-        }
-        <p class="list__facts">
-          {{ text().recipe.cookingTime }}: {{ recipe.cookingMinutes }} {{ text().recipe.minutes }} ·
-          {{ text().cuisines[recipe.cuisine] }} · {{ text().diets[recipe.diet] }}
-        </p>
-        @if (recipe.likes > 0) {
+        <span class="list__time">
+          <app-icon name="clock" />
+          {{ text().recipe.cookingTime }}: {{ recipe.cookingMinutes }} {{ text().recipe.minutes }}
+        </span>
+        <h2 class="list__title">{{ recipe.title }}</h2>
+        <span class="list__tags">
+          @if (recipe.language !== language()) {
+            <span class="tag" role="img" [attr.aria-label]="text().language[recipe.language]">
+              {{ recipe.language === 'de' ? 'DE' : 'EN' }}
+            </span>
+          }
+          @if (recipe.diet !== 'none') {
+            <span class="tag">{{ text().diets[recipe.diet] }}</span>
+          }
+          <span class="tag">{{ text().times[recipe.cookingTime] }}</span>
           <span
-            class="list__hearts"
+            class="tag tag--hearts"
+            role="img"
             [attr.aria-label]="
-              recipe.likes + ' ' + (recipe.likes === 1 ? text().cookbook.heart : text().cookbook.hearts)
+              recipe.likes +
+              ' ' +
+              (recipe.likes === 1 ? text().cookbook.heart : text().cookbook.hearts)
             "
           >
-            <app-icon name="heart" [filled]="true" />
+            <app-icon name="heart" />
             {{ recipe.likes }}
           </span>
-        }
+        </span>
       </a>
     </li>
   }

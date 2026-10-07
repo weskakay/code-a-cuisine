@@ -1,78 +1,105 @@
 .list {
   display: flex;
   flex-direction: column;
-  gap: var(--cc-space-2xs);
+  gap: var(--cc-space-xs);
+
+  @media (width >= 768px) {
+    gap: var(--cc-space-2xs);
+  }
 }
 
+/* Phones: number and time, then the name, then the tags. Wider: tags on the right */
 .list__link {
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto 1fr;
   grid-template-areas:
-    'number title lang hearts'
-    'number facts lang hearts';
-  column-gap: var(--cc-space-xs);
-  row-gap: var(--cc-space-3xs);
+    'number time'
+    'title title'
+    'tags tags';
+  align-items: center;
+  gap: var(--cc-space-2xs);
   min-height: var(--cc-tap-target);
-  padding: var(--cc-space-xs);
+  padding: var(--cc-space-2xs) var(--cc-space-xs);
   border-radius: var(--cc-radius-md);
-  background: var(--cc-olive-faint);
   color: var(--cc-green-dark);
   text-decoration: none;
   transition: background var(--cc-transition);
 
-  &:hover {
-    background: var(--cc-olive-soft);
+  &:hover,
+  &:active {
+    background: var(--cc-cream-row);
+  }
+
+  @media (width >= 768px) {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+      'number time tags'
+      'number title tags';
+    column-gap: var(--cc-space-2xs);
+    row-gap: 0;
   }
 }
 
 .list__number {
   grid-area: number;
-  align-self: center;
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: var(--cc-space-md);
+  height: var(--cc-space-md);
   border-radius: var(--cc-radius-pill);
   background: var(--cc-number-circle);
-  color: var(--cc-green-dark);
+  color: var(--cc-green-mid);
   font-size: var(--cc-fs-xs);
-  font-weight: var(--cc-fw-semibold);
+  font-weight: var(--cc-fw-medium);
+
+  @media (width >= 768px) {
+    align-self: end;
+  }
+}
+
+.list__time {
+  grid-area: time;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cc-space-3xs);
+  color: var(--cc-olive);
+  font-size: var(--cc-fs-xs);
 }
 
 .list__title {
   grid-area: title;
-  font-size: var(--cc-fs-xs);
-  font-weight: var(--cc-fw-semibold);
   color: var(--cc-green-mid);
+  font-size: var(--cc-fs-sm);
+  font-weight: var(--cc-fw-semibold);
 
   @media (width >= 1024px) {
     font-size: var(--cc-fs-lg);
+    font-weight: var(--cc-fw-medium);
   }
 }
 
-.list__facts {
-  grid-area: facts;
-  font-size: var(--cc-fs-xs);
+.list__tags {
+  grid-area: tags;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cc-space-2xs);
+
+  @media (width >= 768px) {
+    justify-content: flex-end;
+  }
 }
 
-.list__hearts {
-  grid-area: hearts;
-  align-self: center;
+.tag {
   display: inline-flex;
   align-items: center;
   gap: var(--cc-space-3xs);
+  padding: var(--cc-space-3xs) var(--cc-space-xs);
+  border-radius: var(--cc-radius-pill);
+  background: var(--cc-olive-tag);
   font-size: var(--cc-fs-xs);
-  color: var(--cc-green);
+  font-weight: var(--cc-fw-medium);
 }
 
-/* Marks a recipe that is not written in the chosen language */
-.list__lang {
-  grid-area: lang;
-  align-self: center;
-  padding: var(--cc-space-3xs) var(--cc-space-2xs);
-  border-radius: var(--cc-radius-pill);
-  background: var(--cc-olive-faint);
-  color: var(--cc-green-mid);
-  font-size: var(--cc-fs-xs);
-  font-weight: var(--cc-fw-semibold);
+.tag--hearts {
+  background: var(--cc-olive-soft);
 }
