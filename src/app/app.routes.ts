@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { Cookbook } from './components/cookbook/cookbook';
+import { CuisinePage } from './components/cuisine-page/cuisine-page';
 import { Generate } from './components/generate/generate';
 import { Home } from './components/home/home';
 import { Imprint } from './components/imprint/imprint';
@@ -13,6 +14,7 @@ export const routes: Routes = [
   { path: 'generate', component: Generate, title: 'generate' },
   { path: 'preferences', component: Preferences, title: 'preferences' },
   { path: 'cookbook', component: Cookbook, title: 'cookbook' },
+  { path: 'cookbook/:cuisine', component: CuisinePage, title: 'cookbook' },
   { path: 'results', component: Results, title: 'results' },
   { path: 'recipe/:id', component: RecipeDetail, title: 'recipe' },
   { path: 'imprint', component: Imprint, title: 'imprint' },

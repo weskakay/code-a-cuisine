@@ -1,0 +1,110 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  min-height: 100svh;
+  background: var(--cc-white);
+  color: var(--cc-green-dark);
+}
+
+.kind {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-lg);
+  max-width: var(--cc-cuisine-max);
+  margin: 0 auto;
+  padding: var(--cc-space-sm) var(--cc-space-xs) var(--cc-space-xl);
+
+  @media (width >= 1024px) {
+    gap: var(--cc-space-xl);
+    padding-inline: var(--cc-space-xl);
+  }
+}
+
+/* Last in the page on phones, top right on wide screens */
+.kind__generate {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--cc-tap-target);
+  padding: var(--cc-space-2xs) var(--cc-space-sm);
+  background: var(--cc-olive);
+  color: var(--cc-cream);
+  font-size: var(--cc-fs-xs);
+  font-weight: var(--cc-fw-semibold);
+  text-decoration: none;
+
+  &:hover {
+    background: var(--cc-green-pressed);
+  }
+
+  @media (width >= 1024px) {
+    order: -1;
+    align-self: flex-end;
+    font-size: var(--cc-fs-lg);
+  }
+}
+
+/* Drawn banner with the name of the cuisine on top */
+.banner {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.banner__image {
+  width: 100%;
+  height: auto;
+}
+
+.banner__title {
+  position: absolute;
+  color: var(--cc-green-mid);
+  font-size: var(--cc-fs-sm);
+  font-weight: var(--cc-fw-semibold);
+  text-align: center;
+
+  @media (width >= 600px) {
+    color: var(--cc-green-dark);
+    font-size: var(--cc-fs-banner);
+    font-weight: var(--cc-fw-bold);
+  }
+}
+
+.kind__list {
+  width: 100%;
+  max-width: var(--cc-list-max);
+  margin: 0 auto;
+}
+
+.kind__note {
+  font-size: var(--cc-fs-xs);
+  text-align: center;
+}
+
+.pages {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--cc-space-3xs);
+}
+
+.pages__item {
+  display: grid;
+  place-items: center;
+  min-width: var(--cc-tap-target);
+  min-height: var(--cc-tap-target);
+  border-radius: var(--cc-radius-xs);
+  color: var(--cc-green-dark);
+  font-size: var(--cc-fs-sm);
+  text-decoration: none;
+  transition: background var(--cc-transition);
+
+  &:hover {
+    background: var(--cc-loader-soft);
+  }
+}
+
+.pages__item--active {
+  background: var(--cc-loader);
+  font-weight: var(--cc-fw-semibold);
+}

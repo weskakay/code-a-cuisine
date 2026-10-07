@@ -1,0 +1,76 @@
+<app-menu-bar back="/cookbook" [backLabel]="text().titles.cookbook" />
+
+@if (style(); as style) {
+  <main class="kind">
+    <header class="banner">
+      <picture>
+        <source media="(min-width: 600px)" [srcset]="'images/banner-' + style + '.webp'" />
+        <img
+          class="banner__image"
+          [src]="'images/banner-' + style + '-m.webp'"
+          alt=""
+          width="680"
+          height="182"
+        />
+      </picture>
+      <h1 class="banner__title">{{ text().cuisineTitles[style] }}</h1>
+    </header>
+
+    <section class="kind__list" [attr.aria-label]="text().cookbook.recipes">
+      @if (loading()) {
+        <p class="kind__note">{{ text().cookbook.loading }}</p>
+      } @else if (failed()) {
+        <p class="kind__note" role="alert">{{ text().cookbook.failed }}</p>
+      } @else if (recipes().length === 0) {
+        <p class="kind__note">{{ text().cookbook.emptyStyle }}</p>
+      } @else {
+        <app-recipe-list
+          [recipes]="recipes()"
+          [offset]="(page() - 1) * perPage"
+          [from]="style"
+          [page]="page()"
+        />
+      }
+    </section>
+
+    @if (pages().length > 1) {
+      <nav class="pages" [attr.aria-label]="text().cookbook.page">
+        @if (page() > 1) {
+          <a
+            class="pages__item"
+            [routerLink]="[]"
+            [queryParams]="{ page: page() - 1 }"
+            [attr.aria-label]="text().cookbook.previous"
+          >
+            &lsaquo;
+          </a>
+        }
+        @for (number of pages(); track number) {
+          <a
+            class="pages__item"
+            [class.pages__item--active]="page() === number"
+            [routerLink]="[]"
+            [queryParams]="{ page: number }"
+            [attr.aria-current]="page() === number ? 'page' : null"
+          >
+            {{ number }}
+          </a>
+        }
+        @if (page() < pages().length) {
+          <a
+            class="pages__item"
+            [routerLink]="[]"
+            [queryParams]="{ page: page() + 1 }"
+            [attr.aria-label]="text().cookbook.next"
+          >
+            &rsaquo;
+          </a>
+        }
+      </nav>
+    }
+
+    <a class="kind__generate" routerLink="/generate">{{ text().cookbook.generate }}</a>
+  </main>
+}
+
+<app-site-footer />
