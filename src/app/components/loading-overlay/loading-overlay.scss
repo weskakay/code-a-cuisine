@@ -25,8 +25,8 @@
 }
 
 .loading__tile {
-  display: grid;
-  place-items: center;
+  display: block;
+  overflow: hidden;
   width: var(--cc-loader-tile-width);
   height: var(--cc-loader-tile-height);
   border-radius: var(--cc-radius-lg);
@@ -44,61 +44,11 @@
   font-size: var(--cc-fs-sm);
 }
 
-/* A pot with three rising clouds of steam */
-.pot {
-  position: relative;
-  width: 96px;
-  height: 96px;
-  transform: scale(var(--cc-loader-pot-scale));
-}
-
-.pot__body {
-  position: absolute;
-  inset: auto 8px 8px;
-  height: 48px;
-  border-radius: 0 0 var(--cc-radius-md) var(--cc-radius-md);
-  background: var(--cc-olive);
-}
-
-.pot__steam {
-  position: absolute;
-  bottom: 56px;
-  width: 10px;
-  height: 10px;
-  border-radius: var(--cc-radius-pill);
-  background: var(--cc-cream);
-  opacity: 0;
-  animation: rise 1.8s ease-in-out infinite;
-}
-
-.pot__steam:nth-child(1) {
-  left: 24px;
-}
-
-.pot__steam:nth-child(2) {
-  left: 44px;
-  animation-delay: 0.3s;
-}
-
-.pot__steam:nth-child(3) {
-  left: 64px;
-  animation-delay: 0.6s;
-}
-
-@keyframes rise {
-  0% {
-    transform: translateY(0) scale(0.6);
-    opacity: 0;
-  }
-
-  40% {
-    opacity: 0.9;
-  }
-
-  100% {
-    transform: translateY(-28px) scale(1.2);
-    opacity: 0;
-  }
+/* Spinner from the design, sits at the top and leaves a small strip of the tile below */
+.loading__image {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /* The text stays, the dots leave one by one from the end and come back
@@ -150,7 +100,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pot__steam,
   .dots span {
     animation: none;
     opacity: 1;

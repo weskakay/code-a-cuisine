@@ -2,14 +2,10 @@
   <app-menu-bar [onDark]="true" />
 
   <div class="loading__body" role="status" aria-live="polite">
-    <div class="loading__tile" aria-hidden="true">
-      <div class="pot">
-        <span class="pot__steam"></span>
-        <span class="pot__steam"></span>
-        <span class="pot__steam"></span>
-        <span class="pot__body"></span>
-      </div>
-    </div>
+    <picture class="loading__tile">
+      <source media="(prefers-reduced-motion: reduce)" srcset="images/loader-still.webp" />
+      <img class="loading__image" src="images/loader.webp" alt="" width="436" height="501" />
+    </picture>
     <p class="loading__label">
       {{ label()
       }}<span class="dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span>
