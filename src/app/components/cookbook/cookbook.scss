@@ -71,12 +71,13 @@
 }
 
 .liked__arrow {
+  display: grid;
+  place-items: center;
   min-width: var(--cc-tap-target);
   min-height: var(--cc-tap-target);
   border-radius: var(--cc-radius-pill);
   background: var(--cc-olive-faint);
   color: var(--cc-green-mid);
-  font-size: var(--cc-fs-xs);
   transition: background var(--cc-transition);
 
   &:hover {
@@ -91,7 +92,9 @@
   scroll-snap-type: x proximity;
   padding-bottom: var(--cc-space-2xs);
 
+  /* The cards stretch to the tallest one, so a long name does not make one card stand out */
   > li {
+    display: flex;
     scroll-snap-align: start;
   }
 }

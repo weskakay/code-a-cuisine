@@ -13,6 +13,14 @@
   stroke-linejoin: round;
 }
 
+/* Every arrow has the same size, whatever the text next to it.
+   Works because name is always set as a plain attribute, never bound */
+:host([name='arrow-left']) .icon,
+:host([name='arrow-right']) .icon {
+  width: var(--cc-icon-arrow);
+  height: var(--cc-icon-arrow);
+}
+
 .icon--filled {
   fill: currentColor;
 }

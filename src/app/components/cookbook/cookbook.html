@@ -20,7 +20,7 @@
               [attr.aria-label]="text().cookbook.scrollLeft"
               (click)="scrollLiked(-1)"
             >
-              &larr;
+              <app-icon name="arrow-left" />
             </button>
             <button
               type="button"
@@ -28,7 +28,7 @@
               [attr.aria-label]="text().cookbook.scrollRight"
               (click)="scrollLiked(1)"
             >
-              &rarr;
+              <app-icon name="arrow-right" />
             </button>
           </div>
         }
