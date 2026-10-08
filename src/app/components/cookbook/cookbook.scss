@@ -181,6 +181,7 @@
   display: block;
   overflow: hidden;
   border-radius: var(--cc-radius-lg);
+  background: var(--cc-card);
   outline: 4px solid transparent;
   outline-offset: 4px;
   transition: outline-color var(--cc-transition);
