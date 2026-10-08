@@ -34,19 +34,19 @@
   <dl class="facts">
     <div>
       <dt>{{ text().recipe.energyShort }}</dt>
-      <dd>{{ dish().nutritionPerPortion.energyKcal }} kcal</dd>
+      <dd>{{ dish().nutritionPerPortion.energyKcal | amount }} kcal</dd>
     </div>
     <div>
       <dt>{{ text().recipe.protein }}</dt>
-      <dd>{{ dish().nutritionPerPortion.proteinG }} g</dd>
+      <dd>{{ dish().nutritionPerPortion.proteinG | amount }} g</dd>
     </div>
     <div>
       <dt>{{ text().recipe.fat }}</dt>
-      <dd>{{ dish().nutritionPerPortion.fatG }} g</dd>
+      <dd>{{ dish().nutritionPerPortion.fatG | amount }} g</dd>
     </div>
     <div>
       <dt>{{ text().recipe.carbs }}</dt>
-      <dd>{{ dish().nutritionPerPortion.carbsG }} g</dd>
+      <dd>{{ dish().nutritionPerPortion.carbsG | amount }} g</dd>
     </div>
   </dl>
 </div>

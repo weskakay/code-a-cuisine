@@ -38,7 +38,7 @@
           [attr.stroke-dashoffset]="slice.offset"
         />
       }
-      <text class="chart__kcal" x="90" y="86">{{ current().energyKcal }}</text>
+      <text class="chart__kcal" x="90" y="86">{{ current().energyKcal | amount }}</text>
       <text class="chart__unit" x="90" y="108">kcal</text>
     </svg>
 
@@ -51,7 +51,7 @@
             aria-hidden="true"
           ></span>
           <span class="legend__label">{{ slice.label }}</span>
-          <span class="legend__value">{{ slice.grams }} g &middot; {{ slice.percent }}&nbsp;%</span>
+          <span class="legend__value">{{ slice.grams | amount }} g &middot; {{ slice.percent }}&nbsp;%</span>
         </li>
       }
     </ul>

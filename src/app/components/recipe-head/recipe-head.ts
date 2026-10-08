@@ -1,5 +1,6 @@
 import { Component, inject, input } from '@angular/core';
 import type { Recipe } from '../../interfaces/recipe.interface';
+import { AmountPipe } from '../../pipes/amount.pipe';
 import { LanguageService } from '../../services/language.service';
 import { CookLabel } from '../cook-label/cook-label';
 import { Icon } from '../icon/icon';
@@ -7,7 +8,7 @@ import { Icon } from '../icon/icon';
 /** Top of a recipe: name, cooks, tags, hearts and the four values per portion. */
 @Component({
   selector: 'app-recipe-head',
-  imports: [CookLabel, Icon],
+  imports: [AmountPipe, CookLabel, Icon],
   templateUrl: './recipe-head.html',
   styleUrl: './recipe-head.scss',
 })

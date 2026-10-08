@@ -1,10 +1,12 @@
 import { Component, inject } from '@angular/core';
+import { AmountPipe } from '../../pipes/amount.pipe';
 import { LanguageService } from '../../services/language.service';
 import { RecipeDraftService } from '../../services/recipe-draft.service';
 
 /** Shows what is on the list so far and lets the visitor take items off again. */
 @Component({
   selector: 'app-ingredient-list',
+  imports: [AmountPipe],
   templateUrl: './ingredient-list.html',
   styleUrl: './ingredient-list.scss',
 })

@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, input, signal, untracked } from '@
 import { Router, RouterLink } from '@angular/router';
 import { CUISINES } from '../../data/options';
 import type { Recipe } from '../../interfaces/recipe.interface';
+import { AmountPipe } from '../../pipes/amount.pipe';
 import { LanguageService } from '../../services/language.service';
 import { LikesService } from '../../services/likes.service';
 import { RecipeService } from '../../services/recipe.service';
@@ -18,6 +19,7 @@ import { NutritionChart } from '../nutrition-chart/nutrition-chart';
 @Component({
   selector: 'app-recipe-detail',
   imports: [
+    AmountPipe,
     CookLabel,
     Icon,
     MenuBar,

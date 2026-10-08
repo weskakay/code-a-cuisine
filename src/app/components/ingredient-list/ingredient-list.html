@@ -4,7 +4,7 @@
   <ul class="list">
     @for (item of ingredients(); track $index) {
       <li class="list__item" [class.list__item--editing]="editing() === $index">
-        <span class="list__amount">{{ item.amount }} {{ text().unitsShort[item.unit] }}</span>
+        <span class="list__amount">{{ item.amount | amount }} {{ text().unitsShort[item.unit] }}</span>
         <span class="list__name">{{ item.name }}</span>
         <button
           type="button"

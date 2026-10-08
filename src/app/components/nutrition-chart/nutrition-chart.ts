@@ -1,5 +1,6 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import type { Nutrition } from '../../interfaces/recipe.interface';
+import { AmountPipe } from '../../pipes/amount.pipe';
 import { LanguageService } from '../../services/language.service';
 
 /** Radius of the ring, shared by the maths here and the viewBox in the template. */
@@ -36,6 +37,7 @@ export interface MacroSlice extends Macro {
  */
 @Component({
   selector: 'app-nutrition-chart',
+  imports: [AmountPipe],
   templateUrl: './nutrition-chart.html',
   styleUrl: './nutrition-chart.scss',
 })
