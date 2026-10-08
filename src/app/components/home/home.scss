@@ -19,7 +19,7 @@
   max-width: var(--cc-content-max);
   margin: 0 auto;
   padding: var(--cc-space-lg) var(--cc-space-xs) var(--cc-space-xl);
-  min-height: calc(100svh - 76px);
+  min-height: calc(100svh - var(--cc-bar-height));
 
   @media (width >= 1024px) {
     padding: var(--cc-space-xl);
