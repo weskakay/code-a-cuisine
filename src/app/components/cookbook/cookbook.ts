@@ -44,6 +44,7 @@ export class Cookbook implements OnInit {
     inject(DestroyRef).onDestroy(() => window.removeEventListener('resize', onResize));
   }
 
+  /** Loads the most liked recipes for the row at the top. */
   ngOnInit(): void {
     void this.loadMostLiked();
   }
