@@ -67,11 +67,20 @@
   dt {
     font-size: var(--cc-fs-sm);
     font-weight: var(--cc-fw-bold);
+
+    @media (width >= 1024px) {
+      font-size: var(--cc-fs-fact);
+    }
   }
 
   dd {
     margin: 0;
     font-size: var(--cc-fs-sm);
+    font-weight: var(--cc-fw-medium);
+
+    @media (width >= 1024px) {
+      font-size: var(--cc-fs-body);
+    }
   }
 }
 

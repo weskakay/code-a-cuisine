@@ -70,11 +70,13 @@
   --cc-fs-xs: 16px;
   --cc-fs-sm: 18px;
   --cc-fs-body: 20px;
+  --cc-fs-fact: 22px;
   --cc-fs-lg: 24px;
   --cc-fs-card: 28px;
   --cc-fs-banner: clamp(28px, 3vw, 40px);
   --cc-fs-band: clamp(24px, 2.5vw, 32px);
   --cc-fs-h2: clamp(32px, 5vw, 54px);
+  --cc-fs-loading: clamp(36px, 4vw, 48px);
   --cc-fs-h1: clamp(48px, 9vw, 104px);
   --cc-lh-body: 1.5;
 
@@ -82,6 +84,9 @@
   --cc-content-max: 1440px;
   --cc-tap-target: 44px;
   --cc-results-visual: 574px;
+  --cc-loader-tile-width: 253px;
+  --cc-loader-tile-height: 309px;
+  --cc-loader-pot-scale: 1.75;
   --cc-cuisine-max: 1271px;
   --cc-list-max: 900px;
   --cc-recipe-max: 1376px;
