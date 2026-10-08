@@ -24,8 +24,8 @@ the library, see [The hosted version](#the-hosted-version).
 3. The workflow asks the model for exactly three recipes, checks the answer and stores it.
 4. You get three suggestions, each with steps split by cook, waiting times and the
    nutritional values per portion and for the whole dish.
-5. Every recipe stays in the library, browsable without an account, and anyone can
-   give it a heart.
+5. Every recipe stays in the library, sorted by cooking style and browsable without an
+   account. Anyone can give it a heart, the browser remembers which ones it gave.
 
 Three recipes per address and day, twelve per day in total. A failed run gives the
 attempt back.
@@ -211,7 +211,8 @@ npm run build
 | `/preferences` | portions, cooks, time, cuisine, diet |
 | `/results` | the three suggestions |
 | `/recipe/:id` | one recipe in full |
-| `/cookbook` | the library, filtered by cooking style |
+| `/cookbook` | the library: the most liked recipes and one tile per cooking style |
+| `/cookbook/:cuisine` | every recipe of one cooking style in the chosen language, 20 per page |
 | `/imprint` | legal notice |
 
 ## Project structure
@@ -220,6 +221,8 @@ npm run build
 src/app/components   screens and reusable parts
 src/app/services     data access and shared logic
 src/app/interfaces   the types shared with the workflow
+src/app/data         texts in both languages and the fixed options
+src/app/pipes        number formatting that follows the language
 src/styles           design tokens and base styles
 n8n/workflows        exported automation workflows
 ```
@@ -263,7 +266,8 @@ The app posts this to the workflow:
 }
 ```
 
-`unit` is `g`, `ml` or `piece`. `cookingTime` is `quick`, `medium` or `complex`. `cuisine`
+The list holds 1 to 20 ingredients, each name up to 40 characters. `unit` is `g`, `ml`
+or `piece`. `cookingTime` is `quick`, `medium` or `complex`. `cuisine`
 is one of german, italian, japanese, indian, gourmet, fusion. `diet` is vegetarian, vegan,
 keto or none. Portions run from 1 to 12, helpers from 1 to 3. `language` is `en` or `de`
 and decides which language the model writes the recipes in.
@@ -283,8 +287,8 @@ when the limit is reached and 502 when the model broke the rules. The types live
 
 ## The workflows
 
-`Generate recipes` takes the request, counts it against the daily limit and asks the
-model. Its answer has a fixed shape (three recipes, at most three extras each), and a code
+`Generate recipes` checks the request again with the same limits as the form, counts it
+against the daily limit and asks the model. Its answer has a fixed shape (three recipes, at most three extras each), and a code
 node checks the one rule a shape cannot hold: every recipe uses at least 70 percent of the
 ingredients. Then the three recipes are stored. Every branch ends in an
 answer: 400 for a bad request, 429 when the limit is used up, 502 when the model broke the
