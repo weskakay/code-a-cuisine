@@ -25,7 +25,7 @@
 }
 
 .loading__tile {
-  display: block;
+  position: relative;
   overflow: hidden;
   width: var(--cc-loader-tile-width);
   height: var(--cc-loader-tile-height);
@@ -45,14 +45,67 @@
 }
 
 /* Spinner from the design, sits at the top and leaves a small strip of the tile below */
-.loading__image {
+.loading__image,
+.loading__still {
   display: block;
   width: 100%;
   height: auto;
+  background: var(--cc-loader);
+}
+
+/* With less motion asked for, three still frames fade into each other instead */
+.loading__still {
+  display: none;
+  position: absolute;
+  inset: 0 0 auto;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading__still {
+    display: block;
+    animation: 9s ease-in-out infinite;
+  }
+
+  .loading__still--second {
+    animation-name: still-second;
+  }
+
+  .loading__still--third {
+    animation-name: still-third;
+  }
+}
+
+@keyframes still-second {
+  0%,
+  28%,
+  66%,
+  100% {
+    opacity: 0;
+  }
+
+  33%,
+  61% {
+    opacity: 1;
+  }
+}
+
+@keyframes still-third {
+  0%,
+  61%,
+  100% {
+    opacity: 0;
+  }
+
+  66%,
+  95% {
+    opacity: 1;
+  }
 }
 
 /* The text stays, the dots leave one by one from the end and come back
-   the same way: ... .. . (none) . .. ... in eight steps of half a second */
+   the same way: ... .. . (none) . .. ... in eight steps of half a second.
+   Only the opacity changes, so this runs with less motion as well */
 .dots span {
   animation: 4s step-end infinite;
 }
@@ -95,13 +148,6 @@
   }
 
   87.5% {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .dots span {
-    animation: none;
     opacity: 1;
   }
 }

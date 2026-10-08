@@ -95,8 +95,10 @@ a {
   outline-offset: 2px;
 }
 
+/* Less motion stops every animation. Elements marked calm-fade only change their
+   opacity, nothing moves, so they keep running */
 @media (prefers-reduced-motion: reduce) {
-  *,
+  *:not(.calm-fade),
   *::before,
   *::after {
     animation-duration: 0.01ms !important;

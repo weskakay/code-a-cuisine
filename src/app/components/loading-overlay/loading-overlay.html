@@ -2,13 +2,34 @@
   <app-menu-bar [onDark]="true" />
 
   <div class="loading__body" role="status" aria-live="polite">
-    <picture class="loading__tile">
-      <source media="(prefers-reduced-motion: reduce)" srcset="images/loader-still.webp" />
-      <img class="loading__image" src="images/loader.webp" alt="" width="436" height="501" />
-    </picture>
+    <div class="loading__tile" aria-hidden="true">
+      <picture>
+        <source media="(prefers-reduced-motion: reduce)" srcset="images/loader-still-1.webp" />
+        <img class="loading__image" src="images/loader.webp" alt="" width="436" height="501" />
+      </picture>
+      <img
+        class="loading__still loading__still--second calm-fade"
+        src="images/loader-still-2.webp"
+        alt=""
+        width="436"
+        height="501"
+        loading="lazy"
+      />
+      <img
+        class="loading__still loading__still--third calm-fade"
+        src="images/loader-still-3.webp"
+        alt=""
+        width="436"
+        height="501"
+        loading="lazy"
+      />
+    </div>
     <p class="loading__label">
       {{ label()
-      }}<span class="dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span>
+      }}<span class="dots" aria-hidden="true"
+        ><span class="calm-fade">.</span><span class="calm-fade">.</span
+        ><span class="calm-fade">.</span></span
+      >
     </p>
     @if (hint()) {
       <p class="loading__hint">{{ hint() }}</p>
