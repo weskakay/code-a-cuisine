@@ -33,7 +33,7 @@
   @media (width >= 768px) {
     grid-template-columns: auto 1fr auto;
     grid-template-areas:
-      'number time tags'
+      '. time tags'
       'number title tags';
     column-gap: var(--cc-space-2xs);
     row-gap: 0;
@@ -52,8 +52,10 @@
   font-size: var(--cc-fs-xs);
   font-weight: var(--cc-fw-medium);
 
+  /* Sits on the first line of the name, as in the design */
   @media (width >= 768px) {
-    align-self: end;
+    align-self: baseline;
+    font-size: var(--cc-fs-sm);
   }
 }
 
@@ -68,6 +70,7 @@
 
 .list__title {
   grid-area: title;
+  align-self: baseline;
   color: var(--cc-green-mid);
   font-size: var(--cc-fs-sm);
   font-weight: var(--cc-fw-semibold);
