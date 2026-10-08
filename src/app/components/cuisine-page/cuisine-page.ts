@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, input, signal, untracked } from '@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { CUISINES, RECIPES_PER_PAGE } from '../../data/options';
+import type { Language } from '../../data/texts';
 import type { Cuisine, Recipe } from '../../interfaces/recipe.interface';
 import { LanguageService } from '../../services/language.service';
 import { RecipeService, type RecipePage } from '../../services/recipe.service';
@@ -19,8 +20,9 @@ import { SiteFooter } from '../site-footer/site-footer';
 export class CuisinePage {
   private readonly recipeService = inject(RecipeService);
   private readonly router = inject(Router);
+  private readonly languages = inject(LanguageService);
 
-  readonly text = inject(LanguageService).t;
+  readonly text = this.languages.t;
   readonly perPage = RECIPES_PER_PAGE;
 
   /** Comes from the route, for example /cookbook/italian. */
@@ -50,26 +52,27 @@ export class CuisinePage {
     effect(() => {
       const style = this.style();
       const page = this.page();
-      untracked(() => void this.show(style, page));
+      const language = this.languages.current();
+      untracked(() => void this.show(style, page, language));
     });
   }
 
   /** An unknown style goes back to the cookbook, a known one loads its page. */
-  private async show(style: Cuisine | undefined, page: number): Promise<void> {
+  private async show(style: Cuisine | undefined, page: number, language: Language): Promise<void> {
     if (!style) {
       await this.router.navigate(['/cookbook']);
       return;
     }
-    await this.load(style, page);
+    await this.load(style, page, language);
   }
 
-  /** Reads one page of that style from the library. */
-  private async load(style: Cuisine, page: number): Promise<void> {
+  /** Reads one page of that style in the language of the interface. */
+  private async load(style: Cuisine, page: number, language: Language): Promise<void> {
     const ticket = ++this.request;
     this.loading.set(true);
     this.failed.set(false);
     try {
-      this.take(ticket, await this.recipeService.listRecipes(page, style));
+      this.take(ticket, await this.recipeService.listRecipes(page, style, language));
     } catch (error) {
       await this.recover(error, page);
     }

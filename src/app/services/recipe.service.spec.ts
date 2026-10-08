@@ -52,6 +52,11 @@ describe('RecipeService', () => {
     expect(request.request.headers.get('Range')).toBe('20-39');
   });
 
+  it('filters by language when one is given', () => {
+    service.listRecipes(1, 'italian', 'de');
+    http.expectOne((r) => r.url.includes('cuisine=eq.italian&language=eq.de'));
+  });
+
   it('returns null when the recipe does not exist', async () => {
     const recipe = service.getRecipe('missing');
     http.expectOne((r) => r.url.includes('id=eq.missing')).flush([]);

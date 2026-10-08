@@ -12,10 +12,7 @@ import { Icon } from '../icon/icon';
   styleUrl: './recipe-list.scss',
 })
 export class RecipeList {
-  private readonly languages = inject(LanguageService);
-
-  readonly text = this.languages.t;
-  readonly language = this.languages.current;
+  readonly text = inject(LanguageService).t;
 
   /** The page of recipes the cookbook handed over. */
   readonly recipes = input.required<Recipe[]>();

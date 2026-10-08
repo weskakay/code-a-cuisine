@@ -38,10 +38,11 @@ export class RecipeService {
   private readonly http = inject(HttpClient);
   private readonly endpoint = `${environment.supabaseUrl}/rest/v1/recipes`;
 
-  /** Reads one page of the library, newest first, optionally filtered by cuisine. */
-  async listRecipes(page = 1, cuisine?: Cuisine): Promise<RecipePage> {
+  /** Reads one page of the library, newest first, optionally filtered by cuisine and language. */
+  async listRecipes(page = 1, cuisine?: Cuisine, language?: Language): Promise<RecipePage> {
     const first = (page - 1) * RECIPES_PER_PAGE;
-    const filter = cuisine ? `&cuisine=eq.${cuisine}` : '';
+    const filter =
+      (cuisine ? `&cuisine=eq.${cuisine}` : '') + (language ? `&language=eq.${language}` : '');
     const url = `${this.endpoint}?select=*&order=created_at.desc${filter}`;
     const response = await firstValueFrom(
       this.http.get<RecipeRow[]>(url, {

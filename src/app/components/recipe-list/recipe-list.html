@@ -9,11 +9,6 @@
         </span>
         <h2 class="list__title">{{ recipe.title }}</h2>
         <span class="list__tags">
-          @if (recipe.language !== language()) {
-            <span class="tag" role="img" [attr.aria-label]="text().language[recipe.language]">
-              {{ recipe.language === 'de' ? 'DE' : 'EN' }}
-            </span>
-          }
           @if (recipe.diet !== 'none') {
             <span class="tag">{{ text().diets[recipe.diet] }}</span>
           }
