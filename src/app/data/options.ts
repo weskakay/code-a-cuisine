@@ -6,6 +6,12 @@ export const PORTIONS = { min: 1, max: 12, default: 2 };
 /** Cooks that can share the work. */
 export const HELPERS = { min: 1, max: 3, default: 1 };
 
+/** Ingredients the list holds at most, the workflow checks the same. */
+export const MAX_INGREDIENTS = 20;
+
+/** Characters an ingredient name may have, the workflow checks the same. */
+export const MAX_NAME_LENGTH = 40;
+
 /** Basic ingredients a recipe may add on top of what the user has. */
 export const MAX_EXTRA_INGREDIENTS = 3;
 

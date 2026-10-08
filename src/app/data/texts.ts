@@ -41,7 +41,7 @@ export const EN = {
     fusion: 'Fusion cuisine',
   },
   home: {
-    claim: 'AI-Powered recipe generator',
+    claim: 'AI-powered recipe generator',
     start: 'Get started',
     inspiration: 'Hungry for inspiration?',
     cookbook: 'Go to cookbook',
@@ -60,6 +60,7 @@ export const EN = {
     change: 'Change',
     remove: 'Remove from the list',
     error: 'Enter a name and an amount above zero.',
+    full: 'The list holds 20 ingredients at most.',
     next: 'Next step',
   },
   preferences: {
@@ -229,6 +230,7 @@ export const DE: Texts = {
     change: 'Ändern:',
     remove: 'Von der Liste nehmen:',
     error: 'Gib einen Namen und eine Menge über null ein.',
+    full: 'Auf die Liste passen höchstens 20 Zutaten.',
     next: 'Weiter',
   },
   preferences: {

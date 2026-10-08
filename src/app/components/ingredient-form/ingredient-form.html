@@ -8,6 +8,7 @@
       formControlName="name"
       autocomplete="off"
       placeholder="Pasta"
+      [attr.maxlength]="maxName"
     />
 
     @if (suggestions().length > 0) {

@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { COMMON_INGREDIENTS } from '../../data/ingredients';
-import { UNITS } from '../../data/options';
+import { MAX_INGREDIENTS, MAX_NAME_LENGTH, UNITS } from '../../data/options';
 import type { IngredientInput, Unit } from '../../interfaces/recipe.interface';
 import { LanguageService } from '../../services/language.service';
 import { RecipeDraftService } from '../../services/recipe-draft.service';
@@ -23,12 +23,13 @@ export class IngredientForm {
   private readonly languages = inject(LanguageService);
 
   readonly units = UNITS;
+  readonly maxName = MAX_NAME_LENGTH;
   readonly text = this.languages.t;
   readonly error = signal('');
   readonly editing = this.draft.editing;
 
   readonly form = this.builder.nonNullable.group({
-    name: ['', Validators.required],
+    name: ['', [Validators.required, Validators.pattern(/\S/), Validators.maxLength(MAX_NAME_LENGTH)]],
     amount: [100, [Validators.required, Validators.min(1)]],
     unit: ['g' as Unit, Validators.required],
   });
@@ -51,18 +52,27 @@ export class IngredientForm {
 
   /** Puts the ingredient on the list, or writes back the one being changed. */
   add(): void {
-    if (this.form.invalid) {
-      this.error.set(this.text().generate.error);
+    const problem = this.problem();
+    if (problem) {
+      this.error.set(problem);
       return;
     }
     const place = this.editing();
-    const entered = this.form.getRawValue();
     if (place === null) {
-      this.draft.addIngredient(entered);
+      this.draft.addIngredient(this.form.getRawValue());
     } else {
-      this.draft.updateIngredient(place, entered);
+      this.draft.updateIngredient(place, this.form.getRawValue());
     }
     this.clear();
+  }
+
+  /** Says why the entry cannot go on the list, or nothing when it can. */
+  private problem(): string {
+    if (this.form.invalid) {
+      return this.text().generate.error;
+    }
+    const full = this.editing() === null && this.draft.ingredients().length >= MAX_INGREDIENTS;
+    return full ? this.text().generate.full : '';
   }
 
   /** Takes a suggestion over into the field. */
