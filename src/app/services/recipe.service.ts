@@ -26,6 +26,9 @@ interface RecipeRow {
   language: Language;
 }
 
+/** Shape of a recipe id, so nothing else from the address reaches the query. */
+const RECIPE_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 /** One page of the library plus how many recipes match the filter. */
 export interface RecipePage {
   items: Recipe[];
@@ -53,8 +56,11 @@ export class RecipeService {
     return { items: (response.body ?? []).map(toRecipe), total: readTotal(response) };
   }
 
-  /** Reads a single recipe, or null when the id is unknown. */
+  /** Reads a single recipe, or null when the id is unknown or no id at all. */
   async getRecipe(id: string): Promise<Recipe | null> {
+    if (!RECIPE_ID.test(id)) {
+      return null;
+    }
     const url = `${this.endpoint}?select=*&id=eq.${id}&limit=1`;
     const rows = await firstValueFrom(
       this.http.get<RecipeRow[]>(url, { headers: this.headers(0, 0) }),

@@ -57,9 +57,15 @@ describe('RecipeService', () => {
     http.expectOne((r) => r.url.includes('cuisine=eq.italian&language=eq.de'));
   });
 
+  it('returns null without asking when the id is no recipe id', async () => {
+    expect(await service.getRecipe('x&select=likes')).toBeNull();
+    http.expectNone((r) => r.url.includes('/rest/v1/recipes'));
+  });
+
   it('returns null when the recipe does not exist', async () => {
-    const recipe = service.getRecipe('missing');
-    http.expectOne((r) => r.url.includes('id=eq.missing')).flush([]);
+    const id = '00000000-0000-4000-8000-000000000000';
+    const recipe = service.getRecipe(id);
+    http.expectOne((r) => r.url.includes(`id=eq.${id}`)).flush([]);
     expect(await recipe).toBeNull();
   });
 });
