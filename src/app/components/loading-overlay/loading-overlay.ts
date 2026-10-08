@@ -1,8 +1,10 @@
 import { Component, input } from '@angular/core';
+import { MenuBar } from '../menu-bar/menu-bar';
 
-/** Bridges the wait while the workflow writes the recipes. */
+/** Olive page that bridges the wait while the workflow writes the recipes. */
 @Component({
   selector: 'app-loading-overlay',
+  imports: [MenuBar],
   templateUrl: './loading-overlay.html',
   styleUrl: './loading-overlay.scss',
 })

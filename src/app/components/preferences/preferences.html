@@ -1,6 +1,10 @@
-<app-menu-bar back="/generate" [backLabel]="text().preferences.back" />
+<app-menu-bar
+  back="/generate"
+  [backLabel]="text().preferences.back"
+  [attr.inert]="busy() ? '' : null"
+/>
 
-<main class="prefs">
+<main class="prefs" [attr.inert]="busy() ? '' : null">
   <h1 class="prefs__title">{{ text().titles.preferences }}</h1>
 
   <div class="counters">
@@ -165,4 +169,4 @@
   <button class="quota__close" type="button" (click)="dismiss()">{{ text().preferences.quotaClose }}</button>
 </dialog>
 
-<app-site-footer />
+<app-site-footer [attr.inert]="busy() ? '' : null" />

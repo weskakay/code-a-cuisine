@@ -1,32 +1,47 @@
-.overlay {
+/* Covers the whole page like the loading frame of the design */
+.loading {
   position: fixed;
   inset: 0;
   z-index: 10;
-  display: grid;
-  place-items: center;
-  background: var(--cc-overlay);
-}
-
-.overlay__box {
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  background: var(--cc-olive);
+  color: var(--cc-cream);
+
+  /* Green on olive is barely visible, so the ring turns cream here */
+  --cc-focus: var(--cc-cream);
+}
+
+.loading__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: var(--cc-space-xs);
-  padding: var(--cc-space-lg) var(--cc-space-md);
-  border-radius: var(--cc-radius-lg);
-  background: var(--cc-loader);
-  color: var(--cc-green-dark);
+  gap: var(--cc-space-md);
+  padding: var(--cc-space-lg) var(--cc-space-xs);
   text-align: center;
 }
 
-.overlay__label {
-  font-family: var(--cc-font-display);
-  font-size: var(--cc-fs-lg);
-  font-weight: var(--cc-fw-bold);
+.loading__tile {
+  display: grid;
+  place-items: center;
+  width: var(--cc-loader-tile-width);
+  height: var(--cc-loader-tile-height);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-loader);
 }
 
-.overlay__hint {
-  font-size: var(--cc-fs-xs);
+.loading__label {
+  font-family: var(--cc-font-display);
+  font-size: var(--cc-fs-loading);
+  font-weight: var(--cc-fw-bold);
+  line-height: 1.15;
+}
+
+.loading__hint {
+  font-size: var(--cc-fs-sm);
 }
 
 /* A pot with three rising clouds of steam */
@@ -34,6 +49,7 @@
   position: relative;
   width: 96px;
   height: 96px;
+  transform: scale(var(--cc-loader-pot-scale));
 }
 
 .pot__body {
@@ -85,27 +101,51 @@
   }
 }
 
-/* The text stays, the dots leave one by one and come back the same way */
+/* The text stays, the dots leave one by one from the end and come back
+   the same way: ... .. . (none) . .. ... in eight steps of half a second */
 .dots span {
-  animation: fade 1.5s linear infinite;
+  animation: 4s step-end infinite;
+}
+
+.dots span:nth-child(1) {
+  animation-name: dot-first;
 }
 
 .dots span:nth-child(2) {
-  animation-delay: 0.5s;
+  animation-name: dot-second;
 }
 
 .dots span:nth-child(3) {
-  animation-delay: 1s;
+  animation-name: dot-third;
 }
 
-@keyframes fade {
-  0%,
-  100% {
-    opacity: 1;
+@keyframes dot-first {
+  37.5% {
+    opacity: 0;
   }
 
-  50% {
+  62.5% {
+    opacity: 1;
+  }
+}
+
+@keyframes dot-second {
+  25% {
     opacity: 0;
+  }
+
+  75% {
+    opacity: 1;
+  }
+}
+
+@keyframes dot-third {
+  12.5% {
+    opacity: 0;
+  }
+
+  87.5% {
+    opacity: 1;
   }
 }
 

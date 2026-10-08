@@ -1,17 +1,21 @@
-<div class="overlay" role="status" aria-live="polite">
-  <div class="overlay__box">
-    <div class="pot" aria-hidden="true">
-      <span class="pot__steam"></span>
-      <span class="pot__steam"></span>
-      <span class="pot__steam"></span>
-      <span class="pot__body"></span>
+<div class="loading">
+  <app-menu-bar [onDark]="true" />
+
+  <div class="loading__body" role="status" aria-live="polite">
+    <div class="loading__tile" aria-hidden="true">
+      <div class="pot">
+        <span class="pot__steam"></span>
+        <span class="pot__steam"></span>
+        <span class="pot__steam"></span>
+        <span class="pot__body"></span>
+      </div>
     </div>
-    <p class="overlay__label">
+    <p class="loading__label">
       {{ label()
       }}<span class="dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span>
     </p>
     @if (hint()) {
-      <p class="overlay__hint">{{ hint() }}</p>
+      <p class="loading__hint">{{ hint() }}</p>
     }
   </div>
 </div>
