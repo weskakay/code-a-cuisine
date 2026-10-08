@@ -283,8 +283,10 @@ when the limit is reached and 502 when the model broke the rules. The types live
 
 ## The workflows
 
-`Generate recipes` takes the request, counts it against the daily limit, asks the model,
-checks the answer against the rules and stores the three recipes. Every branch ends in an
+`Generate recipes` takes the request, counts it against the daily limit and asks the
+model. Its answer has a fixed shape (three recipes, at most three extras each), and a code
+node checks the one rule a shape cannot hold: every recipe uses at least 70 percent of the
+ingredients. Then the three recipes are stored. Every branch ends in an
 answer: 400 for a bad request, 429 when the limit is used up, 502 when the model broke the
 rules, and in that case the generation is given back.
 

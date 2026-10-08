@@ -266,7 +266,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// The model is asked politely, so the answer still has to be checked.\nconst answer = $json.output ?? $json;\nconst recipes = answer.recipes ?? [];\nconst wanted = $('Read visitor address').item.json.request.ingredients;\nconst problems = [];\n\n// \"Chicken breast\" and \"sliced chicken breasts\" mean the same thing here.\nconst plain = (name) => name.toLowerCase().replace(/[^a-z ]/g, '').trim();\nconst same = (mine, theirs) => {\n  const a = plain(mine);\n  const b = plain(theirs);\n  return a.includes(b) || b.includes(a);\n};\n\nif (recipes.length !== 3) {\n  problems.push(`Expected three recipes, got ${recipes.length}.`);\n}\n\nfor (const recipe of recipes) {\n  const listed = [...(recipe.yourIngredients ?? []), ...(recipe.extraIngredients ?? [])];\n  const used = wanted.filter((item) => listed.some((entry) => same(item.name, entry.name))).length;\n  if (used / wanted.length < 0.7) {\n    problems.push(`\"${recipe.title}\" uses too few of the ingredients.`);\n  }\n  if ((recipe.extraIngredients ?? []).length > 3) {\n    problems.push(`\"${recipe.title}\" asks for more than three extra ingredients.`);\n  }\n}\n\nif (problems.length > 0) {\n  return [{ json: { rulesOk: false, error: problems[0] } }];\n}\n\nreturn [{ json: { rulesOk: true, recipes } }];\n"
+        "jsCode": "// Recipe shape already fixes three recipes with at most three extras.\n// A schema cannot check how many of the visitor's ingredients are used.\nconst recipes = ($json.output ?? $json).recipes;\nconst wanted = $('Read visitor address').item.json.request.ingredients;\n\n// \"Chicken breast\" and \"sliced chicken breasts\" mean the same thing here.\nconst plain = (name) => name.toLowerCase().replace(/[^\\p{L} ]/gu, '').trim();\nconst same = (mine, theirs) => {\n  const a = plain(mine);\n  const b = plain(theirs);\n  return a !== '' && b !== '' && (a.includes(b) || b.includes(a));\n};\n\nconst tooFew = recipes.find((recipe) => {\n  const listed = [...recipe.yourIngredients, ...recipe.extraIngredients];\n  const used = wanted.filter((item) => listed.some((entry) => same(item.name, entry.name)));\n  return used.length / wanted.length < 0.7;\n});\n\nif (tooFew) {\n  return [{ json: { rulesOk: false, error: `\"${tooFew.title}\" uses too few of the ingredients.` } }];\n}\n\nreturn [{ json: { rulesOk: true, recipes } }];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -275,9 +275,9 @@
         160
       ],
       "id": "f93cdad7-f014-43e9-835a-8e26e0918f87",
-      "name": "Check rules",
+      "name": "Check ingredient share",
       "notesInFlow": true,
-      "notes": "Checks the answer: three recipes, at least 70 percent of the ingredients, at most three extras."
+      "notes": "Checks that every recipe uses at least 70 percent of the ingredients. Count of recipes and extras is already fixed by Recipe shape."
     },
     {
       "parameters": {
@@ -583,7 +583,7 @@
       "main": [
         [
           {
-            "node": "Check rules",
+            "node": "Check ingredient share",
             "type": "main",
             "index": 0
           }
@@ -597,7 +597,7 @@
         ]
       ]
     },
-    "Check rules": {
+    "Check ingredient share": {
       "main": [
         [
           {
