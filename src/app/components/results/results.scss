@@ -145,27 +145,29 @@
   font-weight: var(--cc-fw-medium);
 }
 
+/* Secondary button of the design: no frame, a soft cream wash on hover */
 .results__again {
   align-self: flex-end;
   display: inline-flex;
   align-items: center;
   gap: var(--cc-space-2xs);
   text-decoration: none;
-  border: 2px solid var(--cc-cream);
   min-height: var(--cc-tap-target);
-  padding: var(--cc-space-2xs) var(--cc-space-sm);
-  border-radius: var(--cc-radius-sm);
+  padding: var(--cc-space-xs) var(--cc-space-sm);
+  border-radius: var(--cc-radius-button);
   color: var(--cc-cream);
   font-size: var(--cc-fs-xs);
-  font-weight: var(--cc-fw-semibold);
+  font-weight: var(--cc-fw-medium);
+  line-height: 1;
   transition: background var(--cc-transition);
 
-  &:hover {
-    background: var(--cc-green-pressed);
+  &:hover,
+  &:active {
+    background: var(--cc-cream-hover-faint);
   }
 
   @media (width >= 1024px) {
-    font-size: var(--cc-fs-lg);
+    font-size: var(--cc-fs-body);
   }
 }
 
