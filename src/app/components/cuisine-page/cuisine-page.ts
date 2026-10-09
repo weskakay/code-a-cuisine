@@ -5,6 +5,7 @@ import { CUISINES, RECIPES_PER_PAGE } from '../../data/options';
 import type { Language } from '../../data/texts';
 import type { Cuisine, Recipe } from '../../interfaces/recipe.interface';
 import { LanguageService } from '../../services/language.service';
+import { RecipeDraftService } from '../../services/recipe-draft.service';
 import { RecipeService, type RecipePage } from '../../services/recipe.service';
 import { MenuBar } from '../menu-bar/menu-bar';
 import { RecipeList } from '../recipe-list/recipe-list';
@@ -21,6 +22,7 @@ export class CuisinePage {
   private readonly recipeService = inject(RecipeService);
   private readonly router = inject(Router);
   private readonly languages = inject(LanguageService);
+  private readonly draft = inject(RecipeDraftService);
 
   readonly text = this.languages.t;
   readonly perPage = RECIPES_PER_PAGE;
@@ -55,6 +57,11 @@ export class CuisinePage {
       const language = this.languages.current();
       untracked(() => void this.show(style, page, language));
     });
+  }
+
+  /** A new recipe starts from an empty list, not from the last one. */
+  startNew(): void {
+    this.draft.reset();
   }
 
   /** An unknown style goes back to the cookbook, a known one loads its page. */

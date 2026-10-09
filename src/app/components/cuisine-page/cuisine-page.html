@@ -69,7 +69,9 @@
       </nav>
     }
 
-    <a class="kind__generate" routerLink="/generate">{{ text().cookbook.generate }}</a>
+    <a class="kind__generate" routerLink="/generate" (click)="startNew()">{{
+      text().cookbook.generate
+    }}</a>
   </main>
 }
 

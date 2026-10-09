@@ -9,6 +9,13 @@ import type {
 } from '../interfaces/recipe.interface';
 import { LanguageService } from './language.service';
 
+/** Choices a new recipe starts with, both on the first visit and after a reset. */
+const START: { cookingTime: CookingTime; cuisine: Cuisine; diet: Diet } = {
+  cookingTime: 'quick',
+  cuisine: 'italian',
+  diet: 'none',
+};
+
 /** The list survives a reload of the tab, nothing more. */
 const STORAGE_KEY = 'cc-ingredients';
 
@@ -20,9 +27,9 @@ export class RecipeDraftService {
   readonly ingredients = signal<IngredientInput[]>(readIngredients());
   readonly portions = signal(PORTIONS.default);
   readonly helpers = signal(HELPERS.default);
-  readonly cookingTime = signal<CookingTime>('quick');
-  readonly cuisine = signal<Cuisine>('italian');
-  readonly diet = signal<Diet>('none');
+  readonly cookingTime = signal(START.cookingTime);
+  readonly cuisine = signal(START.cuisine);
+  readonly diet = signal(START.diet);
 
   /** The place of the ingredient the visitor is changing, or null. */
   readonly editing = signal<number | null>(null);
@@ -55,6 +62,17 @@ export class RecipeDraftService {
     this.ingredients.update((list) =>
       list.map((item, place) => (place === index ? ingredient : item)),
     );
+    this.editing.set(null);
+  }
+
+  /** Empties the list and puts every preference back, for a recipe from scratch. */
+  reset(): void {
+    this.ingredients.set([]);
+    this.portions.set(PORTIONS.default);
+    this.helpers.set(HELPERS.default);
+    this.cookingTime.set(START.cookingTime);
+    this.cuisine.set(START.cuisine);
+    this.diet.set(START.diet);
     this.editing.set(null);
   }
 

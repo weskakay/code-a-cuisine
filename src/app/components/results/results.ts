@@ -32,4 +32,9 @@ export class Results {
     this.text().cuisines[this.draft.cuisine()],
     this.text().times[this.draft.cookingTime()],
   ]);
+
+  /** A new recipe starts from an empty list, not from the last one. */
+  startNew(): void {
+    this.draft.reset();
+  }
 }

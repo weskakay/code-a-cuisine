@@ -3,7 +3,7 @@
   <a class="invite__link" routerLink="/cookbook">{{ text().recipe.inviteLink }}</a>
 </div>
 
-<a class="again" routerLink="/generate">
+<a class="again" routerLink="/generate" (click)="startNew()">
   {{ text().recipe.generateNew }}
   <app-icon name="arrow-right" />
 </a>
