@@ -57,6 +57,11 @@ describe('RecipeService', () => {
     http.expectOne((r) => r.url.includes('cuisine=eq.italian&language=eq.de'));
   });
 
+  it('asks only for the most liked recipes in one language', () => {
+    service.listMostLiked('en');
+    http.expectOne((r) => r.url.includes('language=eq.en') && r.url.includes('order=likes.desc'));
+  });
+
   it('returns null without asking when the id is no recipe id', async () => {
     expect(await service.getRecipe('x&select=likes')).toBeNull();
     http.expectNone((r) => r.url.includes('/rest/v1/recipes'));

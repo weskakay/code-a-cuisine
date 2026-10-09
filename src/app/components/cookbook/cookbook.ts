@@ -4,12 +4,13 @@ import {
   effect,
   ElementRef,
   inject,
-  type OnInit,
   signal,
+  untracked,
   viewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CUISINES } from '../../data/options';
+import type { Language } from '../../data/texts';
 import type { Recipe } from '../../interfaces/recipe.interface';
 import { LanguageService } from '../../services/language.service';
 import { RecipeService } from '../../services/recipe.service';
@@ -24,10 +25,11 @@ import { SiteFooter } from '../site-footer/site-footer';
   templateUrl: './cookbook.html',
   styleUrl: './cookbook.scss',
 })
-export class Cookbook implements OnInit {
+export class Cookbook {
   private readonly recipeService = inject(RecipeService);
+  private readonly languages = inject(LanguageService);
 
-  readonly text = inject(LanguageService).t;
+  readonly text = this.languages.t;
 
   readonly cuisines = CUISINES;
   readonly mostLiked = signal<Recipe[]>([]);
@@ -39,14 +41,13 @@ export class Cookbook implements OnInit {
 
   constructor() {
     effect(() => this.watchRow(this.mostLiked()));
+    effect(() => {
+      const language = this.languages.current();
+      untracked(() => void this.loadMostLiked(language));
+    });
     const onResize = () => this.measureRow();
     window.addEventListener('resize', onResize);
     inject(DestroyRef).onDestroy(() => window.removeEventListener('resize', onResize));
-  }
-
-  /** Loads the most liked recipes for the row at the top. */
-  ngOnInit(): void {
-    void this.loadMostLiked();
   }
 
   /** Moves the row of the most liked recipes by about one card. */
@@ -70,9 +71,15 @@ export class Cookbook implements OnInit {
     this.rowScrolls.set(!!row && row.scrollWidth > row.clientWidth + 8);
   }
 
-  /** Reads the recipes with the most hearts. Stays empty until someone likes one. */
-  private async loadMostLiked(): Promise<void> {
-    const liked = await this.recipeService.listMostLiked().catch(() => []);
-    this.mostLiked.set(liked.filter((dish) => dish.likes > 0));
+  /**
+   * Reads the recipes with the most hearts in the language of the interface, again on
+   * every switch. Stays empty until someone likes one. A late answer for a language
+   * that is no longer on is dropped.
+   */
+  private async loadMostLiked(language: Language): Promise<void> {
+    const liked = await this.recipeService.listMostLiked(language).catch(() => []);
+    if (language === this.languages.current()) {
+      this.mostLiked.set(liked.filter((dish) => dish.likes > 0));
+    }
   }
 }

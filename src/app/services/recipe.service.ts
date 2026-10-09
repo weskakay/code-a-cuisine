@@ -68,9 +68,10 @@ export class RecipeService {
     return rows.length ? toRecipe(rows[0]) : null;
   }
 
-  /** Reads the recipes with the most hearts, for the row in the library. */
-  async listMostLiked(count = MOST_LIKED_COUNT): Promise<Recipe[]> {
-    const url = `${this.endpoint}?select=*&order=likes.desc,created_at.desc&limit=${count}`;
+  /** Reads the recipes with the most hearts in one language, for the row in the library. */
+  async listMostLiked(language: Language, count = MOST_LIKED_COUNT): Promise<Recipe[]> {
+    const order = 'order=likes.desc,created_at.desc';
+    const url = `${this.endpoint}?select=*&language=eq.${language}&${order}&limit=${count}`;
     const rows = await firstValueFrom(
       this.http.get<RecipeRow[]>(url, { headers: this.headers(0, count - 1) }),
     );
