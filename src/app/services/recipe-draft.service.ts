@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { HELPERS, PORTIONS } from '../data/options';
 import type {
   CookingTime,
@@ -9,12 +9,15 @@ import type {
 } from '../interfaces/recipe.interface';
 import { LanguageService } from './language.service';
 
+/** The list survives a reload of the tab, nothing more. */
+const STORAGE_KEY = 'cc-ingredients';
+
 /** Holds what the visitor picked while walking through the steps. */
 @Injectable({ providedIn: 'root' })
 export class RecipeDraftService {
   private readonly languages = inject(LanguageService);
 
-  readonly ingredients = signal<IngredientInput[]>([]);
+  readonly ingredients = signal<IngredientInput[]>(readIngredients());
   readonly portions = signal(PORTIONS.default);
   readonly helpers = signal(HELPERS.default);
   readonly cookingTime = signal<CookingTime>('quick');
@@ -26,6 +29,10 @@ export class RecipeDraftService {
 
   /** True as soon as one ingredient is on the list, which the next step needs. */
   readonly ready = computed(() => this.ingredients().length > 0);
+
+  constructor() {
+    effect(() => writeIngredients(this.ingredients()));
+  }
 
   /** Puts a new ingredient on top of the list. */
   addIngredient(ingredient: IngredientInput): void {
@@ -67,5 +74,34 @@ export class RecipeDraftService {
       helpers: this.helpers(),
       language: this.languages.current(),
     };
+  }
+}
+
+/** Reads the list the tab kept, empty when there is none or it looks broken. */
+function readIngredients(): IngredientInput[] {
+  try {
+    const list: unknown = JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? '[]');
+    return Array.isArray(list) ? list.filter(isIngredient) : [];
+  } catch {
+    return [];
+  }
+}
+
+/** True for an entry with a name, an amount and a unit. */
+function isIngredient(item: unknown): item is IngredientInput {
+  const entry = item as Partial<IngredientInput> | null;
+  return (
+    typeof entry?.name === 'string' &&
+    typeof entry.amount === 'number' &&
+    typeof entry.unit === 'string'
+  );
+}
+
+/** Keeps the list for a reload of the same tab. */
+function writeIngredients(list: IngredientInput[]): void {
+  try {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  } catch {
+    return;
   }
 }
