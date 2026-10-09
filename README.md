@@ -282,16 +282,19 @@ The answer holds three saved recipes and what is left of the daily limit:
 ```
 
 Errors come back as `{ "error": "one sentence" }` with status 400 for a bad request, 429
-when the limit is reached and 502 when the model broke the rules. The types live in
+when the limit is reached and 422 when the model broke the rules. It is not 502 on purpose:
+Cloudflare in front of n8n Cloud swaps a 502 for its own page without CORS headers, and the
+browser would only see a network error. The types live in
 `src/app/interfaces/recipe.interface.ts`.
 
 ## The workflows
 
 `Generate recipes` checks the request again with the same limits as the form, counts it
-against the daily limit and asks the model. Its answer has a fixed shape (three recipes, at most three extras each), and a code
-node checks the one rule a shape cannot hold: every recipe uses at least 70 percent of the
-ingredients. Then the three recipes are stored. Every branch ends in an
-answer: 400 for a bad request, 429 when the limit is used up, 502 when the model broke the
+against the daily limit and asks the model. The prompt tells the model to keep the names of
+the visitor's ingredients exactly as typed, only titles, steps and extras follow the
+language. The answer has a fixed shape (three recipes, at most three extras each), and a
+code node checks the one rule a shape cannot hold: every recipe uses at least 70 percent of
+the ingredients. Then the three recipes are stored. Every branch ends in an answer: 400 for a bad request, 429 when the limit is used up, 422 when the model broke the
 rules, and in that case the generation is given back.
 
 ![The recipe workflow](docs/workflow-generate.jpg)

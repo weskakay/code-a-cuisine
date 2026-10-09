@@ -212,7 +212,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Turns the request into one clear order for the model.\nconst request = $('Read visitor address').item.json.request;\nconst list = request.ingredients\n  .map((item) => `${item.amount} ${item.unit} ${item.name}`)\n  .join(', ');\n\nconst language =\n  request.language === 'de'\n    ? 'Schreibe jeden Titel und jeden Text auf Deutsch, auch die Zutatennamen, unabhaengig von der Kochrichtung.'\n    : 'Write every title and every text in English, whatever the cooking style is.';\n\nconst prompt = [\n  'You are a cooking assistant. Create exactly three different recipes.',\n  `Ingredients at home: ${list}.`,\n  `Portions: ${request.portions}. Cooks in the kitchen: ${request.helpers}.`,\n  `Cooking style: ${request.cuisine}. Diet: ${request.diet}.`,\n  `Time frame: ${request.cookingTime} (quick is up to 20 minutes, medium 20 to 45, complex over 45).`,\n  'Every recipe uses at least 70 percent of the ingredients above.',\n  'Every recipe may add at most three basic extra ingredients.',\n  'The three recipes differ in preparation or taste.',\n  'Scale all amounts to the number of portions.',\n  'Steps are chronological. Mark steps that run in parallel and give each step a cook.',\n  'Use waiting times, for example time in the oven, for other steps.',\n  'Give durations in minutes and nutrition per portion and for the whole recipe.',\n  language,\n].join(' ');\n\nreturn [{ json: { prompt } }];"
+        "jsCode": "// Turns the request into one clear order for the model.\nconst request = $('Read visitor address').item.json.request;\nconst list = request.ingredients\n  .map((item) => `${item.amount} ${item.unit} ${item.name}`)\n  .join(', ');\n\nconst language =\n  request.language === 'de'\n    ? 'Schreibe jeden Titel, jeden Schritt und jede Zusatzzutat auf Deutsch, unabhaengig von der Kochrichtung.'\n    : 'Write every title and every text in English, whatever the cooking style is.';\n\nconst prompt = [\n  'You are a cooking assistant. Create exactly three different recipes.',\n  `Ingredients at home: ${list}.`,\n  `Portions: ${request.portions}. Cooks in the kitchen: ${request.helpers}.`,\n  `Cooking style: ${request.cuisine}. Diet: ${request.diet}.`,\n  `Time frame: ${request.cookingTime} (quick is up to 20 minutes, medium 20 to 45, complex over 45).`,\n  'Every recipe uses at least 70 percent of the ingredients above.',\n  'In yourIngredients, write each ingredient from home with exactly the name given above, never translated or changed.',\n  'Every recipe may add at most three basic extra ingredients.',\n  'The three recipes differ in preparation or taste.',\n  'Scale all amounts to the number of portions.',\n  'Steps are chronological. Mark steps that run in parallel and give each step a cook.',\n  'Use waiting times, for example time in the oven, for other steps.',\n  'Give durations in minutes and nutrition per portion and for the whole recipe.',\n  language,\n].join(' ');\n\nreturn [{ json: { prompt } }];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -320,7 +320,7 @@
         "respondWith": "json",
         "responseBody": "={{ JSON.stringify({ error: 'The recipes could not be generated. Please try again.' }) }}",
         "options": {
-          "responseCode": 502
+          "responseCode": 422
         }
       },
       "type": "n8n-nodes-base.respondToWebhook",
@@ -332,7 +332,7 @@
       "id": "2eb0d833-dd33-492f-8953-69436b31d74d",
       "name": "Respond generation failed",
       "notesInFlow": true,
-      "notes": "Answers with status 502 when the model did not keep to the rules."
+      "notes": "Answers with status 422 when the model did not keep to the rules. Not 502: Cloudflare swaps a 502 for its own page without CORS headers."
     },
     {
       "parameters": {

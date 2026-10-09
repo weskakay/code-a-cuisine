@@ -61,7 +61,10 @@ describe('GeneratorService', () => {
     const answer = service.generate(request).catch((error: unknown) => error as GeneratorError);
     http
       .expectOne((r) => r.url.includes('generate-recipes'))
-      .flush({ error: 'The model broke the rules.' }, { status: 502, statusText: 'Bad Gateway' });
+      .flush(
+        { error: 'The model broke the rules.' },
+        { status: 422, statusText: 'Unprocessable Entity' },
+      );
     const error = (await answer) as GeneratorError;
     expect(error.offline).toBe(false);
     expect(error.message).toBe('The model broke the rules.');
